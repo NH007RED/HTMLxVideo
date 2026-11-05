@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GitHub Uploader v3.3 - Complete Build Tutorial</title>
+<style>
+:root{--bg:#0a0f1f;--ink:#eef1ff;--mut:#98a5cc;--card:#141c3a;--ac:#22d3ee;box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+.w{max-width:900px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:4px 0}
+p{margin:4px 0 12px;color:var(--mut);font-size:13px}
+canvas{width:100%;height:auto;aspect-ratio:16/9;display:block;border-radius:10px;background:#000}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+button{font:inherit;padding:10px 13px;border-radius:9px;border:1px solid #2a3563;background:var(--card);color:var(--ink);cursor:pointer}
+#st{font-size:13px;color:var(--mut);min-height:20px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>GitHub Uploader v3.3: Complete Android Build Tutorial</h1>
+<p>16:9, 1920x1080 tutorial video (12 scenes). Awaaz HTML2Video app ki Hindi AI voice se banti hai. Screens illustrative animation hain, real screen recording nahi.</p>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div class="ctl">
+  <button id="pv">▶ Preview chalao</button>
+  <label style="font-size:13px"><input type="checkbox" id="cap" checked> Subtitle</label>
+  <label style="font-size:13px"><input type="checkbox" id="vo" checked> Voice (sirf browser preview)</label>
+</div>
+<div id="st"></div>
+</div>
+<script>
+/* ===================== SCRIPT (Hinglish voice-over, jaisa diya gaya) ===================== */
+var SC=[
+{min:14,vo:"Namaste dosto! Main hoon NH Developer, aur aaj ki video mein hum seekhenge ki GitHub Uploader v3.3 ki help se mobile par Android application kaise build karte hain. Hum project ki ZIP file upload karenge, Google Services JSON configure karenge, API variables set karenge, apni keystore file configure karenge aur finally Debug APK, Release APK aur AAB build karna seekhenge. Video ko end tak zaroor dekhna, kyunki main build errors ko fix karne ka process bhi explain karunga."},
+{min:14,vo:"Sabse pehle GitHub account connect karna hoga. Settings open kijiye aur Login with GitHub option use kijiye. Agar Device Flow use kar rahe hain, to OAuth app ka Client ID aur authorization code wala process complete karein. Aap required permissions wala personal access token bhi use kar sakte hain. Account connect hone ke baad username screen par dikh jayega. Dhyan rakhein, apna token, password ya authorization code kisi ke saath share mat kijiye."},
+{min:14,vo:"Ab apna Android Studio project add karte hain. Home screen par Add from ZIP button par tap kijiye aur apni project ZIP file select kijiye. Dhyan rahe, ZIP ke andar project ka actual source code, Gradle files, settings file aur required modules hone chahiye. Sirf APK file ko ZIP karke upload karne se source project build nahi hoga. Project ka naam, GitHub repository name aur branch confirm kijiye. Ab project open karne par aapko build screen dikhai degi."},
+{min:30,vo:"Ab aate hain Google Services JSON par. Agar aapke Android project mein Firebase ya Google Services Gradle plugin use hota hai, to sahi configuration file zaroori ho sakti hai. Sabse pehle Firebase Console open kijiye. Apna Firebase project select kijiye aur Project Settings mein jaakar apni Android application select karein. Yahan package name bilkul aapke Android project ke application ID se match hona chahiye. Uske baad google-services.json download kar lijiye. Ab GitHub Uploader mein wapas aaiye. Project screen ke info icon par tap kijiye, Build fixes open kijiye aur Attach file select kijiye. Apni asli JSON file choose karein aur repository path mein \"app/google-services.json\" enter karein. Agar aapke project ka Android module kisi doosre naam se hai, to uske actual module path ka use karein. File attach karne ke baad Build par tap kijiye. App updated project upload karke build process chala sakta hai."},
+{min:25,vo:"Ab agar aapki application Google Maps ya kisi doosri API ka use karti hai, to uski required variables configure karni pad sakti hain. Build fixes ke andar Variables option open kijiye. Yahan variable ko KEY equals VALUE format mein enter karna hota hai. Example ke liye, MAPS_API_KEY equals YOUR_API_KEY. Yeh sirf example hai. Iski jagah apni actual API key use karein aur variable ka naam apne project ke code aur Gradle configuration ke according rakhein. Agar multiple variables hain, to har variable ko alag line mein enter karein. Save karne ke baad dobara Build kijiye. Is project mein Variables feature ke values local.properties configuration ke through upload hoti hain, isliye inhe automatically secure GitHub Secrets samajhna galat hoga. Private repository ka use karein aur production secrets ko repository mein upload karne se bachein. Agar API provider support karta hai, to API key par application restrictions aur usage limits bhi set karein."},
+{min:35,vo:"Ab sabse important step hai Keystore configuration. Agar aap apni application ko long-term maintain karna chahte hain, to signing key ko carefully manage karna bahut zaroori hai. Project screen par info icon tap kijiye, Build fixes open kijiye aur Keystore option select kijiye. Ab apni existing keystore file choose karein. Uske baad key alias, store password aur key password enter karein. Store password keystore ko access karne ke liye hota hai, jabki key password selected signing key ko access karne ke liye hota hai. Dono same bhi ho sakte hain aur alag bhi. Details verify karke Save par tap karein. Is project mein keystore configure hone ke baad Release build option enable ho sakta hai. Ek bahut important warning: apni keystore file aur passwords ka secure backup zaroor rakhein. Is tool ke documented workflow mein keystore repository par upload hoti hai, isliye repository ko private rakhein aur credentials ko public repository mein kabhi upload na karein. Agar aapke paas pehle se published app ki signing key hai, to usi key ko preserve karein. Nayi random key se signed APK purane installation ko normally update nahi kar payegi."},
+{min:20,vo:"Ab pehle Debug APK build karte hain. Build type mein Debug select kijiye aur Build button par tap kijiye. GitHub Actions aapke project ko cloud server par build karega. Build ke dauran GitHub log aur App log check kar sakte hain. Jab build successful ho jaye, Download button se APK phone mein save kar lijiye. Is APK ko testing ke liye use kar sakte hain."},
+{min:22,vo:"Ab Release APK banate hain. Build type mein Release select kijiye. Confirm kar lijiye ki aapki intended keystore aur signing details correctly configure hain. Ab Build par tap kijiye. Release build mein code shrinking ya resource optimization bhi configured ho sakti hai, isliye build complete hone ke baad application ko properly test karna zaroori hai. Build successful hone par signed APK download kar lijiye. Agar aap production application release kar rahe hain, to temporary test key ke bajaye apni intended permanent signing key ka use karein."},
+{min:24,vo:"Ab Google Play ke liye Android App Bundle, yaani AAB generate karte hain. Build type mein AAB select kijiye aur Build par tap karein. GitHub Actions release bundle generate karega. Successful build ke baad \".aab\" file download kar lijiye. Dhyan rakhein, AAB generate hona aur Google Play Store par app live hona do alag steps hain. Google Play Console mein upload, app signing configuration, testing aur applicable publishing requirements bhi complete karni hoti hain."},
+{min:30,vo:"Agar build fail ho jata hai, to tension mat lijiye. Sabse pehle Copy error log par tap karein. Isse compiler errors aur Gradle failure details copy karne mein madad milti hai. Ab error ko dhyan se check kijiye. Agar Google Services configuration missing hai, to correct JSON file attach karein. Agar API variable missing hai, to uska exact naam aur expected format verify karein. Agar signing error hai, to keystore path, alias aur passwords check karein. Fix suggestions option bhi use kar sakte hain. Problem resolve karne ke baad Build par dobara tap karein. Yaad rakhein, sirf build pass hona is baat ka proof nahi hai ki Firebase, Maps, login ya doosri application features correctly kaam kar rahi hain. Unhe APK install karke test bhi karna chahiye."},
+{min:20,vo:"To dosto, aaj humne seekha ki GitHub Uploader v3.3 mein Android project ZIP kaise upload karte hain, Google Services JSON kaise configure karte hain, API variables kaise set karte hain aur keystore ke saath Release APK aur AAB kaise build karte hain. Agar aapko video helpful lagi, to like kijiye, NH Developer ko subscribe kijiye aur comment mein batayein ki aapko agla tutorial kis topic par chahiye. Main hoon NH Developer. Milte hain agli video mein. Tab tak ke liye, happy coding!"}
+];
+var S=SC; /* app ka helper (Player mode) isi naam ko dhundhta hai */
+
+/* ===================== helpers ===================== */
+var cv=document.getElementById("cv"),c=cv.getContext("2d"),W=1920,H=1080,CX=960;
+var SF='system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',MO='ui-monospace,Consolas,Menlo,monospace';
+var VI="#7c5cff",CYN="#22d3ee",GRN="#34d399",AMB="#fbbf24",RED="#f87171",CARD="#141b34",CARD2="#1b2548",STK="#2a3563",TXT="#f2f5ff",SUB="#98a5cc";
+var cl=function(v,a,b){return v<a?a:v>b?b:v};
+var E=function(t){t=cl(t,0,1);return 1-Math.pow(1-t,3)};
+var IO=function(t){t=cl(t,0,1);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+var BK=function(t){t=cl(t,0,1);return 1+2.7*Math.pow(t-1,3)+1.7*Math.pow(t-1,2)};
+var seg=function(t,a,b){return cl((t-a)/(b-a),0,1)};
+var A=function(q,a,d){return E((q-a)/(d||.04))};
+var hs=function(n){var x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+function rr(x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function tx(s,x,y,size,col,al,wt,a,sp,font){c.save();c.globalAlpha*=(a==null?1:a);c.font=(wt||400)+" "+size+"px "+(font||SF);c.fillStyle=col;c.textAlign=al||"left";c.textBaseline="middle";
+  if(sp){try{c.letterSpacing=sp+"px"}catch(e){}}c.fillText(s,x,y);c.restore()}
+function glow(col,b){c.shadowColor=col;c.shadowBlur=b}
+function noglow(){c.shadowColor="transparent";c.shadowBlur=0}
+function gradH(x,w,c1,c2){var g=c.createLinearGradient(x,0,x+w,0);g.addColorStop(0,c1||VI);g.addColorStop(1,c2||CYN);return g}
+function pop(cx,cy,a,fn){if(a<=0)return;var s=BK(a);c.save();c.globalAlpha=Math.min(1,a*1.5);c.translate(cx,cy);c.scale(s,s);c.translate(-cx,-cy);fn();c.restore()}
+
+/* ===================== timeline (voice ki length se) ===================== */
+var DUR=null,PLAN=[],TOTAL=0;
+function est(i){return Math.max(3,SC[i].vo.length*0.078)}
+function vdur(i){return DUR&&DUR[i]&&DUR[i].a>0?DUR[i].a:est(i)}
+function buildPlan(){PLAN=[];var T0=0;
+  SC.forEach(function(s,i){var vd=vdur(i),len=Math.max(s.min,vd+1.7);if(i===SC.length-1)len=Math.max(s.min,0.5+vd+3.2);
+    PLAN.push({i:i,start:T0,len:len,vd:vd,vs:0.5});T0+=len});
+  TOTAL=T0}
+window.__missing=[];
+function fr(i,word){var s=SC[i].vo,k=s.indexOf(word);if(k<0){window.__missing.push(i+":"+word);return .5}return cl(k/s.length,0,1)}
+/* tap ring ka progress: q ke window mein 0..1 */
+function tp(q,t0,d){d=d||.04;return q>=t0&&q<t0+d?(q-t0)/d:0}
+
+/* ===================== backdrop / captions ===================== */
+function backdrop(T){
+  c.fillStyle="#050918";c.fillRect(0,0,W,H);
+  var g=c.createRadialGradient(CX,520,60,CX,520,1100);g.addColorStop(0,"rgba(60,50,170,.45)");g.addColorStop(.5,"rgba(20,30,90,.35)");g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  var g2=c.createRadialGradient(1500,200,20,1500,200,600);g2.addColorStop(0,"rgba(34,211,238,.16)");g2.addColorStop(1,"rgba(34,211,238,0)");c.fillStyle=g2;c.fillRect(0,0,W,H);
+  c.save();c.strokeStyle="rgba(124,92,255,.10)";c.lineWidth=1;var o=(T*14)%80;
+  for(var x=-80+o;x<W;x+=80){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke()}
+  for(var y=-80+o;y<H;y+=80){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}c.restore();
+  for(var k=0;k<60;k++){var sp=5+hs(k+3)*14,x=(hs(k)*W+T*sp+W*4)%W,y=(hs(k+40)*H-T*sp*.5+H*4)%H,r=.8+hs(k+80)*2,a=.12+.28*hs(k+120)*(.6+.4*Math.sin(T*.8+k));
+    c.fillStyle=hs(k+7)<.5?"rgba(34,211,238,"+a+")":"rgba(160,140,255,"+a+")";c.beginPath();c.arc(x,y,r,0,7);c.fill()}
+}
+function wrapLines(s,mw,font){c.save();c.font=font;var w=s.split(" "),L=[],l="";w.forEach(function(k){var q=l?l+" "+k:k;if(c.measureText(q).width>mw&&l){L.push(l);l=k}else l=q});L.push(l);c.restore();return L}
+function caption(i,q){
+  if(!document.getElementById("cap").checked)return;
+  var s=SC[i];if(!s.sn){s.sn=(s.vo.replace(/(\d)\.(\d)/g,"$1\u0001$2").replace(/\.(?=aab)/g,"\u0001").match(/[^.!?]+[.!?]+(?:["”])?\s*/g)||[s.vo]).map(function(x){return x.replace(/\u0001/g,".")})}
+  var L=s.vo.length,pos=cl(q,0,.999)*L,acc=0,k=0;for(;k<s.sn.length-1;k++){if(pos<acc+s.sn[k].length)break;acc+=s.sn[k].length}
+  var a=cl((pos-acc)/5,0,1),txt=s.sn[k].trim(),fs=txt.length>150?32:36,f="600 "+fs+"px "+SF,lines=wrapLines(txt,1560,f),lh=fs+12,h=lines.length*lh+22,y0=1010-h;
+  c.save();c.globalAlpha=a;c.fillStyle="rgba(4,8,22,.74)";var wd=0;c.font=f;lines.forEach(function(l){wd=Math.max(wd,c.measureText(l).width)});
+  rr(CX-wd/2-30,y0,wd+60,h,18);c.fill();c.strokeStyle="rgba(124,92,255,.35)";c.lineWidth=1.5;c.stroke();
+  lines.forEach(function(l,j){tx(l,CX,y0+11+lh/2+j*lh,fs,"#fff","center",600)});c.restore()}
+
+/* ===================== icons / ui parts ===================== */
+function zipIcon(x,y,s,a){c.save();c.globalAlpha=a;c.translate(x,y);c.scale(s,s);glow("rgba(251,191,36,.4)",24);c.fillStyle="#f5b942";rr(-50,-60,100,120,14);c.fill();noglow();
+  c.fillStyle="#e3a21f";for(var k=0;k<6;k++){c.fillRect(-6,-56+k*14,6,7);c.fillRect(0,-49+k*14,6,7)}tx("ZIP",0,34,26,"#4a3000","center",900);c.restore()}
+function apkIcon(x,y,s,a){c.save();c.globalAlpha=a;c.translate(x,y);c.scale(s,s);glow("rgba(52,211,153,.45)",26);c.fillStyle="#3ddc84";rr(-56,-56,112,112,26);c.fill();noglow();
+  c.fillStyle="#06361d";c.beginPath();c.arc(0,-8,26,Math.PI,0);c.fill();c.fillStyle="#3ddc84";c.beginPath();c.arc(-10,-16,4,0,7);c.arc(10,-16,4,0,7);c.fill();
+  tx("APK",0,26,28,"#06361d","center",900);c.restore()}
+function appIcon(x,y,s,a){c.save();c.globalAlpha=a;c.translate(x,y);c.scale(s,s);glow("rgba(124,92,255,.55)",30);c.fillStyle=gradH(-56,112);rr(-56,-56,112,112,28);c.fill();noglow();
+  c.strokeStyle="#fff";c.lineWidth=9;c.lineCap="round";c.lineJoin="round";c.beginPath();c.moveTo(0,22);c.lineTo(0,-24);c.moveTo(-22,-2);c.lineTo(0,-26);c.lineTo(22,-2);c.stroke();c.restore()}
+function ico(x,y,r,kind,col){c.save();c.translate(x,y);c.strokeStyle=col;c.fillStyle=col;c.lineWidth=r*.16;c.lineCap="round";c.lineJoin="round";
+  if(kind==="lock"){c.beginPath();c.arc(0,-r*.2,r*.32,Math.PI,0);c.stroke();rr(-r*.42,-r*.2,r*.84,r*.62,r*.1);c.fill()}
+  else if(kind==="check"){c.beginPath();c.moveTo(-r*.4,0);c.lineTo(-r*.1,r*.3);c.lineTo(r*.45,-r*.32);c.stroke()}
+  else if(kind==="down"){c.beginPath();c.moveTo(0,-r*.45);c.lineTo(0,r*.3);c.moveTo(-r*.3,r*.02);c.lineTo(0,r*.32);c.lineTo(r*.3,r*.02);c.moveTo(-r*.4,r*.5);c.lineTo(r*.4,r*.5);c.stroke()}
+  else if(kind==="up"){c.beginPath();c.moveTo(0,r*.4);c.lineTo(0,-r*.35);c.moveTo(-r*.3,-r*.06);c.lineTo(0,-r*.38);c.lineTo(r*.3,-r*.06);c.stroke()}
+  else if(kind==="gear"){c.beginPath();c.arc(0,0,r*.28,0,7);c.stroke();for(var k=0;k<8;k++){var a=k*Math.PI/4;c.beginPath();c.moveTo(Math.cos(a)*r*.42,Math.sin(a)*r*.42);c.lineTo(Math.cos(a)*r*.58,Math.sin(a)*r*.58);c.stroke()}}
+  else if(kind==="phone"){rr(-r*.3,-r*.5,r*.6,r,r*.1);c.stroke();c.fillRect(-r*.08,r*.34,r*.16,r*.05)}
+  else if(kind==="repo"){rr(-r*.38,-r*.45,r*.76,r*.9,r*.08);c.stroke();c.beginPath();c.moveTo(-r*.38,r*.2);c.lineTo(r*.38,r*.2);c.stroke();c.beginPath();c.arc(-r*.15,r*.33,r*.05,0,7);c.fill()}
+  else if(kind==="box"){c.beginPath();c.moveTo(0,-r*.5);c.lineTo(r*.45,-r*.25);c.lineTo(r*.45,r*.25);c.lineTo(0,r*.5);c.lineTo(-r*.45,r*.25);c.lineTo(-r*.45,-r*.25);c.closePath();c.stroke();c.beginPath();c.moveTo(-r*.45,-r*.25);c.lineTo(0,0);c.lineTo(r*.45,-r*.25);c.moveTo(0,0);c.lineTo(0,r*.5);c.stroke()}
+  else if(kind==="warn"){c.beginPath();c.moveTo(0,-r*.5);c.lineTo(r*.5,r*.4);c.lineTo(-r*.5,r*.4);c.closePath();c.stroke();c.fillRect(-r*.04,-r*.15,r*.08,r*.3);c.beginPath();c.arc(0,r*.28,r*.05,0,7);c.fill()}
+  else if(kind==="x"){c.beginPath();c.moveTo(-r*.3,-r*.3);c.lineTo(r*.3,r*.3);c.moveTo(r*.3,-r*.3);c.lineTo(-r*.3,r*.3);c.stroke()}
+  c.restore()}
+function panel(x,y,w,h,a,col){c.save();c.globalAlpha*=a;glow("rgba(0,0,0,.5)",30);c.fillStyle="rgba(16,22,48,.94)";rr(x,y,w,h,24);c.fill();noglow();c.strokeStyle=col||"rgba(124,92,255,.5)";c.lineWidth=2;c.stroke();c.restore()}
+function blurBar(x,y,w,h,a){/* sensitive data: blur */
+  c.save();c.globalAlpha=a==null?1:a;try{c.filter="blur(7px)"}catch(e){}c.fillStyle="#9aa4cf";for(var k=0;k<Math.floor(w/14);k++){c.fillRect(x+k*14,y+(k%3)*2,10,h-(k%3)*3)}c.restore();
+  c.save();c.globalAlpha=(a==null?1:a)*.5;c.fillStyle="#2a3563";rr(x-4,y-2,w+8,h+4,6);c.fill();c.restore()}
+
+/* ===================== phone (screen 334x714) ===================== */
+var PW=360,PH=740,SI=13,SWD=PW-2*SI,SHT=PH-2*SI;
+function phone(cx,cy,s,rot,alpha,screen){
+  c.save();c.globalAlpha=alpha;c.translate(cx,cy);c.rotate(rot);c.scale(s,s);
+  glow("rgba(124,92,255,.5)",60);var g=c.createLinearGradient(-PW/2,0,PW/2,0);g.addColorStop(0,"#3a3d52");g.addColorStop(.5,"#13151f");g.addColorStop(1,"#2a2d40");
+  c.fillStyle=g;rr(-PW/2,-PH/2,PW,PH,58);c.fill();noglow();
+  c.fillStyle="#2a2d40";c.fillRect(PW/2-1,-PH/2+150,5,70);c.fillRect(PW/2-1,-PH/2+240,5,110);c.fillRect(-PW/2-4,-PH/2+190,5,64);
+  var g2=c.createLinearGradient(-PW/2,-PH/2,PW/2,PH/2);g2.addColorStop(0,"rgba(130,110,255,.95)");g2.addColorStop(.3,"rgba(255,255,255,.25)");g2.addColorStop(.6,"rgba(255,255,255,.05)");g2.addColorStop(1,"rgba(34,211,238,.7)");
+  c.strokeStyle=g2;c.lineWidth=3.5;rr(-PW/2,-PH/2,PW,PH,58);c.stroke();
+  c.fillStyle="#000";rr(-PW/2+SI-2,-PH/2+SI-2,SWD+4,SHT+4,46);c.fill();
+  c.save();c.translate(-SWD/2,-SHT/2);rr(0,0,SWD,SHT,44);c.clip();
+  var bg=c.createLinearGradient(0,0,0,SHT);bg.addColorStop(0,"#0f1630");bg.addColorStop(1,"#070b18");c.fillStyle=bg;c.fillRect(0,0,SWD,SHT);
+  screen();
+  var g3=c.createLinearGradient(0,0,SWD,SHT);g3.addColorStop(0,"rgba(255,255,255,.07)");g3.addColorStop(.38,"rgba(255,255,255,0)");c.fillStyle=g3;c.fillRect(0,0,SWD,SHT);
+  c.fillStyle="#000";rr(SWD/2-52,12,104,30,15);c.fill();
+  c.restore();c.restore()}
+
+/* ===================== app screens ===================== */
+function sbar(){tx("9:41",34,28,15,"#fff","left",700);c.save();c.strokeStyle="#fff";c.globalAlpha=.9;c.lineWidth=1.5;rr(SWD-62,21,26,13,4);c.stroke();c.fillStyle="#fff";c.fillRect(SWD-60,23,18,9);c.fillRect(SWD-35,25,2.5,5);c.restore()}
+function hdr(t,sub){sbar();tx(t,24,82,24,TXT,"left",800);if(sub)tx(sub,24,108,13,SUB)}
+function btn(x,y,w,h,label,pri,pr,hl,T,col){c.save();var s=1-.05*(pr||0);c.translate(x+w/2,y+h/2);c.scale(s,s);c.translate(-w/2,-h/2);
+  if(hl){glow(CYN,10+10*(.5+.5*Math.sin((T||0)*5)))}
+  c.fillStyle=col||(pri?gradH(0,w):CARD2);rr(0,0,w,h,Math.min(16,h*.32));c.fill();noglow();if(!pri&&!col){c.strokeStyle=hl?CYN:STK;c.lineWidth=hl?2.5:1.5;c.stroke()}
+  tx(label,w/2,h/2+1,Math.min(16,h*.36),"#fff","center",700);c.restore()}
+function tap(x,y,p){if(p<=0||p>=1)return;c.save();c.globalAlpha=1-p*.7;c.strokeStyle=CYN;c.lineWidth=3;c.beginPath();c.arc(x,y,10+p*40,0,7);c.stroke();
+  c.fillStyle="rgba(255,255,255,.6)";c.beginPath();c.arc(x,y,13*(1-p*.4),0,7);c.fill();c.restore()}
+function hlBox(x,y,w,h,a,T,r){if(a<=0)return;c.save();c.globalAlpha=a;glow(CYN,14+8*Math.sin(T*5));c.strokeStyle=CYN;c.lineWidth=3;rr(x-5,y-5,w+10,h+10,r||14);c.stroke();c.restore()}
+function field(x,y,w,label,val,foc,T){tx(label,x+2,y-9,11.5,SUB,"left",600);c.fillStyle="#0c1228";rr(x,y,w,42,12);c.fill();c.strokeStyle=foc?CYN:STK;c.lineWidth=foc?2:1.2;c.stroke();
+  tx(val+((foc&&Math.floor(T*2)%2===0)?"|":""),x+14,y+22,14,TXT,"left",500)}
+function spinner(x,y,r,T){c.save();c.strokeStyle=CYN;c.lineWidth=4;c.lineCap="round";c.beginPath();c.arc(x,y,r,T*5,T*5+4.2);c.stroke();c.restore()}
+function osd(items,q){var cur=null;items.forEach(function(it){if(q>=it[0])cur=it});if(!cur)return;var a=A(q,cur[0],.03);c.save();c.globalAlpha=a;c.font="800 32px "+SF;var w=c.measureText(cur[1]).width+70;
+  glow("rgba(124,92,255,.6)",24);c.fillStyle="rgba(20,16,60,.94)";rr(CX-w/2,38,w,60,30);c.fill();noglow();c.strokeStyle=CYN;c.lineWidth=2;c.stroke();tx(cur[1],CX,69,32,"#fff","center",800);c.restore()}
+function shieldPath(cx,cy,w,h){var x=cx-w/2,y=cy-h/2;c.beginPath();c.moveTo(cx,y);c.bezierCurveTo(cx+w*.2,y+h*.08,cx+w*.38,y+h*.1,x+w,y+h*.12);c.lineTo(x+w,y+h*.5);c.bezierCurveTo(x+w,y+h*.78,cx+w*.3,y+h*.92,cx,y+h);c.bezierCurveTo(cx-w*.3,y+h*.92,x,y+h*.78,x,y+h*.5);c.lineTo(x,y+h*.12);c.bezierCurveTo(cx-w*.38,y+h*.1,cx-w*.2,y+h*.08,cx,y);c.closePath()}
+function ghMark(x,y,r,a){c.save();c.globalAlpha=a;c.translate(x,y);glow("rgba(255,255,255,.35)",30);c.fillStyle="#f0f6fc";c.beginPath();c.arc(0,0,r,0,7);c.fill();noglow();
+  c.strokeStyle="#0d1117";c.lineWidth=r*.1;c.lineCap="round";c.beginPath();c.moveTo(-r*.3,-r*.45);c.lineTo(-r*.3,r*.45);c.moveTo(-r*.3,r*.05);c.quadraticCurveTo(r*.35,r*.05,r*.35,-r*.25);c.stroke();
+  c.fillStyle="#0d1117";[[-.3,-.45],[-.3,.45],[.35,-.3]].forEach(function(p){c.beginPath();c.arc(p[0]*r,p[1]*r,r*.14,0,7);c.fill()});c.restore()}
+
+/* ---- browser mock (GitHub jaisa dark page) ---- */
+var GHB="#0d1117",GH2="#161b22",GHL="#30363d",GHT="#e6edf3",GHS="#8b949e",GHG="#238636",GHBL="#58a6ff";
+function browser(x,y,w,h,url,a,fn){if(a<=0)return;c.save();c.globalAlpha=a;glow("rgba(0,0,0,.6)",40);c.fillStyle=GHB;rr(x,y,w,h,20);c.fill();noglow();
+  c.save();rr(x,y,w,h,20);c.clip();c.fillStyle=GH2;c.fillRect(x,y,w,52);c.fillStyle="#ff5f57";c.beginPath();c.arc(x+28,y+26,7,0,7);c.fill();c.fillStyle="#febc2e";c.beginPath();c.arc(x+52,y+26,7,0,7);c.fill();c.fillStyle="#28c840";c.beginPath();c.arc(x+76,y+26,7,0,7);c.fill();
+  c.fillStyle=GHB;rr(x+120,y+10,w-240,32,16);c.fill();ico(x+146,y+26,22,"lock",GHS);tx(url,x+168,y+27,20,GHS,"left",500);
+  c.beginPath();c.rect(x,y+52,w,h-52);c.clip();c.translate(x,y+52);fn(w,h-52);c.restore();
+  c.strokeStyle=GHL;c.lineWidth=2;rr(x,y,w,h,20);c.stroke();c.restore()}
+function ghNav(w,T,hlAv){c.fillStyle=GH2;c.fillRect(0,0,w,60);c.fillStyle="#f0f6fc";c.beginPath();c.arc(40,30,16,0,7);c.fill();c.fillStyle=GHB;rr(80,16,300,28,8);c.fill();c.strokeStyle=GHL;c.lineWidth=1;c.stroke();tx("Search or jump to...",94,31,16,GHS);
+  var g=c.createLinearGradient(w-70,10,w-30,50);g.addColorStop(0,"#7c5cff");g.addColorStop(1,"#22d3ee");c.fillStyle=g;c.beginPath();c.arc(w-50,30,19,0,7);c.fill();if(hlAv>0){hlBox(w-69,11,38,38,hlAv,T,19)}
+  c.strokeStyle=GHL;c.beginPath();c.moveTo(0,60);c.lineTo(w,60);c.stroke()}
+function ghBtn(x,y,w,h,label,col,pr,hl,T,fs){c.save();var s=1-.04*(pr||0);c.translate(x+w/2,y+h/2);c.scale(s,s);c.translate(-w/2,-h/2);if(hl){glow(CYN,12+8*Math.sin((T||0)*5))}c.fillStyle=col||GHG;rr(0,0,w,h,8);c.fill();noglow();tx(label,w/2,h/2+1,fs||20,"#fff","center",700);c.restore()}
+function ghField(x,y,w,label,val,foc,T,hl){tx(label,x,y-16,20,GHT,"left",700);c.fillStyle=GHB;rr(x,y,w,46,8);c.fill();c.strokeStyle=foc?GHBL:GHL;c.lineWidth=foc?3:1.5;c.stroke();tx(val+((foc&&Math.floor(T*2)%2===0)?"|":""),x+16,y+24,22,GHT,"left",500);if(hl>0)hlBox(x,y,w,46,hl,T,10)}
+function ghSide(x,y,items,hlIdx,hl,T,w){items.forEach(function(it,k){var yy=y+k*46;if(k===hlIdx&&hl>0){c.fillStyle="rgba(56,139,253,.15)";rr(x,yy,w,38,8);c.fill();hlBox(x,yy,w,38,hl,T,10)}else if(k===hlIdx){c.fillStyle="rgba(56,139,253,.12)";rr(x,yy,w,38,8);c.fill()}tx(it,x+16,yy+20,20,k===hlIdx?GHT:GHS,"left",k===hlIdx?700:500)})}
+function ghLines(x,y,n,w,a){for(var k=0;k<n;k++){c.fillStyle="rgba(139,148,158,"+(.16*(a==null?1:a))+")";rr(x,y+k*30,w*(.55+.45*hs(k+n)),14,7);c.fill()}}
+
+/* ---- phone screens ---- */
+function tabsBar(sel,hl,T){c.fillStyle="#0c1228";c.fillRect(0,SHT-78,SWD,78);c.strokeStyle=STK;c.lineWidth=1;c.beginPath();c.moveTo(0,SHT-78);c.lineTo(SWD,SHT-78);c.stroke();
+  ["Home","Projects","Settings"].forEach(function(t,k){var x=SWD*(k+.5)/3,on=k===sel;c.fillStyle=on?CYN:"#4a5280";c.beginPath();c.arc(x,SHT-52,6,0,7);c.fill();tx(t,x,SHT-28,12,on?CYN:SUB,"center",on?800:600)});
+  if(hl>0)hlBox(SWD*5/6-48,SHT-72,96,60,hl,T,16)}
+function homeTabScr(T,hl,tapP){hdr("GitHub Uploader","Home");
+  [["Projects","3 projects",VI],["Builds","Last build ready",GRN],["Releases","Publish APK",CYN]].forEach(function(r,k){var y=130+k*86;c.fillStyle=CARD;rr(18,y,SWD-36,72,18);c.fill();c.fillStyle=r[2];c.globalAlpha=.25;c.beginPath();c.arc(54,y+36,20,0,7);c.fill();c.globalAlpha=1;tx(r[0],90,y+30,15,TXT,"left",700);tx(r[1],90,y+52,12,SUB)});
+  tabsBar(0,hl,T);tap(SWD*5/6,SHT-48,tapP)}
+function acctScr(T,o){hdr("Settings","GitHub account");
+  c.fillStyle=CARD;rr(18,126,SWD-36,330,22);c.fill();c.strokeStyle=o.hlCard>0?CYN:STK;c.lineWidth=o.hlCard>0?2.5:1.3;c.stroke();
+  tx("GitHub account",34,152,16,TXT,"left",800);c.fillStyle="rgba(248,113,113,.15)";rr(34,170,SWD-68,40,12);c.fill();ico(54,190,24,"warn",RED);tx("Abhi login nahi hai",76,191,13.5,"#fca5a5","left",700);
+  if(o.hlHint>0)hlBox(34,170,SWD-68,40,o.hlHint,T,12);
+  var cid="Ov23li";var cv2=o.cid>0;tx("OAuth Client ID",36,236,11.5,SUB,"left",600);c.fillStyle="#0c1228";rr(34,246,SWD-68,42,12);c.fill();c.strokeStyle=(o.cid>0&&o.cid<1)?CYN:STK;c.lineWidth=(o.cid>0&&o.cid<1)?2:1.2;c.stroke();
+  if(o.cid>0){tx("Ov23li",48,267,14,TXT,"left",600,1,0,MO);blurBar(104,257,Math.max(10,(SWD-68-90)*Math.min(1,o.cid)),20,1)}else tx("Paste Client ID",48,267,14,"#6a739c","left",500);
+  if(o.hlField>0)hlBox(34,246,SWD-68,42,o.hlField,T,12);
+  btn(34,312,SWD-68,54,"Login with GitHub",true,o.pr||0,o.hlBtn>0,T,"#2563eb");tap(SWD/2,339,o.tapB||0);
+  tx("Client Secret ki zaroorat nahi",SWD/2,402,12,SUB,"center",600);tx("Access: repo + workflow",SWD/2,426,12,SUB,"center",600);
+  tabsBar(2,0,T)}
+function codeScr(T,o){hdr("Settings","GitHub account");c.fillStyle=CARD;rr(18,126,SWD-36,530,22);c.fill();c.strokeStyle=STK;c.lineWidth=1.3;c.stroke();
+  if(o.load){spinner(SWD/2,300,26,T);tx("GitHub se code mang raha hoon...",SWD/2,360,14,TXT,"center",700);return}
+  tx("Aapka code",SWD/2,166,15,SUB,"center",700);c.save();glow("rgba(34,211,238,"+(.4+.3*Math.sin(T*3))+")",o.zoom?30:16);c.fillStyle="#0c1228";rr(34,186,SWD-68,92,18);c.fill();noglow();c.strokeStyle=CYN;c.lineWidth=2.5;c.stroke();
+  tx("ABCD-1234",SWD/2,232,40,"#fff","center",800,1,3,MO);c.restore();tx("Valid for ~15 minutes",SWD/2,304,12.5,AMB,"center",700);
+  btn(34,334,SWD-68,50,"Copy + Open GitHub",true,o.prC||0,o.hlC>0,T);tap(SWD/2,359,o.tapC||0);btn(34,396,SWD-68,46,"Cancel",false,0,false,T);
+  btn(34,458,SWD-68,54,"Authorize kar diya? Login check karo",true,0,false,T,"#15803d");tx("App har ~5 second me khud check karta hai",SWD/2,540,11.5,SUB,"center",600)}
+function loggedScr(T,o){hdr("Settings","GitHub account");c.fillStyle=CARD;rr(18,126,SWD-36,o.st===2?300:380,22);c.fill();c.strokeStyle=o.st===2?GRN:STK;c.lineWidth=1.5;c.stroke();
+  if(o.st<2){tx("GitHub account",34,152,16,TXT,"left",800);spinner(60,206,16,T);tx(o.st===1?"Thoda ruko... kuch second baad dobara dabao":"Authorize ka intezaar... (check "+o.chk+")",90,206,12.5,o.st===1?AMB:TXT,"left",700);
+    btn(34,250,SWD-68,54,"Authorize kar diya? Login check karo",true,o.pr||0,o.hlG>0,T,"#15803d");tap(SWD/2,277,o.tapG||0);tx("App har ~5 second me khud check karta hai",SWD/2,340,11.5,SUB,"center",600)}
+  else{c.fillStyle="rgba(52,211,153,.2)";c.beginPath();c.arc(62,176,24,0,7);c.fill();ico(62,176,38,"check",GRN);tx("Logged in",100,168,19,GRN,"left",800);tx("@username",100,194,15,TXT,"left",700);
+    btn(SWD-120,152,84,40,"Logout",false,0,false,T);btn(34,236,SWD-68,50,"GitHub Repos (Public/Private)",true,0,false,T);
+    tx("Username apne aap set ho gaya",SWD/2,322,12.5,SUB,"center",600);
+    if(o.toast>0){c.save();c.globalAlpha=o.toast;c.fillStyle="#0e2b22";rr(24,SHT-150,SWD-48,60,18);c.fill();c.strokeStyle=GRN;c.lineWidth=1.6;c.stroke();tx("Login ho gaya: @username",SWD/2,SHT-130,13.5,GRN,"center",800);tx("(username apne aap set ho gaya)",SWD/2,SHT-108,11.5,SUB,"center",600);c.restore()}}
+  tabsBar(2,0,T)}
+function tokScr(T,o){hdr("Settings","GitHub token");c.fillStyle=CARD;rr(18,126,SWD-36,o.ph===0?250:470,22);c.fill();c.strokeStyle=STK;c.lineWidth=1.3;c.stroke();tx("GitHub token",34,152,16,TXT,"left",800);
+  if(o.ph===0){btn(34,176,SWD-68,54,"Create token on GitHub",true,o.pr||0,o.hlB>0,T);tap(SWD/2,203,o.tapB||0);tx("Repo + workflow scope pehle se tick",SWD/2,262,12,SUB,"center",600);tx("Token sirf ek baar dikhega",SWD/2,288,12,AMB,"center",700)}
+  else{tx("Personal access token",36,190,11.5,SUB,"left",600);c.fillStyle="#0c1228";rr(34,200,SWD-68,44,12);c.fill();c.strokeStyle=(o.dots>0&&o.dots<1)?CYN:STK;c.lineWidth=(o.dots>0&&o.dots<1)?2:1.2;c.stroke();
+    if(o.dots>0){var n=Math.floor(o.dots*28);for(var k=0;k<n;k++){c.fillStyle="#eee";c.beginPath();c.arc(50+k*8.6,222,3,0,7);c.fill()}}else tx("Paste token",48,222,14,"#6a739c","left",500);
+    if(o.hlF>0)hlBox(34,200,SWD-68,44,o.hlF,T,12);
+    btn(34,262,SWD-68,50,"Check token",true,o.pr||0,o.hlB>0,T,"#7c3aed");tap(SWD/2,287,o.tapB||0);
+    if(o.ok>0){c.save();c.globalAlpha=o.ok;c.fillStyle="rgba(52,211,153,.14)";rr(34,334,SWD-68,58,16);c.fill();c.strokeStyle=GRN;c.lineWidth=1.6;c.stroke();ico(58,363,28,"check",GRN);tx("Token sahi hai",84,354,14.5,GRN,"left",800);tx("Account: @username",84,376,12.5,SUB,"left",600);c.restore()}
+    chipS(34,408,"repo",true);chipS(92,408,"workflow",true);
+    if(o.sec>0){c.save();c.globalAlpha=o.sec;c.fillStyle="#0c1228";rr(34,456,SWD-68,76,16);c.fill();ico(58,494,30,"lock",CYN);tx("Token phone ke encrypted",82,484,12.5,"#dbe3ff","left",700);tx("storage me save hota hai",82,504,12.5,"#dbe3ff","left",700);c.restore()}}
+  tabsBar(2,0,T)}
+function chipS(x,y,label,sel,w){c.font="700 13px "+SF;var ww=w||(c.measureText(label).width+26);c.fillStyle=sel?gradH(x,ww):CARD2;rr(x,y,ww,32,16);c.fill();if(!sel){c.strokeStyle=STK;c.lineWidth=1.2;c.stroke()}tx(label,x+ww/2,y+17,13,sel?"#fff":SUB,"center",700);return ww}
+function uploadScr(T,p){hdr("MyApp","Upload & Build");c.fillStyle=CARD;rr(18,128,SWD-36,150,22);c.fill();tx("Uploading project...",34,156,15,TXT,"left",800);tx(Math.floor(p*100)+"%",SWD-34,156,14,CYN,"right",800);
+  c.fillStyle="#232c52";rr(34,176,SWD-68,9,5);c.fill();c.fillStyle=gradH(34,SWD-68);rr(34,176,Math.max(8,(SWD-68)*p),9,5);c.fill();tx("GitHub connected: @username",34,214,12.5,GRN,"left",700);tx("Ready for Build & Release",34,238,12.5,SUB,"left",600)}
+function sideCard(x,y,w,h,a,title,lines,col,icon){if(a<=0)return;c.save();c.translate((1-a)*(x<CX?-40:40),0);c.globalAlpha=a;
+  panel(x,y,w,h,1,col);if(icon)ico(x+48,y+54,50,icon,col||CYN);tx(title,x+(icon?86:28),y+46,30,"#fff","left",800);
+  lines.forEach(function(l,k){tx(l,x+28,y+104+k*40,25,k===0?"#dbe3ff":SUB,"left",k===0?700:500)});c.restore()}
+
+/* ===================== extra screens (build tutorial) ===================== */
+function toggle(x,y,on,T){c.fillStyle=on?CYN:"#2a3563";rr(x,y,46,26,13);c.fill();c.fillStyle="#fff";c.beginPath();c.arc(x+(on?33:13),y+13,10,0,7);c.fill()}
+function icoX(kind,x,y,r,col){c.save();c.translate(x,y);c.strokeStyle=col;c.fillStyle=col;c.lineWidth=r*.12;c.lineCap="round";
+  if(kind==="key"){c.beginPath();c.arc(-r*.22,0,r*.22,0,7);c.stroke();c.beginPath();c.moveTo(0,0);c.lineTo(r*.5,0);c.moveTo(r*.34,0);c.lineTo(r*.34,r*.18);c.moveTo(r*.5,0);c.lineTo(r*.5,r*.18);c.stroke()}
+  else if(kind==="json"){tx("{ }",0,0,r*.7,col,"center",800,1,0,MO)}
+  else if(kind==="vars"){tx("KEY=",0,0,r*.38,col,"center",800,1,0,MO)}
+  else if(kind==="info"){c.beginPath();c.arc(0,0,r*.4,0,7);c.stroke();tx("i",0,1,r*.5,col,"center",800)}
+  else if(kind==="copy"){rr(-r*.3,-r*.3,r*.45,r*.5,r*.06);c.stroke();rr(-r*.12,-r*.12,r*.45,r*.5,r*.06);c.stroke()}
+  c.restore()}
+function welcomeScr(T,selDev,pr){sbar();c.save();c.translate(SWD/2,150);c.scale(.8,.8);appIcon(0,0,1,1);c.restore();
+  tx("GitHub Uploader",SWD/2,236,24,TXT,"center",800);tx("v3.3",SWD/2,262,13,CYN,"center",700);tx("Choose how you want to continue",SWD/2,318,13,SUB,"center");
+  [["Developer","Manage projects, build & publish",VI,"gear"],["User","Browse the App Store",CYN,"phone"]].forEach(function(r,k){var y=346+k*134,on=(k===0&&selDev);var s=on?1-.04*pr:1;c.save();c.translate(SWD/2,y+54);c.scale(s,s);c.translate(-SWD/2,-y-54);
+    if(on){glow(CYN,16)}c.fillStyle=CARD;rr(22,y,SWD-44,108,22);c.fill();noglow();c.strokeStyle=on?CYN:STK;c.lineWidth=on?2.5:1.3;c.stroke();
+    c.fillStyle=r[2];c.globalAlpha=.25;c.beginPath();c.arc(62,y+54,24,0,7);c.fill();c.globalAlpha=1;ico(62,y+54,36,r[3],r[2]);
+    tx(r[0],100,y+42,20,TXT,"left",800);tx(r[1],100,y+70,12,SUB);c.restore()})}
+function projRow(y,name,sub,letter,col,a,isNew){c.save();c.globalAlpha*=a;c.fillStyle=CARD;rr(18,y,SWD-36,70,18);c.fill();c.strokeStyle=isNew?CYN:"rgba(255,255,255,.07)";c.lineWidth=isNew?2:1;c.stroke();
+  c.fillStyle=col;rr(32,y+13,44,44,12);c.fill();tx(letter,54,y+36,22,"#fff","center",800);tx(name,90,y+27,15,TXT,"left",700);tx(sub,90,y+48,12,SUB);
+  if(isNew){c.fillStyle="rgba(34,211,238,.18)";rr(SWD-80,y+22,48,24,12);c.fill();tx("NEW",SWD-56,y+35,11,CYN,"center",800)}c.restore()}
+function projScr(T,o){hdr("Projects","Developer mode");ico(SWD-38,76,34,"gear",SUB);
+  var sh=o.newA||0;if(sh>0)projRow(128,"MyApp","Kotlin  •  main","M",GRN,sh,true);
+  [["NHShopManager","Kotlin  •  main","S",VI],["NHTFLIX","Compose  •  main","N","#ef4444"],["PlumberService","Firebase  •  main","P",CYN]].forEach(function(p,k){projRow(128+(sh>0?78*sh:0)+k*80,p[0],p[1],p[2],p[3],1)});
+  if(o.hlOpen>0)hlBox(18,128,SWD-36,70,o.hlOpen,T,18);
+  btn(22,SHT-142,SWD-44,52,"＋  Add from ZIP",true,o.prAdd||0,o.hlBtn>0,T);btn(22,SHT-80,SWD-44,48,"Open from folder",false,0,false,T);tap(SWD/2,SHT-116,o.tapAdd||0);tap(SWD/2,163,o.tapOpen||0)}
+function pickScr(T,p,sel,tapP){var y=SHT-(SHT-250)*E(p);c.fillStyle="rgba(0,0,0,"+.5*E(p)+")";c.fillRect(0,0,SWD,SHT);
+  c.fillStyle="#10162e";rr(0,y,SWD,SHT-250+40,28);c.fill();c.fillStyle="#3a4470";rr(SWD/2-24,y+10,48,5,3);c.fill();tx("Select ZIP file",24,y+44,18,TXT,"left",800);
+  [["MyApp.zip","Android Studio project",1],["notes.pdf","Document",0],["photo.jpg","Image",0]].forEach(function(f,k){var yy=y+78+k*74;c.fillStyle=(f[2]&&sel)?"rgba(124,92,255,.25)":CARD;rr(18,yy,SWD-36,62,16);c.fill();if(f[2]&&sel){c.strokeStyle=CYN;c.lineWidth=2;c.stroke()}
+    c.fillStyle=f[2]?"#f5b942":"#4a5280";rr(32,yy+13,36,36,9);c.fill();tx(f[0],82,yy+25,14,TXT,"left",700);tx(f[1],82,yy+44,11.5,SUB)});tap(SWD/2,y+78+31,tapP)}
+function detailsScr(T,o){hdr("Project details","MyApp.zip");
+  var n=function(s,k){return s.slice(0,Math.floor(k*s.length))};
+  field(22,150,SWD-44,"Project name",n("MyApp",o.f1),o.f1>0&&o.f1<1,T);field(22,226,SWD-44,"Repository",n("myapp-android",o.f2),o.f2>0&&o.f2<1,T);field(22,302,SWD-44,"Branch",n("main",o.f3),o.f3>0&&o.f3<1,T);
+  c.fillStyle=CARD;rr(22,364,SWD-44,56,16);c.fill();ico(48,392,26,"lock",CYN);tx("Private repository",72,392,14,TXT,"left",600);toggle(SWD-82,379,true);
+  btn(22,SHT-92,SWD-44,52,"Add project",true,o.pr||0,o.hl>0,T);tap(SWD/2,SHT-66,o.tapP||0)}
+var GLOG=["Workflow queued","Set up JDK 17","Restore Gradle cache","Decode project files","Build started","Upload artifact"];
+function buildScr(T,o){/* o: sel,keyOk,stage(0 idle,1 building,2 ok,3 fail),prog,tab,cfg[3],hlI,hlBuild,prB,tapB,hlDock,hlDl,prDl,tapDl,saved,hlCopy,tapI */
+  sbar();tx("MyApp",24,82,24,TXT,"left",800);tx("Build & publish",24,108,13,SUB);infoBtn(SWD-44,84,o.hlI,T);tap(SWD-44,84,o.tapI||0);
+  var types=["Debug","Release","AAB"],tn=["Debug","Release","Release","AAB"];
+  c.fillStyle=CARD;rr(18,128,SWD-36,370,22);c.fill();c.strokeStyle="rgba(255,255,255,.07)";c.lineWidth=1;c.stroke();
+  if(o.stage===0){tx("Repository",36,158,12,SUB,"left",600);tx("myapp-android",36,180,15,TXT,"left",700);tx("Branch",36,216,12,SUB,"left",600);tx("main",36,238,15,TXT,"left",700);
+    tx("CONFIGURATION",36,282,11.5,SUB,"left",700,1,1.2);[["google-services.json",o.cfg[0]],["Variables",o.cfg[1]],["Keystore",o.cfg[2]]].forEach(function(r,k){var y=300+k*46;c.fillStyle="#0c1228";rr(32,y,SWD-64,38,12);c.fill();tx(r[0],48,y+20,13,TXT,"left",600);
+      if(r[1]){ico(SWD-60,y+19,24,"check",GRN);tx("Set",SWD-82,y+20,12,GRN,"right",700)}else tx("Not set",SWD-48,y+20,12,SUB,"right",600)})}
+  else{["GitHub log","App log"].forEach(function(t,k){var x=32+k*((SWD-72)/2+8),w=(SWD-72)/2;c.fillStyle=o.tab===k?"rgba(124,92,255,.3)":"#0c1228";rr(x,144,w,32,16);c.fill();if(o.tab===k){c.strokeStyle=CYN;c.lineWidth=1.5;c.stroke()}tx(t,x+w/2,160,12.5,o.tab===k?"#fff":SUB,"center",700)});
+    var ok=o.stage===2,fl=o.stage===3,p=o.prog;tx(fl?"Build failed":ok?"Build successful":"Building "+types[o.sel]+"...",36,200,15,fl?RED:ok?GRN:TXT,"left",800);tx(Math.floor((fl?Math.min(p,.6):p)*100)+"%",SWD-36,200,14,fl?RED:CYN,"right",800);
+    c.fillStyle="#232c52";rr(36,214,SWD-72,8,4);c.fill();c.fillStyle=fl?RED:gradH(36,SWD-72);rr(36,214,Math.max(8,(SWD-72)*(fl?.6:p)),8,4);c.fill();
+    var L;if(o.tab===0)L=GLOG;else{var tk=o.sel===2?"bundleRelease":o.sel===1?"assembleRelease":"assembleDebug";L=["> Task :app:preBuild","> Task :app:mergeResources","> Task :app:compileKotlin","> Task :app:"+tk,fl?"> Task :app:processGoogleServices FAILED":"> Task :app:package"+types[o.sel],fl?"File google-services.json is missing":"Artifact ready",fl?"BUILD FAILED":"BUILD SUCCESSFUL"]}
+    c.fillStyle="#070b18";rr(32,236,SWD-64,o.stage===2?170:240,12);c.fill();var n=Math.floor(Math.min(1,p*1.1)*L.length);
+    for(var k=0;k<Math.min(n,L.length);k++){var bad=/FAILED|missing/.test(L[k]);tx(L[k],42,256+k*26,11.5,bad?"#fca5a5":(k===L.length-1&&ok?GRN:"#9fb0e0"),"left",500,1,0,MO)}
+    if(ok){btn(32,420,SWD-64,52,"⬇  Download "+(o.sel===2?".aab":"APK"),true,o.prDl||0,o.hlDl>0,T);tap(SWD/2,446,o.tapDl||0)}
+    if(fl){btn(32,436,SWD-64,48,"Copy error log",false,o.prC||0,o.hlCopy>0,T);tap(SWD/2,460,o.tapC||0)}}
+  if(o.saved>0){c.save();c.globalAlpha=o.saved;c.fillStyle="#0e2b22";rr(24,500,SWD-48,40,20);c.fill();c.strokeStyle=GRN;c.lineWidth=1.5;c.stroke();ico(50,520,22,"check",GRN);tx(o.sel===2?"Saved: app-release.aab":"Saved to Downloads",70,521,12.5,GRN,"left",800);c.restore()}
+  /* dock */
+  c.fillStyle="#0c1228";rr(18,SHT-142,SWD-36,50,25);c.fill();c.strokeStyle=o.hlDock>0?CYN:STK;c.lineWidth=o.hlDock>0?2.5:1.2;c.stroke();
+  types.forEach(function(t,k){var w=(SWD-48)/3,x=24+k*w,on=o.sel===k;if(on){c.fillStyle=gradH(x,w);rr(x,SHT-136,w,38,19);c.fill()}tx(t,x+w/2,SHT-116,13.5,on?"#fff":SUB,"center",700);if(k===1&&!o.keyOk){ico(x+w-14,SHT-120,18,"lock",on?"#fff":"#6a739c")}});
+  if(o.hlDock>0)hlBox(18,SHT-142,SWD-36,50,o.hlDock,T,25);
+  btn(22,SHT-80,SWD-44,56,o.stage===1?"Building...":"Build",true,o.prB||0,o.hlBuild>0,T);tap(SWD/2,SHT-52,o.tapB||0)}
+function infoBtn(x,y,hl,T){c.fillStyle=CARD2;c.beginPath();c.arc(x,y,17,0,7);c.fill();c.strokeStyle=hl>0?CYN:STK;c.lineWidth=hl>0?2.5:1.3;c.stroke();tx("i",x,y+1,18,"#fff","center",800);if(hl>0)hlBox(x-18,y-18,36,36,hl,T,18)}
+function sheetBase(T,p,title,h){c.fillStyle="rgba(0,0,0,"+.55*p+")";c.fillRect(0,0,SWD,SHT);var y=SHT-h*E(p);c.fillStyle="#10162e";rr(0,y,SWD,h+40,28);c.fill();c.fillStyle="#3a4470";rr(SWD/2-24,y+10,48,5,3);c.fill();tx(title,24,y+46,20,TXT,"left",800);return y}
+function fixesSheet(T,o){var y=sheetBase(T,o.p,"Build fixes",420);var rows=[["Attach file","Add google-services.json etc.","up"],["Variables","KEY=VALUE for API keys","vars"],["Keystore","Release signing","key"],["Fix suggestions","Common build errors","warn"]];
+  rows.forEach(function(r,k){var yy=y+72+k*74,on=o.sel===k;c.fillStyle=on?"rgba(124,92,255,.25)":CARD;rr(18,yy,SWD-36,62,16);c.fill();c.strokeStyle=on?CYN:"rgba(255,255,255,.07)";c.lineWidth=on?2.2:1;c.stroke();
+    c.fillStyle="rgba(34,211,238,.15)";c.beginPath();c.arc(48,yy+31,18,0,7);c.fill();if(r[2]==="key"||r[2]==="vars")icoX(r[2],48,yy+31,36,CYN);else ico(48,yy+31,32,r[2],CYN);tx(r[0],80,yy+25,15,TXT,"left",700);tx(r[1],80,yy+45,11.5,SUB)});
+  if(o.tapY>0)tap(SWD/2,y+72+o.sel*74+31,o.tapY)}
+function attachScr(T,o){hdr("Attach file","Build fixes");
+  c.fillStyle=CARD;rr(18,128,SWD-36,84,18);c.fill();c.strokeStyle=o.file?GRN:STK;c.lineWidth=1.5;c.stroke();c.fillStyle="#f59e0b";rr(32,146,44,48,10);c.fill();icoX("json",54,170,44,"#3b2300");
+  tx(o.file?"google-services.json":"Choose file",92,160,15,TXT,"left",700);tx(o.file?"Selected from phone":"Tap to open file picker",92,184,12,SUB);if(o.hlFile>0)hlBox(18,128,SWD-36,84,o.hlFile,T,18);tap(SWD/2,170,o.tapF||0);
+  var pth="app/google-services.json";field(22,252,SWD-44,"Repository path",pth.slice(0,Math.floor(o.path*pth.length)),o.path>0&&o.path<1,T);if(o.hlPath>0)hlBox(22,252,SWD-44,42,o.hlPath,T,12);
+  tx("Module path = actual Android module",24,330,12,SUB,"left",600);
+  btn(22,SHT-92,SWD-44,52,"Attach file",true,o.pr||0,o.hlA>0,T);tap(SWD/2,SHT-66,o.tapA||0);
+  if(o.done>0){c.save();c.globalAlpha=o.done;c.fillStyle="#0e2b22";rr(24,SHT-160,SWD-48,52,18);c.fill();c.strokeStyle=GRN;c.lineWidth=1.5;c.stroke();ico(52,SHT-134,24,"check",GRN);tx("File attached",76,SHT-133,13.5,GRN,"left",800);c.restore()}}
+function varsScr(T,o){hdr("Variables","Build fixes");tx("One variable per line   KEY=VALUE",24,140,12.5,SUB,"left",600);
+  c.fillStyle="#070b18";rr(18,156,SWD-36,170,16);c.fill();c.strokeStyle=(o.t>0&&o.t<1)?CYN:STK;c.lineWidth=(o.t>0&&o.t<1)?2:1.2;c.stroke();
+  var l1="MAPS_API_KEY=YOUR_API_KEY",l2="ANOTHER_KEY=VALUE",s1=l1.slice(0,Math.floor(Math.min(1,o.t)*l1.length)),s2=l2.slice(0,Math.floor(o.t2*l2.length));
+  tx(s1+((o.t>0&&o.t<1&&Math.floor(T*2)%2===0)?"|":""),32,184,12.5,"#a5f3fc","left",600,1,0,MO);tx(s2,32,214,12.5,"#a5f3fc","left",600,1,0,MO);
+  if(o.hlEx>0)hlBox(18,156,SWD-36,60,o.hlEx,T,14);
+  c.fillStyle="rgba(251,191,36,.12)";rr(18,344,SWD-36,66,16);c.fill();c.strokeStyle=AMB;c.lineWidth=1.2;c.stroke();ico(44,377,26,"warn",AMB);tx("Example only. Use your own key.",68,370,12.5,"#fde68a","left",700);tx("Name must match your Gradle config",68,390,11.5,SUB,"left",600);
+  btn(22,SHT-92,SWD-44,52,"Save",true,o.pr||0,o.hlS>0,T);tap(SWD/2,SHT-66,o.tapS||0);
+  if(o.saved>0){c.save();c.globalAlpha=o.saved;c.fillStyle="#0e2b22";rr(24,SHT-160,SWD-48,52,18);c.fill();c.strokeStyle=GRN;c.lineWidth=1.5;c.stroke();ico(52,SHT-134,24,"check",GRN);tx("Variables saved",76,SHT-133,13.5,GRN,"left",800);c.restore()}}
+function keyScr(T,o){hdr("Keystore","Build fixes");
+  c.fillStyle=CARD;rr(18,126,SWD-36,70,16);c.fill();c.strokeStyle=o.file?GRN:STK;c.lineWidth=1.5;c.stroke();c.fillStyle="#7c5cff";rr(32,142,38,38,10);c.fill();icoX("key",51,161,38,"#fff");
+  tx(o.file?"my-release.jks":"Choose .jks / .keystore",84,153,14.5,TXT,"left",700);tx(o.file?"Existing keystore file":"Tap to select",84,175,11.5,SUB);if(o.hlFile>0)hlBox(18,126,SWD-36,70,o.hlFile,T,16);tap(SWD/2,161,o.tapF||0);
+  var al="release-key";field(22,236,SWD-44,"Key alias",al.slice(0,Math.floor(o.al*al.length)),o.al>0&&o.al<1,T);
+  var dots=function(x,y,lab,k,hl){tx(lab,x+2,y-9,11.5,SUB,"left",600);c.fillStyle="#0c1228";rr(x,y,SWD-44,42,12);c.fill();c.strokeStyle=(k>0&&k<1)?CYN:STK;c.lineWidth=(k>0&&k<1)?2:1.2;c.stroke();var n=Math.floor(k*12);for(var j=0;j<n;j++){c.fillStyle="#eee";c.beginPath();c.arc(x+18+j*10,y+21,3.4,0,7);c.fill()}if(hl>0)hlBox(x,y,SWD-44,42,hl,T,12)};
+  dots(22,312,"Store password",o.sp,o.hlSp);dots(22,388,"Key password (if different)",o.kp,o.hlKp);
+  if(o.ok>0){c.save();c.globalAlpha=o.ok;c.fillStyle="rgba(52,211,153,.14)";rr(22,452,SWD-44,58,16);c.fill();c.strokeStyle=GRN;c.lineWidth=1.6;c.stroke();ico(50,481,28,"check",GRN);tx("Keystore configured",76,472,14,GRN,"left",800);tx("Release build enabled",76,494,12,SUB,"left",600);c.restore()}
+  btn(22,SHT-92,SWD-44,52,"Save",true,o.pr||0,o.hlS>0,T);tap(SWD/2,SHT-66,o.tapS||0)}
+function suggestScr(T,o){hdr("Fix suggestions","Build fixes");
+  [["Missing google-services.json","Attach the correct JSON file"],["Missing API variable","Check exact name and format"],["Signing error","Check keystore path, alias, passwords"]].forEach(function(r,k){var a=A(o.q,o.t0+k*.04,.03);if(a<=0)return;var y=136+k*108;c.save();c.globalAlpha*=a;c.fillStyle=CARD;rr(18,y,SWD-36,94,18);c.fill();c.strokeStyle="rgba(251,191,36,.45)";c.lineWidth=1.4;c.stroke();ico(46,y+30,28,"warn",AMB);tx(r[0],72,y+30,14.5,TXT,"left",800);tx(r[1],34,y+64,12.5,"#bbf7d0","left",600);c.restore()})}
+
+/* ---- mock web pages ---- */
+function firebasePage(w,h,T,q,o){c.fillStyle=GHB;c.fillRect(0,0,w,h);c.fillStyle=GH2;c.fillRect(0,0,w,60);c.fillStyle="#f59e0b";rr(26,16,28,28,6);c.fill();tx("Firebase Console",70,31,24,GHT,"left",800);tx("MyApp",w-150,31,22,GHS,"right",600);c.strokeStyle=GHL;c.beginPath();c.moveTo(0,60);c.lineTo(w,60);c.stroke();
+  tx("Project settings",60,112,38,GHT,"left",800);["General","Cloud Messaging","Integrations","Service accounts"].forEach(function(t,k){tx(t,60+k*200,168,22,k===0?GHBL:GHS,"left",k===0?800:500)});c.fillStyle=GHBL;c.fillRect(60,186,100,3);
+  tx("Your apps",60,236,28,GHT,"left",800);c.fillStyle=GH2;rr(60,262,1000,230,14);c.fill();c.strokeStyle=GHL;c.lineWidth=1.5;c.stroke();
+  c.fillStyle="#3ddc84";rr(90,290,52,52,12);c.fill();tx("A",116,317,28,"#06361d","center",900);tx("MyApp  (Android)",164,306,28,GHT,"left",800);
+  tx("Package name",90,380,20,GHS,"left",600);tx("com.nh.myapp",90,414,30,GHT,"left",800,1,0,MO);tx("= your applicationId",430,414,22,GRN,"left",600,o.pk);
+  if(o.hlPk>0)hlBox(84,392,330,46,o.hlPk,T,10);
+  ghBtn(680,380,340,58,"google-services.json",GHBL,o.pr||0,o.hlDl>0,T,22);tap(850,409,o.tapD||0);
+  c.save();c.globalAlpha=o.dlA||0;c.fillStyle="#0e2b22";rr(60,520,600,62,12);c.fill();c.strokeStyle=GRN;c.lineWidth=2;c.stroke();ico(92,551,30,"down",GRN);tx("google-services.json downloaded",124,552,24,GRN,"left",800);c.restore()}
+function playPage(w,h,T,q,o){c.fillStyle=GHB;c.fillRect(0,0,w,h);c.fillStyle=GH2;c.fillRect(0,0,w,60);c.fillStyle=GHBL;rr(26,16,28,28,6);c.fill();tx("Google Play Console",70,31,24,GHT,"left",800);c.strokeStyle=GHL;c.beginPath();c.moveTo(0,60);c.lineTo(w,60);c.stroke();
+  tx("Create release",60,112,38,GHT,"left",800);c.strokeStyle=GHS;c.lineWidth=2.5;c.setLineDash([12,10]);rr(60,150,620,220,16);c.stroke();c.setLineDash([]);
+  if(o.up>0){c.save();c.globalAlpha=o.up;c.fillStyle="rgba(56,139,253,.14)";rr(80,200,580,100,12);c.fill();tx(".aab",120,250,34,GHBL,"left",800,1,0,MO);tx("app-release.aab uploaded",230,250,26,GHT,"left",700);c.restore()}else tx("Drop app bundles here",370,260,28,GHS,"center",600);
+  tx("Separate steps after the build",720,172,26,GHT,"left",800);
+  [["Upload AAB",o.s1],["App signing configuration",o.s2],["Testing",o.s3],["Publishing requirements",o.s4]].forEach(function(r,k){var a=r[1];if(a<=0)return;c.save();c.globalAlpha=a;c.fillStyle=GH2;rr(720,200+k*72,520,58,10);c.fill();c.strokeStyle=GHL;c.lineWidth=1.5;c.stroke();c.fillStyle=k===0?GHG:"#3a4470";c.beginPath();c.arc(756,229+k*72,16,0,7);c.fill();tx(String(k+1),756,230+k*72,18,"#fff","center",800);tx(r[0],790,230+k*72,24,GHT,"left",700);c.restore()});
+  c.save();c.globalAlpha=o.warn;c.fillStyle="rgba(251,191,36,.12)";rr(60,500,1180,100,12);c.fill();c.strokeStyle=AMB;c.lineWidth=2;c.stroke();ico(110,550,50,"warn",AMB);tx("AAB generated  ≠  App live on Google Play",160,535,32,"#fde68a","left",800);tx("Upload, signing, testing and policy steps are separate.",160,574,24,GHS,"left",600);c.restore()}
+
+/* ===================== scenes ===================== */
+function floatY(T){return Math.sin(T*1.25)*6}
+function F(i,w){return fr(i,w)}
+function sceneDraw(p,T,t){
+  var i=p.i,vd=p.vd,q=cl((t-p.vs)/vd,0,1.2),by=floatY(T),PX=CX,PY=475,PS=.9;
+  var P=function(sc,a,x,s){phone(x==null?PX:x,PY+by,s||PS,0,a==null?1:a,sc)};
+  var BX=300,BY=130,BW=1320,BH=690;
+  var stdBuild=function(o){return function(){buildScr(T,o)}};
+  if(i===0){var s=.7+.1*IO(seg(t,0,8)),a=E(seg(t,.2,1.4));
+    phone(PX,500+by+(1-a)*50,s,0,a,function(){projScr(T,{newA:0})});
+    var it=[["ZIP",PX-520,330,F(0,"ZIP file upload"),function(x,y){c.fillStyle="#f5b942";rr(x-50,y-60,100,120,14);c.fill();tx("ZIP",x,y+34,26,"#4a3000","center",900)}],
+            ["google-services.json",PX+520,330,F(0,"Google Services JSON"),function(x,y){c.fillStyle="#f59e0b";rr(x-50,y-60,100,120,14);c.fill();icoX("json",x,y,100,"#3b2300")}],
+            ["API variables",PX-520,640,F(0,"API variables"),function(x,y){c.fillStyle="#1b2548";rr(x-50,y-60,100,120,14);c.fill();c.strokeStyle=CYN;c.lineWidth=3;c.stroke();icoX("vars",x,y,110,CYN)}],
+            ["keystore (.jks)",PX+520,640,F(0,"keystore file"),function(x,y){c.fillStyle="#7c5cff";rr(x-50,y-60,100,120,14);c.fill();icoX("key",x,y,130,"#fff")}]];
+    it.forEach(function(r,k){var aa=A(q,r[3],.04);if(aa>0)pop(r[1],r[2]+Math.sin(T+k)*8,aa,function(){r[4](r[1],r[2]+Math.sin(T+k)*8);tx(r[0],r[1],r[2]+92,26,"#fff","center",800)})});
+    [["Debug APK",F(0,"Debug APK")],["Release APK",F(0,"Release APK")],["AAB",F(0,"AAB build")]].forEach(function(r,k){var aa=A(q,r[1],.04);if(aa>0)pop(CX-300+k*300,830,aa,function(){c.fillStyle=gradH(CX-300+k*300-120,240);rr(CX-300+k*300-120,800,240,60,30);c.fill();tx(r[0],CX-300+k*300,831,28,"#fff","center",800)})});
+    var ta=A(q,.04,.06);if(ta>0){c.save();glow("rgba(124,92,255,.8)",36);tx("COMPLETE ANDROID BUILD TUTORIAL",CX,100+(1-ta)*16,64,"#fff","center",800,ta,3);c.restore()}}
+  else if(i===1){var tS=F(1,"Settings open"),tL=F(1,"Login with GitHub option"),tC=F(1,"Client ID aur authorization"),tP=F(1,"personal access token"),tU=F(1,"username screen par"),tH=F(1,"Dhyan rakhein");
+    osd([[0,"Developer > Settings > Login with GitHub"],[tC,"Device Flow: Client ID + authorization code"],[tU-.01,"Connected username screen par"],[tH-.01,"Token / password / code share mat karo"]],q);
+    var bA=A(q,tC+.09,.03)*(1-A(q,tU-.06,.03));
+    P(function(){if(q<tS-.06)welcomeScr(T,q>.02,tp(q,.02,.04)>0?1:0);else if(q<tS+.04)homeTabScr(T,A(q,tS-.05,.03),tp(q,tS,.04));else if(q<tU-.04)acctScr(T,{hlBtn:A(q,tL,.03)*(q<tC?1:0),hlField:A(q,tC,.03),cid:seg(q,tC+.01,tC+.06),pr:tp(q,tC+.07,.03)>0?1:0,tapB:tp(q,tC+.07,.04)});
+      else loggedScr(T,{st:2,chk:1,toast:A(q,tU,.03)})},1-bA);
+    browser(BX,BY,BW,BH,"github.com/login/device",bA,function(w,h){c.fillStyle=GHB;c.fillRect(0,0,w,h);ghNav(w,T,0);var done=q>=tU-.08;
+      if(!done){tx("Authorize GitHub Uploader",w/2,150,44,GHT,"center",800);tx("Device code: ABCD-1234",w/2,205,26,GHBL,"center",700,1,0,MO);
+        [["repo","Full control of private repositories"],["workflow","Update GitHub Action workflows"]].forEach(function(r,k){var y=250+k*92;c.fillStyle=GH2;rr(w/2-440,y,880,76,12);c.fill();c.strokeStyle=GHL;c.lineWidth=1.5;c.stroke();ico(w/2-390,y+38,40,"check",GHG);tx(r[0],w/2-340,y+28,26,GHT,"left",800,1,0,MO);tx(r[1],w/2-340,y+56,21,GHS)});
+        ghBtn(w/2-200,450,400,62,"Authorize",GHG,0,A(q,tC+.12,.03),T,26)}
+      else{c.fillStyle="rgba(35,134,54,.25)";c.beginPath();c.arc(w/2,280,86,0,7);c.fill();c.fillStyle=GHG;c.beginPath();c.arc(w/2,280,62,0,7);c.fill();ico(w/2,280,96,"check","#fff");tx("Device connected",w/2,420,44,GHT,"center",800)}});
+    sideCard(130,260,520,230,A(q,tP,.04),"Personal access token",["Alternative to Login","Needs repo + workflow"],CYN,"lock");
+    sideCard(1270,260,520,230,A(q,tH,.04),"Do not share",["Token, password, auth code"],RED,"warn")}
+  else if(i===2){var tA=F(2,"Add from ZIP button"),tZ=F(2,"ZIP ke andar"),tAp=F(2,"Sirf APK file"),tN=F(2,"naam, GitHub repository"),tB=F(2,"build screen");
+    osd([[0,"STEP 1 — ADD ANDROID PROJECT"]],q);
+    var pk=q>=tA+.03&&q<tA+.13,det=q>=tA+.13&&q<tN+.12,after=q>=tN+.12;
+    P(function(){if(after){if(q<tB+.02)projScr(T,{newA:1,hlOpen:A(q,tB-.04,.03),tapOpen:tp(q,tB,.04)});else buildScr(T,{sel:0,keyOk:false,stage:0,cfg:[false,false,false],hlI:0})}
+      else if(det)detailsScr(T,{f1:seg(q,tN-.01,tN+.02),f2:seg(q,tN+.025,tN+.06),f3:seg(q,tN+.065,tN+.085),pr:tp(q,tN+.1,.03)>0?1:0,hl:A(q,tN+.08,.03)*(q<tN+.11?1:0),tapP:tp(q,tN+.1,.04)});
+      else{projScr(T,{newA:0,hlBtn:A(q,tA-.04,.03)*(q<tA+.03?1:0),prAdd:tp(q,tA+.0,.04)>0?1:0,tapAdd:tp(q,tA+.0,.04)});if(pk)pickScr(T,A(q,tA+.03,.04),q>tA+.08,tp(q,tA+.09,.04))}});
+    var za=A(q,tZ,.04);if(za>0){c.save();c.globalAlpha=za;c.translate((1-za)*50,0);panel(1190,230,600,430,1,"rgba(52,211,153,.55)");tx("MyApp.zip",1230,280,36,"#fff","left",800);
+      ["app/ (module)","gradle/","build.gradle.kts","settings.gradle.kts","gradle.properties"].forEach(function(s,k){ico(1250,336+k*52,30,"check",GRN);tx(s,1290,337+k*52,28,"#dbe3ff","left",600,1,0,MO)});c.restore()}
+    var xa=A(q,tAp,.04);if(xa>0){c.save();c.globalAlpha=xa;panel(130,230,520,260,1,"rgba(248,113,113,.6)");ico(180,290,50,"x",RED);tx("Only APK in ZIP",230,288,30,"#fff","left",800);tx("Source project nahi hai,",160,360,26,"#fecaca","left",700);tx("build nahi hoga",160,400,26,"#fecaca","left",700);c.restore()}}
+  else if(i===3){var tF=F(3,"Firebase Console open"),tPs=F(3,"Project Settings"),tPk=F(3,"package name bilkul"),tDl=F(3,"json download"),tIn=F(3,"info icon par tap"),tBf=F(3,"Build fixes open"),tAf=F(3,"Attach file select"),tAs=F(3,"asli JSON"),tRp=F(3,"repository path mein"),tMp=F(3,"module path"),tBt=F(3,"Build par tap");
+    osd([[0,"Firebase Console → Android App → Download JSON → Attach File"]],q);
+    var onB=q<tIn-.03;var bA=onB?1:0;
+    browser(BX,BY,BW,BH,"console.firebase.google.com",onB?A(q,tF-.02,.04):0,function(w,h){firebasePage(w,h,T,q,{pk:A(q,tPk+.02,.03),hlPk:A(q,tPk-.01,.03)*(q<tDl-.03?1:0),hlDl:A(q,tDl-.03,.03)*(q<tDl+.04?1:0),pr:tp(q,tDl+.02,.03)>0?1:0,tapD:tp(q,tDl+.02,.04),dlA:A(q,tDl+.05,.04)})});
+    if(!onB){var ph=A(q,tIn-.03,.04);
+      P(function(){if(q<tBf-.02)buildScr(T,{sel:0,keyOk:false,stage:0,cfg:[false,false,false],hlI:A(q,tIn-.02,.03),tapI:tp(q,tIn+.01,.04)});
+        else if(q<tAf+.06)fixesSheet(T,{p:A(q,tBf,.04),sel:q>=tAf-.03?0:-1,tapY:tp(q,tAf+.02,.04)});
+        else if(q<tBt+.0)attachScr(T,{file:q>=tAs+.03,hlFile:A(q,tAs-.01,.03)*(q<tAs+.04?1:0),tapF:tp(q,tAs+.01,.04),path:seg(q,tRp,tRp+.05),hlPath:A(q,tRp,.03)*(q<tMp?1:0),hlA:A(q,tMp+.02,.03)*(q<tBt-.02?1:0),pr:tp(q,tBt-.04,.03)>0?1:0,tapA:tp(q,tBt-.04,.04),done:A(q,tBt-.03,.03)});
+        else buildScr(T,{sel:0,keyOk:false,stage:1,prog:cl((q-tBt)/(1.05-tBt)*.7,0,1),tab:0,cfg:[true,false,false],hlBuild:A(q,tBt-.01,.03)*(q<tBt+.04?1:0),prB:tp(q,tBt+.01,.03)>0?1:0,tapB:tp(q,tBt+.01,.04),hlI:0})},ph)}
+    sideCard(130,250,520,260,A(q,tMp,.04),"Module path",["Default: app/","Use your actual module name"],CYN,"repo");
+    var dm=A(q,tBt+.02,.04);if(dm>0){c.save();c.globalAlpha=dm;panel(1270,250,520,250,1,"rgba(251,191,36,.6)");ico(1320,305,50,"warn",AMB);tx("Dummy JSON",1380,302,30,"#fff","left",800);tx("Sirf basic build testing ke liye.",1300,372,24,"#fde68a","left",700);tx("Firebase services kaam nahi karengi.",1300,410,24,"#fde68a","left",700);c.restore()}}
+  else if(i===4){var tV=F(4,"Variables option"),tKv=F(4,"KEY equals VALUE"),tEx=F(4,"Example ke liye"),tMl=F(4,"alag line"),tSv=F(4,"Save karne ke baad"),tLp=F(4,"local.properties"),tPr=F(4,"Private repository ka use"),tRs=F(4,"application restrictions");
+    osd([[0,"Build fixes > Variables"],[tKv-.01,"KEY=VALUE"],[tEx-.01,"EXAMPLE — NOT A REAL KEY: MAPS_API_KEY=YOUR_API_KEY"],[tSv-.01,"Save > Build"]],q);
+    P(function(){if(q<tV+.04)fixesSheet(T,{p:A(q,tV-.08,.04),sel:q>=tV-.02?1:-1,tapY:tp(q,tV+.01,.03)});else if(q<tSv+.06)varsScr(T,{t:seg(q,tEx+.02,tEx+.1),t2:seg(q,tMl,tMl+.04),hlEx:A(q,tEx,.03)*(q<tMl?1:0),hlS:A(q,tSv-.02,.03),pr:tp(q,tSv+.02,.03)>0?1:0,tapS:tp(q,tSv+.02,.04),saved:A(q,tSv+.03,.03)});
+      else buildScr(T,{sel:0,keyOk:false,stage:0,cfg:[true,true,false],hlBuild:A(q,tSv+.06,.03),hlI:0,prB:tp(q,tSv+.1,.03)>0?1:0,tapB:tp(q,tSv+.1,.04)})});
+    var a1=A(q,tKv,.04)*(1-A(q,tLp-.04,.04));if(a1>0){c.save();c.globalAlpha=a1;panel(1220,250,570,200,1,"rgba(34,211,238,.6)");tx("KEY=VALUE",1505,320,60,"#fff","center",800,1,2,MO);tx("har variable alag line me",1505,395,26,SUB,"center",600);c.restore()}
+    var a2=A(q,tLp,.04);if(a2>0){c.save();c.globalAlpha=a2;panel(130,250,540,270,1,"rgba(251,191,36,.6)");ico(180,305,50,"warn",AMB);tx("Variables ≠ GitHub Secrets",240,302,28,"#fff","left",800);tx("Values local.properties ke",160,372,26,"#fde68a","left",700);tx("through upload hoti hain",160,412,26,"#fde68a","left",700);c.restore()}
+    var a3=A(q,tPr,.04);if(a3>0){c.save();c.globalAlpha=a3;panel(1220,500,570,230,1,"rgba(52,211,153,.6)");tx("Safer practice",1255,548,30,"#fff","left",800);["Private repository","No production secrets in repo","API key restrictions + limits"].forEach(function(s,k){ico(1275,603+k*44,28,"check",GRN);tx(s,1310,604+k*44,24,"#bbf7d0","left",700)});c.restore()}}
+  else if(i===5){var tK=F(5,"Keystore configuration"),tO=F(5,"Keystore option select"),tFl=F(5,"existing keystore file"),tAl=F(5,"key alias"),tSp=F(5,"Store password keystore"),tDv=F(5,"Details verify"),tRl=F(5,"Release build option enable"),tBk=F(5,"secure backup"),tPv=F(5,"repository ko private"),tPu=F(5,"pehle se published"),tNr=F(5,"Nayi random key");
+    osd([[0,"KEYSTORE + ALIAS + STORE PASSWORD + KEY PASSWORD"],[tBk-.01,"Keystore + passwords ka secure backup rakho"]],q);
+    P(function(){if(q<tO+.04)buildScr(T,{sel:0,keyOk:false,stage:0,cfg:[true,true,false],hlI:A(q,tK+.02,.03)*(q<tO-.04?1:0),tapI:tp(q,tK+.04,.04)}),(q>=tO-.06?fixesSheet(T,{p:A(q,tO-.06,.04),sel:q>=tO-.02?2:-1,tapY:tp(q,tO+.01,.03)}):0);
+      else keyScr(T,{file:q>=tFl+.04,hlFile:A(q,tFl-.01,.03)*(q<tFl+.05?1:0),tapF:tp(q,tFl+.01,.04),al:seg(q,tAl,tAl+.03),sp:seg(q,tAl+.035,tAl+.06),kp:seg(q,tAl+.065,tAl+.09),hlSp:A(q,tSp,.03)*(q<tAl+.065?1:0),hlKp:A(q,tAl+.06,.03)*(q<tDv-.02?1:0),hlS:A(q,tDv,.03)*(q<tDv+.06?1:0),pr:tp(q,tDv+.05,.03)>0?1:0,tapS:tp(q,tDv+.05,.04),ok:A(q,tDv+.07,.04)})});
+    sideCard(130,250,520,250,A(q,tSp,.04),"Store password",["Keystore access ke liye"],CYN,"lock");
+    sideCard(130,540,520,230,A(q,tSp+.02,.04),"Key password",["Selected signing key ke liye","Same ya alag, dono ho sakte"],VI,"key");
+    var rl=A(q,tRl,.04);if(rl>0){c.save();c.globalAlpha=rl;panel(1270,250,520,200,1,"rgba(52,211,153,.6)");ico(1320,305,50,"check",GRN);tx("Release enabled",1380,302,30,"#fff","left",800);tx("Keystore configure hone ke baad",1300,372,24,"#bbf7d0","left",700);c.restore()}
+    var bk=A(q,tBk,.04);if(bk>0){c.save();c.globalAlpha=bk;panel(1270,480,520,290,1,"rgba(248,113,113,.6)");ico(1320,535,50,"warn",RED);tx("Warning",1380,532,30,"#fff","left",800);["Backup keystore + passwords","Repository private rakho","Public repo me kabhi nahi"].forEach(function(s,k){tx(s,1300,596+k*46,25,"#fecaca","left",700)});c.restore()}
+    var np=A(q,tPu,.04);if(np>0){c.save();c.globalAlpha=np;panel(130,540,520,230,1,"rgba(251,191,36,.6)");tx("Published app?",160,590,30,"#fff","left",800);tx("Usi purani key ko preserve karo.",160,650,25,"#fde68a","left",700);tx("Nayi random key = update nahi.",160,692,25,"#fde68a","left",700);c.restore()}}
+  else if(i===6||i===7||i===8){var rel=i===7,aab=i===8,sel=aab?2:rel?1:0,tSel=F(i,rel?"Release select":aab?"AAB select":"Debug select"),tBt2=F(i,rel?"Ab Build par tap":aab?"Build par tap karein":"Build button"),tGa=F(i,rel?"Release build mein":aab?"GitHub Actions release bundle":"GitHub Actions"),tOk=F(i,rel?"Build successful hone par":aab?"Successful build":"Jab build successful"),tDl=F(i,rel?"signed APK download":aab?"aab\" file download":"Download button");
+    var start=tBt2+.0,prog=cl((q-start)/(tOk-start),0,1),stage=q<start?0:q<tOk?1:2,tab=q>(tGa+.1)?1:0;
+    osd(i===6?[[0,"Debug APK — testing ke liye"]]:i===7?[[0,"Release APK — signed with your keystore"]]:[[0,"AAB — Google Play ke liye"],[F(8,"do alag steps")-.02,"AAB generate ≠ app live"]],q);
+    var play=aab&&q>=F(8,"Dhyan rakhein")-.03,pa=aab?A(q,F(8,"Dhyan rakhein")-.03,.04):0;
+    P(function(){buildScr(T,{sel:sel,keyOk:rel||aab||false,stage:stage,prog:stage===2?1:prog,tab:tab,cfg:[true,true,rel||aab],hlI:0,hlDock:A(q,tSel-.04,.03)*(q<tSel+.04?1:0),hlBuild:A(q,tBt2-.04,.03)*(q<tBt2+.03?1:0),prB:tp(q,tBt2,.03)>0?1:0,tapB:tp(q,tBt2,.04),hlDl:A(q,tOk,.03)*(q<tDl+.03?1:0),prDl:tp(q,tDl+.02,.03)>0?1:0,tapDl:tp(q,tDl+.02,.04),saved:A(q,tDl+.05,.04)})},1-pa);
+    if(rel){var kc=A(q,F(7,"Confirm kar lijiye"),.04);if(kc>0){c.save();c.globalAlpha=kc;panel(130,250,520,220,1,"rgba(52,211,153,.6)");icoX("key",180,305,60,GRN);tx("Keystore configured",240,302,30,"#fff","left",800);tx("Signing details hidden",160,372,25,"#bbf7d0","left",700);tx("Passwords kabhi show nahi",160,412,25,"#bbf7d0","left",700);c.restore()}
+      var rt=A(q,F(7,"code shrinking"),.04);if(rt>0){c.save();c.globalAlpha=rt;panel(1270,250,520,250,1,"rgba(251,191,36,.6)");ico(1320,305,50,"warn",AMB);tx("Build ke baad TEST karo",1380,302,28,"#fff","left",800);tx("Shrinking / optimization",1300,372,25,"#fde68a","left",700);tx("app ko affect kar sakti hai",1300,412,25,"#fde68a","left",700);c.restore()}
+      var pk=A(q,F(7,"permanent signing key"),.04);if(pk>0){c.save();c.globalAlpha=pk;panel(1270,540,520,200,1,"rgba(124,92,255,.6)");tx("Production release",1300,590,28,"#fff","left",800);tx("Permanent signing key use karo,",1300,646,25,"#c7d2fe","left",700);tx("temporary test key nahi",1300,686,25,"#c7d2fe","left",700);c.restore()}}
+    if(!rel&&!aab){var gl=A(q,F(6,"GitHub log aur App log"),.04);if(gl>0){c.save();c.globalAlpha=gl;panel(130,250,520,240,1,"rgba(34,211,238,.6)");tx("Logs",170,300,34,"#fff","left",800);tx("GitHub log",170,370,28,CYN,"left",700);tx("App log",170,420,28,CYN,"left",700);c.restore()}}
+    if(aab){var bb=A(q,tGa,.04);if(bb>0){c.save();c.globalAlpha=bb*(1-pa);panel(130,250,520,200,1,"rgba(34,211,238,.6)");tx("GitHub Actions",170,300,32,"#fff","left",800);tx(":app:bundleRelease",170,370,30,CYN,"left",700,1,0,MO);c.restore()}}
+    if(aab&&pa>0){browser(BX,BY,BW,BH,"play.google.com/console",pa,function(w,h){playPage(w,h,T,q,{up:A(q,F(8,"Google Play Console mein upload"),.04),s1:A(q,F(8,"Google Play Console mein upload"),.04),s2:A(q,F(8,"app signing configuration"),.04),s3:A(q,F(8,"testing aur"),.04),s4:A(q,F(8,"applicable publishing"),.04),warn:A(q,F(8,"do alag steps"),.04)})})}}
+  else if(i===9){var tCp=F(9,"Copy error log"),tEr=F(9,"error ko dhyan se"),tGs=F(9,"Google Services configuration missing"),tVr=F(9,"API variable missing"),tSg=F(9,"signing error"),tFx=F(9,"Fix suggestions option"),tRb=F(9,"Build par dobara tap"),tPf=F(9,"sirf build pass");
+    osd([[0,"Build failed? Copy error log"],[tEr,"Error check karo > Fix > Rebuild"],[tPf-.01,"Build pass ≠ features kaam kar rahe hain"]],q);
+    P(function(){if(q<tFx-.02)buildScr(T,{sel:0,keyOk:false,stage:3,prog:.6,tab:1,cfg:[false,true,false],hlCopy:A(q,tCp-.04,.03)*(q<tCp+.05?1:0),prC:tp(q,tCp+.02,.03)>0?1:0,tapC:tp(q,tCp+.02,.04)});
+      else if(q<tRb-.02)suggestScr(T,{q:q,t0:tFx});else buildScr(T,{sel:0,keyOk:false,stage:1,prog:cl((q-tRb)/.12,0,1)*.8,tab:0,cfg:[true,true,false],hlBuild:A(q,tRb-.04,.03)*(q<tRb+.02?1:0),prB:tp(q,tRb,.03)>0?1:0,tapB:tp(q,tRb,.04)})});
+    [["Missing JSON","Correct google-services.json attach karo",tGs,"json"],["Missing variable","Exact naam + format verify karo",tVr,"vars"],["Signing error","Keystore path, alias, passwords",tSg,"key"]].forEach(function(r,k){var a=A(q,r[2]-.01,.04);if(a<=0)return;c.save();c.globalAlpha=a;c.translate((1-a)*(k%2?40:-40),0);var x=k===1?1270:130,y=k===1?250:k===0?250:540;if(k===2){x=1270;y=540}
+      panel(x,y,520,230,1,"rgba(251,191,36,.6)");icoX(r[3],x+60,y+54,64,AMB);tx(r[0],x+110,y+52,30,"#fff","left",800);tx(r[1],x+28,y+132,24,"#fde68a","left",700);c.restore()});
+    var pf=A(q,tPf,.04);if(pf>0){c.save();c.globalAlpha=pf;panel(130,540,520,230,1,"rgba(34,211,238,.6)");ico(180,595,50,"phone",CYN);tx("APK install karke test karo",160,670,26,"#fff","left",800);tx("Firebase, Maps, login...",160,712,24,SUB,"left",600);c.restore()}}
+  else{var tZ2=F(10,"ZIP kaise upload"),tG2=F(10,"Google Services JSON kaise"),tV2=F(10,"API variables kaise"),tK2=F(10,"keystore ke saath"),tLk=F(10,"like kijiye"),tNh=F(10,"Main hoon NH Developer");
+    var mont=1-A(q,tNh-.02,.05);
+    if(mont>.01){c.save();c.globalAlpha=mont;[["ZIP upload",tZ2-.02],["Google Services JSON",tG2],["Variables",tV2],["Keystore",tK2-.02],["Debug APK",tK2+.01],["Release APK",tK2+.03],["AAB",tK2+.05]].forEach(function(r,k){var a=A(q,r[1],.04);if(a<=0)return;var x=300+(k%4)*440,y=290+Math.floor(k/4)*260;pop(x,y,a,function(){c.fillStyle="rgba(20,28,60,.95)";rr(x-190,y-90,380,180,24);c.fill();c.strokeStyle=k<4?VI:CYN;c.lineWidth=3;c.stroke();ico(x-110,y,60,"check",GRN);tx(r[0],x-60,y+2,r[0].length>14?22:28,"#fff","left",800)})});c.restore()}
+    var ba=A(q,tNh,.06);if(ba>0){c.save();c.globalAlpha=ba;var gy=370;c.save();c.translate(CX,gy-30);c.scale(1+(1-ba)*.2,1+(1-ba)*.2);glow("rgba(124,92,255,.8)",50);c.beginPath();for(var k=0;k<6;k++){var an=Math.PI/3*k-Math.PI/6;c.lineTo(Math.cos(an)*110,Math.sin(an)*110)}c.closePath();c.fillStyle=gradH(-110,220);c.fill();noglow();tx("NH",0,4,84,"#fff","center",900,1,2);c.restore();
+      tx("NH DEVELOPER",CX,gy+150,86,"#fff","center",900,1,8);tx("GitHub Uploader v3.3",CX,gy+222,36,CYN,"center",700);var la=A(q,tLk,.05);tx("BUILD SMART • KEEP YOUR KEYS SAFE",CX,gy+300,46,"#dbe3ff","center",800,la,4);c.restore()}}
+}
+
+/* ===================== frame ===================== */
+function frameAt(T){
+  var p=PLAN[PLAN.length-1];for(var k=0;k<PLAN.length;k++){if(T<PLAN[k].start+PLAN[k].len){p=PLAN[k];break}}
+  var t=cl(T-p.start,0,p.len),q=cl((t-p.vs)/p.vd,0,1.2);
+  c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.setLineDash([]);c.lineDashOffset=0;noglow();c.clearRect(0,0,W,H);
+  backdrop(T);
+  // smooth zoom-in har scene ke shuru mein
+  var z=1+.05*(1-E(seg(t,0,1.4)));c.save();c.translate(CX,540);c.scale(z,z);c.translate(-CX,-540);sceneDraw(p,T,t);c.restore();
+  var v=c.createRadialGradient(CX,540,520,CX,540,1250);v.addColorStop(0,"rgba(0,0,0,0)");v.addColorStop(1,"rgba(0,0,0,.55)");c.fillStyle=v;c.fillRect(0,0,W,H);
+  if(p.i>0){tx("Illustrative animation",W-40,36,20,"rgba(180,190,230,.6)","right",600)}
+  caption(p.i,q);
+  var f=Math.min(seg(t,0,.5),1-seg(t,p.len-.5,p.len));
+  if(f<1){c.fillStyle="rgba(0,0,0,"+(1-f)+")";c.fillRect(0,0,W,H)}
+}
+
+/* ===================== Preview ===================== */
+var $=function(x){return document.getElementById(x)},st=$("st"),pv=$("pv"),msg=function(m){st.textContent=m};
+var raf=0,pvOn=false,lastScene=-1;
+function say(i){try{if(!window.speechSynthesis||!$("vo").checked)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(SC[i].vo);u.lang="hi-IN";u.rate=.95;speechSynthesis.speak(u)}catch(e){}}
+function stopPv(){cancelAnimationFrame(raf);pvOn=false;pv.textContent="▶ Preview chalao";try{speechSynthesis.cancel()}catch(e){}}
+pv.onclick=function(){if(pvOn){stopPv();return}
+  DUR=null;buildPlan();var t0=performance.now()+150;pvOn=true;lastScene=-1;pv.textContent="⏹ Stop preview";msg("Preview chal raha hai...");
+  (function loop(){var T=(performance.now()-t0)/1000;
+    if(T>=TOTAL){stopPv();msg("Preview khatam.");frameAt(2.5);return}
+    T=Math.max(0,T);var k=0;for(;k<PLAN.length-1;k++){if(T<PLAN[k].start+PLAN[k].len)break}
+    if(k!==lastScene&&T>=PLAN[k].start+PLAN[k].vs){lastScene=k;say(k)}
+    frameAt(T);raf=requestAnimationFrame(loop)})()};
+
+/* ===== NH API: Android app (HTML2Video) in functions ko bulati hai. Inhe mat badlo ===== */
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+window.NH={
+  lang:"hi-IN",
+  narration:function(){return JSON.stringify(SC.map(function(s){return{a:s.vo,b:""}}))},
+  setDurations:function(j){DUR=JSON.parse(j);buildPlan();var ev=[];
+    PLAN.forEach(function(p){if(DUR[p.i]&&DUR[p.i].a>0)ev.push({key:p.i+"a",at:p.start+p.vs})});
+    return JSON.stringify({total:TOTAL,events:ev})},
+  run:async function(fps){
+    try{buildPlan();var N=Math.ceil(TOTAL*fps);
+      for(var n=0;n<N;n++){frameAt(n/fps);
+        if(Android.pushFrame(cv.toDataURL("image/jpeg",0.95))===false){Android.fail("Cancel ho gaya");return}
+        if(n%20===0){Android.progress(n,N);await sleep(0)}}
+      Android.progress(N,N);Android.done()}
+    catch(e){Android.fail(String(e&&e.message?e.message:e))}}
+};
+buildPlan();frameAt(2.5);
+</script>
+</body>
+</html>

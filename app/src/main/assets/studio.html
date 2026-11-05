@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Screenshot2Video Studio</title>
+<style>
+:root{--bg:#101418;--ink:#eef1f4;--mut:#9aa6b2;--card:#1b2128;--ac:#f5a300;--ln:#3a4450;box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root{--bg:#f1f3f5;--ink:#1d232a;--mut:#5d6a76;--card:#fff;--ln:#c9d1d9}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+.w{max-width:900px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:4px 0}
+p{margin:4px 0 10px;color:var(--mut);font-size:13px}
+[hidden]{display:none!important}
+.tabs{display:flex;gap:8px;margin:8px 0 12px}
+.tabs button{flex:1}
+.tabs button.on{background:var(--ac);border-color:var(--ac);color:#1d232a;font-weight:700}
+canvas{width:100%;height:auto;display:block;border-radius:10px;background:#000}
+#cv{aspect-ratio:16/9}
+#ec{max-height:70vh;width:auto;max-width:100%;margin:0 auto;touch-action:none;cursor:crosshair}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;align-items:center}
+button,select,.fb,input,textarea{font:inherit;padding:10px 12px;border-radius:9px;border:1px solid var(--ln);background:var(--card);color:var(--ink)}
+button,.fb{cursor:pointer}
+input,textarea{width:100%}
+textarea{min-height:64px}
+label.f{display:block;font-size:12px;color:var(--mut);margin-top:8px}
+button.p{background:var(--ac);border-color:var(--ac);color:#1d232a;font-weight:700}
+button.on{outline:2px solid var(--ac)}
+button.rec{background:#e8403a;border-color:#e8403a;color:#fff}
+button:disabled{opacity:.5}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #4da3ff;outline-offset:2px}
+.strip{display:flex;gap:8px;overflow-x:auto;padding:6px 0}
+.th{flex:0 0 auto;width:78px;height:78px;padding:0;position:relative;overflow:hidden}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th b{position:absolute;left:3px;top:3px;background:var(--ac);color:#1d232a;border-radius:8px;padding:0 6px;font-size:12px}
+.th.on{outline:3px solid var(--ac)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#st{font-size:13px;color:var(--mut);min-height:20px}
+#dl a{display:inline-block;margin-top:8px;color:#1d232a;background:var(--ac);padding:12px 16px;border-radius:9px;font-weight:700;text-decoration:none}
+details{background:var(--card);border-radius:10px;padding:10px 12px;margin:12px 0}
+summary{font-weight:700;cursor:pointer}
+.stp{border-top:1px solid var(--ln);margin-top:10px;padding-top:8px}
+.cr{margin:8px 0}.sc{font-size:14px;margin-bottom:6px}
+.bt{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.bt span{font-size:12px;color:var(--mut)}
+.note{font-size:12px;color:var(--mut);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Screenshot2Video Studio</h1>
+<p>Screenshots se tutorial video: marks khud lagao, awaaz likho, MP4 export karo.</p>
+<div class="tabs"><button id="tEdit" class="on">✏ Edit</button><button id="tVid">🎬 Video</button></div>
+
+<section id="edit">
+  <div class="ctl">
+    <label class="fb"><b>📦 Zip ya screenshots load karo</b><input id="file" type="file" accept=".zip,image/*" multiple hidden></label>
+    <button id="addSlide">➕ Text slide</button>
+  </div>
+  <div id="strip" class="strip"></div>
+  <div class="ctl">
+    <button id="mvL">◀</button><button id="mvR">▶</button><button id="delS">🗑 Step hatao</button><span id="sinfo" style="font-size:13px;color:var(--mut)"></span>
+  </div>
+  <div class="ctl" id="modes">
+    <button data-m="m" class="on">① Click mark</button>
+    <button data-m="p2">② Dusra click</button>
+    <button data-m="z">🔍 Zoom area</button>
+    <button id="clrM">✕ Clear</button>
+  </div>
+  <p id="mhint">Screenshot par tap karo (chhota mark) ya ungli se drag karke rectangle banao.</p>
+  <canvas id="ec" width="10" height="10"></canvas>
+  <label class="f">Step title (upar dikhega)</label><input id="f_t">
+  <label class="f">Hint (ek line)</label><input id="f_h">
+  <label class="f">Mark ka label (optional, jaise "यहाँ देखें")</label><input id="f_lab">
+  <label class="f"><input id="f_look" type="checkbox" style="width:auto"> Sirf dikhana hai (click nahi hoga)</label>
+  <label class="f">Awaaz 1: click se pehle (Devanagari me likho to awaaz behtar)</label><textarea id="f_a"></textarea>
+  <label class="f">Awaaz 2: click ke baad (optional)</label><textarea id="f_b"></textarea>
+  <label class="f">Subtitle 1 (optional, Hinglish; khali ho to Awaaz 1 dikhega)</label><textarea id="f_sa"></textarea>
+  <label class="f">Subtitle 2 (optional)</label><textarea id="f_sb"></textarea>
+  <div class="two">
+    <div><label class="f">Dusre click ka delay (sec)</label><input id="f_u2" type="number" step="0.1" min="0.5"></div>
+    <div><label class="f">Step ke baad extra wait (sec)</label><input id="f_post" type="number" step="0.1" min="1"></div>
+  </div>
+  <details><summary>Bulk script: ek line = ek step ki Awaaz 1</summary>
+    <textarea id="bulk" placeholder="Line 1 = step 1&#10;Line 2 = step 2"></textarea>
+    <button id="bulkGo">Lines steps mein bharo</button>
+  </details>
+  <label class="f">Voice language code</label><input id="f_lang" value="hi-IN">
+  <div class="ctl"><button id="toVid" class="p">🎬 Video dekho / export</button></div>
+</section>
+
+<section id="video" hidden>
+  <canvas id="cv" width="1920" height="1080"></canvas>
+  <div class="ctl">
+    <button id="pv">▶ Preview chalao</button>
+    <select id="q" aria-label="Quality"><option value="1080" selected>Full HD 1080p</option><option value="1440">2K 1440p</option><option value="2160">Ultra HD 4K</option></select>
+    <select id="fps" aria-label="FPS"><option>30</option><option>60</option></select>
+    <label style="font-size:13px"><input id="cap" type="checkbox" checked style="width:auto"> Subtitle</label>
+  </div>
+  <div class="ctl"><button id="ex" class="p">Export MP4</button><button id="saveHtml">💾 Standalone HTML save (app ke liye)</button></div>
+  <div id="st"></div><div id="dl"></div>
+  <details><summary>🎙 Awaaz (optional): har step ke liye record ya file</summary>
+    <p>Record dabao aur bolo, phir Stop. Ya audio file chuno. HTML2Video app mein Sarvam/phone TTS bhi use ho sakta hai.</p>
+    <div id="clips"></div>
+  </details>
+  <p class="note">Export phone par fast hota hai. Export ke dauran screen on rakho. MP4 library pehli baar internet se load hoti hai. Asli password, API key ya token wale screenshots pehle blur karo, kyunki video mein wahi dikhega.</p>
+</section>
+</div>
+<script id="proj" type="application/json">null</script>
+<script>
+var SRC="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+var $=function(x){return document.getElementById(x)};
+var cl=function(v,a,b){return v<a?a:v>b?b:v};
+var E=function(t){t=cl(t,0,1);return 1-Math.pow(1-t,3)};
+var BK=function(t){t=cl(t,0,1);return 1+2.7*Math.pow(t-1,3)+1.7*Math.pow(t-1,2)};
+var cv=$("cv"),ctx=cv.getContext("2d"),ec=$("ec");
+var W=1920,H=1080,K=1,TG=0;
+var SF='"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+var DV='"Noto Sans Devanagari","Nirmala UI","Mangal",'+SF;
+var ORG="#f5a300",RED="#e8403a";
+var BX=110,BY=160,BW=1700,BH=780;
+var S=[],LANG="hi-IN",cur=0,mode="m";
+
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function tx(s,x,y,size,col,al,font,wt,a){ctx.save();ctx.globalAlpha=a==null?1:a;ctx.font=(wt||"")+" "+size+"px "+(font||SF);ctx.fillStyle=col;ctx.textAlign=al||"left";ctx.textBaseline="middle";ctx.fillText(s,x,y);ctx.restore()}
+function wrapT(s,x,y,mw,lh,size,col){ctx.font=size+"px "+SF;var w=s.split(" "),l="",yy=y;
+  w.forEach(function(k){var q=l?l+" "+k:k;if(ctx.measureText(q).width>mw&&l){tx(l,x,yy,size,col);l=k;yy+=lh}else l=q});tx(l,x,yy,size,col)}
+function msg(m){$("st").textContent=m}
+
+/* ===== Zip padhna (bina library) ===== */
+async function readZip(buf){
+  var dv=new DataView(buf),u8=new Uint8Array(buf),n=u8.length,eocd=-1;
+  for(var i=n-22;i>=Math.max(0,n-65557);i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break}}
+  if(eocd<0)throw new Error("Ye valid zip nahi hai");
+  var cnt=dv.getUint16(eocd+10,true),off=dv.getUint32(eocd+16,true),out=[];
+  for(var k=0;k<cnt;k++){
+    if(dv.getUint32(off,true)!==0x02014b50)break;
+    var method=dv.getUint16(off+10,true),csize=dv.getUint32(off+20,true),nl=dv.getUint16(off+28,true),el=dv.getUint16(off+30,true),cm=dv.getUint16(off+32,true),lho=dv.getUint32(off+42,true);
+    var name=new TextDecoder().decode(u8.subarray(off+46,off+46+nl));off+=46+nl+el+cm;
+    if(name.slice(-1)==="/"||/__MACOSX|\.DS_Store/.test(name)||!/\.(png|jpe?g|webp|bmp|gif)$/i.test(name))continue;
+    var lnl=dv.getUint16(lho+26,true),lel=dv.getUint16(lho+28,true),ds=lho+30+lnl+lel,raw=u8.subarray(ds,ds+csize),data;
+    if(method===0)data=raw;
+    else if(method===8)data=new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+    else continue;
+    out.push({name:name,blob:new Blob([data])})}
+  return out}
+
+/* ===== Image load: chhota karke JPEG ===== */
+async function addImage(item){
+  var bm=await createImageBitmap(item.blob),sc=Math.min(1,2000/Math.max(bm.width,bm.height)),w=Math.round(bm.width*sc),h=Math.round(bm.height*sc);
+  var c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(bm,0,0,w,h);
+  var src=c.toDataURL("image/jpeg",0.88),im=new Image();
+  await new Promise(function(r){im.onload=r;im.src=src});
+  S.push({src:src,img:im,w:w,h:h,t:"Step "+(S.length+1),h2:"",a:"",b:"",sa:"",sb:"",m:null,p2:null,u2:2.2,z:null,post:2.4,hint:""});
+}
+$("file").onchange=async function(e){
+  var fs=[].slice.call(e.target.files),items=[];
+  try{
+    msg("Load ho raha hai...");
+    for(var i=0;i<fs.length;i++){var f=fs[i];
+      if(/\.zip$/i.test(f.name)){(await readZip(await f.arrayBuffer())).forEach(function(z){items.push(z)})}
+      else if(/^image\//.test(f.type)||/\.(png|jpe?g|webp)$/i.test(f.name))items.push({name:f.name,blob:f})}
+    items.sort(function(a,b){return a.name.localeCompare(b.name,undefined,{numeric:true})});
+    var first=S.length;
+    for(var j=0;j<items.length;j++){msg("Screenshot "+(j+1)+"/"+items.length+" process ho raha hai...");await addImage(items[j])}
+    e.target.value="";
+    if(!items.length){msg("Koi image nahi mili.");return}
+    cur=Math.min(first,S.length-1);renderStrip();loadFields();drawEdit();msg(items.length+" screenshots load ho gaye. Ab har step mein mark lagao.")
+  }catch(err){msg("Load fail: "+err.message)}};
+$("addSlide").onclick=function(){S.push({slide:true,w:1920,h:1080,t:"Title slide",h2:"",hint:"",a:"",b:"",sa:"",sb:"",m:null,p2:null,u2:2.2,z:null,post:2.4});cur=S.length-1;renderStrip();loadFields();drawEdit()};
+
+/* ===== Editor ===== */
+function renderStrip(){
+  $("strip").innerHTML=S.map(function(s,i){return "<button class='th"+(i===cur?" on":"")+"' data-i='"+i+"'>"+(s.src?"<img src='"+s.src+"'>":"<span style='font-size:28px'>T</span>")+"<b>"+(i+1)+"</b></button>"}).join("");
+  $("sinfo").textContent=S.length?("Step "+(cur+1)+" / "+S.length):"Koi step nahi"}
+$("strip").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cur=+b.dataset.i;renderStrip();loadFields();drawEdit()});
+$("mvL").onclick=function(){if(cur>0){var t=S[cur];S[cur]=S[cur-1];S[cur-1]=t;cur--;renderStrip()}};
+$("mvR").onclick=function(){if(cur<S.length-1){var t=S[cur];S[cur]=S[cur+1];S[cur+1]=t;cur++;renderStrip()}};
+$("delS").onclick=function(){if(!S.length)return;S.splice(cur,1);cur=Math.max(0,Math.min(cur,S.length-1));renderStrip();loadFields();drawEdit()};
+var FK={f_t:"t",f_h:"hint",f_lab:"lab",f_a:"a",f_b:"b",f_sa:"sa",f_sb:"sb"};
+$("f_look").addEventListener("change",function(){if(S[cur])S[cur].look=this.checked});
+Object.keys(FK).forEach(function(id){$(id).addEventListener("input",function(){if(S[cur])S[cur][FK[id]]=this.value})});
+$("f_u2").addEventListener("input",function(){if(S[cur])S[cur].u2=parseFloat(this.value)||2.2});
+$("f_post").addEventListener("input",function(){if(S[cur])S[cur].post=parseFloat(this.value)||2.4});
+$("f_lang").addEventListener("input",function(){LANG=this.value.trim()||"hi-IN"});
+function loadFields(){var s=S[cur]||{};Object.keys(FK).forEach(function(id){$(id).value=s[FK[id]]||""});$("f_look").checked=!!s.look;$("f_u2").value=s.u2||2.2;$("f_post").value=s.post||2.4;$("f_lang").value=LANG}
+$("bulkGo").onclick=function(){var L=$("bulk").value.split("\n").map(function(x){return x.trim()}).filter(Boolean);L.forEach(function(l,i){if(S[i])S[i].a=l});loadFields();msg(Math.min(L.length,S.length)+" steps mein awaaz line bhar di.")};
+document.querySelectorAll("#modes [data-m]").forEach(function(b){b.onclick=function(){mode=b.dataset.m;document.querySelectorAll("#modes [data-m]").forEach(function(x){x.classList.toggle("on",x===b)});
+  $("mhint").textContent=mode==="m"?"Click mark: jis button/jagah par click hona hai, wahan tap ya drag karo.":mode==="p2"?"Dusra click (optional): pehle click ke baad jahan doosra click ho, wahan mark lagao.":"Zoom area: jis hisse par camera zoom ho, wahan rectangle banao."}});
+$("clrM").onclick=function(){var s=S[cur];if(!s)return;if(mode==="m")s.m=null;else if(mode==="p2")s.p2=null;else s.z=null;drawEdit()};
+function drawEdit(){
+  var s=S[cur],c=ec.getContext("2d");
+  if(!s||!s.img){ec.width=600;ec.height=120;c.fillStyle="#1b2128";c.fillRect(0,0,600,120);c.fillStyle="#9aa6b2";c.font="22px sans-serif";c.fillText(s&&s.slide?"Text slide: sirf title/hint/awaaz bharo":"Pehle screenshots load karo",20,66);return}
+  var sc=Math.min(1,1100/s.w,1400/s.h);ec.width=Math.round(s.w*sc);ec.height=Math.round(s.h*sc);
+  c.drawImage(s.img,0,0,ec.width,ec.height);
+  function box(r,col,dash,fill,lab){if(!r)return;c.save();c.strokeStyle=col;c.lineWidth=Math.max(3,ec.width/200);c.setLineDash(dash||[]);c.fillStyle=fill;c.fillRect(r[0]*sc,r[1]*sc,r[2]*sc,r[3]*sc);c.strokeRect(r[0]*sc,r[1]*sc,r[2]*sc,r[3]*sc);c.restore();
+    c.fillStyle=col;c.font="bold "+Math.max(14,ec.width/40)+"px sans-serif";c.fillText(lab,r[0]*sc+4,Math.max(16,r[1]*sc-6))}
+  box(s.z,"#1a73e8",[12,8],"rgba(26,115,232,.12)","Zoom");box(s.p2,"#f5a300",null,"rgba(245,163,0,.2)","2");box(s.m,"#e8403a",null,"rgba(232,64,58,.22)","1");
+  if(drag)box(drag,"#00c853",[6,6],"rgba(0,200,83,.15)","")}
+var drag=null,dstart=null;
+function ept(e){var r=ec.getBoundingClientRect(),s=S[cur];return[(e.clientX-r.left)/r.width*s.w,(e.clientY-r.top)/r.height*s.h]}
+ec.addEventListener("pointerdown",function(e){var s=S[cur];if(!s||!s.img)return;ec.setPointerCapture(e.pointerId);dstart=ept(e);dstart.cx=e.clientX;dstart.cy=e.clientY;drag=[dstart[0],dstart[1],1,1];drawEdit()});
+ec.addEventListener("pointermove",function(e){if(!dstart)return;var p=ept(e);drag=[Math.min(dstart[0],p[0]),Math.min(dstart[1],p[1]),Math.abs(p[0]-dstart[0]),Math.abs(p[1]-dstart[1])];drawEdit()});
+ec.addEventListener("pointerup",function(e){
+  if(!dstart)return;var s=S[cur],moved=Math.hypot(e.clientX-dstart.cx,e.clientY-dstart.cy),r;
+  if(moved<8){var tw=Math.max(150,s.w*0.14),th=Math.max(80,Math.min(s.h*0.07,tw*0.5));r=[dstart[0]-tw/2,dstart[1]-th/2,tw,th]}else r=drag;
+  r=[Math.max(0,Math.round(r[0])),Math.max(0,Math.round(r[1])),Math.round(Math.min(r[2],s.w)),Math.round(Math.min(r[3],s.h))];
+  if(mode==="m")s.m=r;else if(mode==="p2")s.p2=r;else s.z=r;
+  drag=null;dstart=null;drawEdit()});
+function showTab(v){$("edit").hidden=v;$("video").hidden=!v;$("tEdit").classList.toggle("on",!v);$("tVid").classList.toggle("on",v);
+  if(v){if(!S.length){msg("Pehle Edit mein screenshots load karo.");return}buildClipsUI();buildPlan();frameAt(Math.min(2.5,TOTAL-0.01))}}
+$("tEdit").onclick=function(){showTab(false)};$("tVid").onclick=function(){showTab(true)};$("toVid").onclick=function(){showTab(true)};
+
+/* ===== Video engine ===== */
+function postOf(s){return Math.max(s.post||2.4,s.p2?(s.u2||2.2)+1.8:0)}
+function cam(s,t){var iw=s.w,ih=s.h,s0=Math.min(BW/iw,BH/ih),cx=iw/2,cy=ih/2,sc=s0;
+  if(s.z){var R=s.z,zf=cl(Math.min(BW/(Math.max(R[2],40)*s0),BH/(Math.max(R[3],40)*s0))*0.92,1,6),p=E((t-0.6)/1.0);
+    sc=s0*(1+(zf-1)*p);cx=iw/2+((R[0]+R[2]/2)-iw/2)*p;cy=ih/2+((R[1]+R[3]/2)-ih/2)*p}
+  return{s:sc,cx:cx,cy:cy}}
+function toScr(c,x,y){return[BX+BW/2+(x-c.cx)*c.s,BY+BH/2+(y-c.cy)*c.s]}
+function ctr(r){return[r[0]+r[2]/2,r[1]+r[3]/2]}
+function ensureBg(s){
+  if(s.bg&&s.bgK===K)return;
+  var c=document.createElement("canvas");c.width=cv.width;c.height=cv.height;var x=c.getContext("2d");
+  var sc=Math.max(c.width/s.w,c.height/s.h);
+  x.fillStyle="#0a0f16";x.fillRect(0,0,c.width,c.height);
+  try{x.filter="blur("+(40*K)+"px) brightness(0.45)"}catch(e){}
+  x.drawImage(s.img,(c.width-s.w*sc)/2,(c.height-s.h*sc)/2,s.w*sc,s.h*sc);
+  x.filter="none";x.fillStyle="rgba(5,10,20,.35)";x.fillRect(0,0,c.width,c.height);
+  s.bg=c;s.bgK=K}
+function markS(r,c,al,lab){
+  if(al<=0)return;var a=toScr(c,r[0],r[1]),b=toScr(c,r[0]+r[2],r[1]+r[3]),x=a[0],y=a[1],w=b[0]-a[0],h=b[1]-a[1],p=0.5+0.5*Math.sin(TG*6);
+  ctx.save();ctx.globalAlpha=al;ctx.shadowColor="rgba(232,64,58,.85)";ctx.shadowBlur=16+p*16;ctx.fillStyle="rgba(232,64,58,.13)";ctx.strokeStyle=RED;ctx.lineWidth=7;
+  rr(x-10,y-10,w+20,h+20,18);ctx.fill();ctx.stroke();ctx.restore();
+  var lw=230,px=cl(x+w-lw+12,10,W-lw-10),py=y<BY+80?y+h+26:y-68;
+  ctx.save();ctx.globalAlpha=al;ctx.fillStyle=RED;rr(px,py,lw,46,23);ctx.fill();ctx.restore();
+  tx(lab,px+lw/2,py+24,26,"#fff","center",DV,"700",al)}
+function arrow(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.shadowColor="rgba(0,0,0,.5)";ctx.shadowBlur=8;ctx.shadowOffsetY=3;
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,34);ctx.lineTo(8,26);ctx.lineTo(14,40);ctx.lineTo(21,37);ctx.lineTo(15,24);ctx.lineTo(26,24);ctx.closePath();
+  ctx.fillStyle="#fff";ctx.fill();ctx.shadowColor="transparent";ctx.lineWidth=2.6;ctx.lineJoin="round";ctx.strokeStyle="#111";ctx.stroke();ctx.restore()}
+function ripple(x,y,dt){if(dt<0||dt>=0.6)return;ctx.save();ctx.globalAlpha=1-dt/0.6;ctx.strokeStyle=RED;ctx.lineWidth=7;ctx.beginPath();ctx.arc(x,y,12+dt*140,0,7);ctx.stroke();ctx.restore()}
+var CUR=[1500,820];
+function curPos(s,t,u){var x=CUR[0],y=CUR[1];
+  if(s.m&&!s.slide){var c=cam(s,t),g=toScr(c,ctr(s.m)[0],ctr(s.m)[1]),p=E((t-0.4)/1.5);x=CUR[0]+(g[0]-CUR[0])*p;y=CUR[1]+(g[1]-CUR[1])*p}
+  if(s.p2&&!s.slide&&u>=(s.u2||2.2)){var c2=cam(s,t),b=s.m?toScr(c2,ctr(s.m)[0],ctr(s.m)[1]):CUR,g2=toScr(c2,ctr(s.p2)[0],ctr(s.p2)[1]),q=E((u-(s.u2||2.2))/0.8);x=b[0]+(g2[0]-b[0])*q;y=b[1]+(g2[1]-b[1])*q}
+  return[x,y]}
+function capText(s){ctx.font="500 30px "+DV;var w=s.split(" "),L=[],l="";
+  w.forEach(function(k){var q=l?l+" "+k:k;if(ctx.measureText(q).width>1500&&l){L.push(l);l=k}else l=q});L.push(l);
+  var y0=L.length>1?990:1008;L.forEach(function(x,j){tx(x,W/2,y0+j*38,30,"#fff","center",DV,"500")})}
+function frame(i,t,u,T,a,prog){
+  TG=T;ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);
+  var s=S[i],g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0f1b2b");g.addColorStop(1,"#070c14");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  if(s.img&&!s.slide){ensureBg(s);ctx.save();ctx.globalAlpha=a;ctx.drawImage(s.bg,0,0,W,H);ctx.restore()}
+  ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*24);
+  ctx.fillStyle=ORG;rr(110,34,150,52,26);ctx.fill();tx("Step "+(i+1)+"/"+S.length,185,60,26,"#202124","center",SF,"700");
+  if(s.slide){
+    tx(s.t||"",W/2,470,88,"#fff","center",DV,"800");if(s.hint)tx(s.hint,W/2,590,38,"#c7d6ea","center",DV,"500");
+  }else{
+    tx(s.t||"",290,60,50,"#fff","left",DV,"700");if(s.hint)wrapT(s.hint,110,118,1700,38,28,"#c7d6ea");
+    if(s.img){var c=cam(s,t),x0=BX+BW/2-c.cx*c.s,y0=BY+BH/2-c.cy*c.s;
+      ctx.save();rr(BX,BY,BW,BH,18);ctx.clip();
+      ctx.shadowColor="rgba(0,0,0,.6)";ctx.shadowBlur=40;ctx.fillStyle="#fff";ctx.fillRect(x0,y0,s.w*c.s,s.h*c.s);ctx.shadowColor="transparent";
+      ctx.drawImage(s.img,x0,y0,s.w*c.s,s.h*c.s);ctx.restore();
+      var LB=s.lab||"\u092F\u0939\u093E\u0901 \u0915\u094D\u0932\u093F\u0915 \u0915\u0930\u0947\u0902";
+      if(s.m)markS(s.m,c,u<0?E((t-0.5)/0.3):(s.look?(u<s.post?1:0):1-E(u/0.5)),LB);
+      if(s.p2){var d2=s.u2||2.2;markS(s.p2,c,u<d2-0.7?0:u<d2+1.3?E((u-d2+0.7)/0.3):0,LB)}
+      var p=curPos(s,t,u),cr=0;
+      if(s.m&&!s.look){var g1=toScr(c,ctr(s.m)[0],ctr(s.m)[1]);ripple(g1[0],g1[1],u);if(u>=0&&u<0.15)cr=1}
+      if(s.p2){var d3=s.u2||2.2,g3=toScr(c,ctr(s.p2)[0],ctr(s.p2)[1]);ripple(g3[0],g3[1],u-d3-0.8);if(u-d3-0.8>=0&&u-d3-0.8<0.15)cr=1}
+      if(s.m||s.p2)arrow(p[0],p[1],cr?1.45:1.7)}}
+  var ct=u>=0&&s.b?(s.sb||s.b):(s.sa||s.a);
+  if($("cap").checked&&ct)capText(ct);
+  ctx.restore();
+  ctx.fillStyle="rgba(255,255,255,.18)";ctx.fillRect(130,H-18,W-260,6);ctx.fillStyle=ORG;ctx.fillRect(130,H-18,(W-260)*cl(prog,0,1),6)}
+
+/* ===== Timeline: awaaz ki length se time banta hai ===== */
+var AC=null,CLIPS={},rs=null,raf=0,busy=false,pvOn=false,psrc=[],DUR=null;
+var st=$("st"),dl=$("dl"),pv=$("pv"),ex=$("ex");
+function actx(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();return AC}
+function est(s){return Math.max(1.5,s.length*0.1)}
+function cdur(i,k){var s=S[i];if(!s[k])return 0;if(DUR&&DUR[i]&&DUR[i][k]>0)return DUR[i][k];var c=CLIPS[i+k];return c?c.duration:est(s[k])}
+var PLAN=[],TOTAL=0;
+function buildPlan(){PLAN=[];var T0=0,prev=[1500,820];
+  S.forEach(function(s,i){var da=cdur(i,"a"),db=cdur(i,"b"),tc=Math.max(2.4,0.3+da+0.25),post=Math.max(postOf(s),db+0.5),len=tc+post+0.45;
+    CUR=prev.slice();PLAN.push({i:i,start:T0,tc:tc,len:len,cur0:prev.slice()});prev=curPos(s,len-0.45,post);T0+=len});
+  TOTAL=T0}
+function events(){var ev=[];PLAN.forEach(function(p){if(CLIPS[p.i+"a"])ev.push({key:p.i+"a",at:p.start+0.3});if(CLIPS[p.i+"b"])ev.push({key:p.i+"b",at:p.start+p.tc})});return ev}
+function frameAt(T){if(!PLAN.length)return;var p=PLAN[PLAN.length-1];
+  for(var k=0;k<PLAN.length;k++){if(T<PLAN[k].start+PLAN[k].len){p=PLAN[k];break}}
+  var t=cl(T-p.start,0,p.len),u=t>=p.tc?t-p.tc:-1,out=p.len-0.45,s=S[p.i];
+  var a=Math.min(cl(t/0.4,0,1),cl(1-(t-out)/0.45,0,1));
+  var prog=(p.i+(u>=0?0.4+0.6*cl(u/postOf(s),0,1):0.4*cl(t/2.4,0,1)))/S.length;
+  CUR=p.cur0;frame(p.i,t,u,T,a,prog)}
+function setRes(h){K=h/1080;cv.width=Math.round(W*K);cv.height=Math.round(H*K)}
+
+/* ===== Apni awaaz (clips) ===== */
+function refresh(key){var c=CLIPS[key],d=$("d"+key);if(d)d.textContent=c?c.duration.toFixed(1)+" sec \u2714":"nahi hai"}
+function decode(ab,key){return actx().decodeAudioData(ab).then(function(b){CLIPS[key]=b;refresh(key);msg("Clip save ho gaya.")}).catch(function(e){msg("Audio samajh nahi aaya: "+e.message)})}
+function toggleRec(key,btn){
+  if(rs){if(rs.key===key)rs.mr.stop();else msg("Pehle chal rahi recording stop karo.");return}
+  if(!navigator.mediaDevices||!window.MediaRecorder){msg("Is browser mein mic recording support nahi.");return}
+  navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(stream){
+    var mr=new MediaRecorder(stream),ch=[];rs={key:key,mr:mr};btn.textContent="\u23F9 Stop";btn.classList.add("rec");
+    mr.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data)};
+    mr.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});btn.textContent="\uD83C\uDF99 Record";btn.classList.remove("rec");rs=null;
+      new Blob(ch,{type:mr.mimeType}).arrayBuffer().then(function(ab){decode(ab,key)})};
+    mr.start()}).catch(function(e){msg("Mic permission nahi mili: "+e.message)})}
+function esc(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/'/g,"&#39;")}
+function buildClipsUI(){var h="";
+  S.forEach(function(s,i){h+="<div class='stp'><b>Step "+(i+1)+": "+esc(s.t||"")+"</b>";
+    ["a","b"].forEach(function(k){if(!s[k])return;var key=i+k;
+      h+="<div class='cr'><div class='sc'>"+(k==="a"?"Pehle bolo: ":"Phir bolo: ")+esc(s[k])+"</div><div class='bt'>"+
+      "<button data-a='rec' data-k='"+key+"'>\uD83C\uDF99 Record</button><label class='fb'>\uD83D\uDCC1 File<input type='file' accept='audio/*' hidden data-a='file' data-k='"+key+"'></label>"+
+      "<button data-a='play' data-k='"+key+"'>\u25B6</button><button data-a='clr' data-k='"+key+"'>\u2715</button><span id='d"+key+"'>nahi hai</span></div></div>"});
+    h+="</div>"});
+  $("clips").innerHTML=h;Object.keys(CLIPS).forEach(refresh)}
+$("clips").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var k=b.dataset.k,a=b.dataset.a;
+  if(a==="rec")toggleRec(k,b);
+  else if(a==="play"&&CLIPS[k]){var s=actx().createBufferSource();s.buffer=CLIPS[k];s.connect(actx().destination);s.start()}
+  else if(a==="clr"){delete CLIPS[k];refresh(k)}});
+$("clips").addEventListener("change",function(e){var f=e.target;if(f.dataset.a!=="file"||!f.files[0])return;
+  f.files[0].arrayBuffer().then(function(ab){decode(ab,f.dataset.k)});f.value=""});
+
+/* ===== Preview ===== */
+function stopPv(){cancelAnimationFrame(raf);psrc.forEach(function(s){try{s.stop()}catch(e){}});psrc=[];pvOn=false;pv.textContent="\u25B6 Preview chalao"}
+pv.onclick=function(){if(busy||!S.length)return;if(pvOn){stopPv();return}
+  buildPlan();setRes(1080);var ac=actx(),base=ac.currentTime+0.15;
+  events().forEach(function(e){var s=ac.createBufferSource();s.buffer=CLIPS[e.key];s.connect(ac.destination);s.start(base+e.at);psrc.push(s)});
+  var t0=performance.now()+150;pvOn=true;pv.textContent="\u23F9 Stop preview";msg("Preview chal raha hai...");
+  (function loop(){var T=(performance.now()-t0)/1000;
+    if(T>=TOTAL){stopPv();msg("Preview khatam.");frameAt(0);return}
+    frameAt(Math.max(0,T));raf=requestAnimationFrame(loop)})()};
+
+/* ===== Export: WebCodecs se asli MP4 ===== */
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+var IMGP=Promise.resolve();
+function loadImgs(){IMGP=Promise.all(S.map(function(s){return new Promise(function(res){if(!s.src||s.img){res();return}var im=new Image();im.onload=function(){s.img=im;res()};im.onerror=res;im.src=s.src})}))}
+async function exportMP4(){
+  if(busy||!S.length)return;if(pvOn)stopPv();
+  if(!window.VideoEncoder||!window.VideoFrame){msg("Is browser mein WebCodecs nahi hai. Chrome ka naya version use karo.");return}
+  if(!window.Mp4Muxer){msg("MP4 library load nahi hui. Internet on karke page refresh karo.");return}
+  busy=true;ex.disabled=pv.disabled=true;dl.innerHTML="";var wl=null;
+  try{
+    try{wl=await navigator.wakeLock.request("screen")}catch(e){}
+    buildPlan();var h=parseInt($("q").value,10),fps=parseInt($("fps").value,10);setRes(h);
+    var bps=h>=2160?45e6:h>=1440?24e6:12e6,vcfg=null;
+    var lv=["avc1.640034","avc1.640033","avc1.640032","avc1.640028","avc1.4d0028","avc1.42E01F"];
+    for(var i=0;i<lv.length&&!vcfg;i++){var c={codec:lv[i],width:cv.width,height:cv.height,bitrate:bps,framerate:fps,avc:{format:"avc"}};
+      try{var r=await VideoEncoder.isConfigSupported(c);if(r&&r.supported)vcfg=r.config||c}catch(e){}}
+    if(!vcfg)throw new Error("Phone ye quality encode nahi kar sakta. 1080p try karo.");
+    var ev=events(),acfg=null,mc=null,pcm=null,SR=48000;
+    if(ev.length&&window.AudioEncoder&&window.AudioData){
+      var al=[["mp4a.40.2","aac"],["opus","opus"]];
+      for(var j=0;j<al.length&&!acfg;j++){var ac={codec:al[j][0],sampleRate:SR,numberOfChannels:1,bitrate:128000};
+        try{var rr2=await AudioEncoder.isConfigSupported(ac);if(rr2&&rr2.supported){acfg=ac;mc=al[j][1]}}catch(e){}}
+      if(acfg){msg("Awaaz taiyar ho rahi hai...");var off=new OfflineAudioContext(1,Math.ceil(TOTAL*SR),SR);
+        ev.forEach(function(e){var s=off.createBufferSource();s.buffer=CLIPS[e.key];s.connect(off.destination);s.start(e.at)});
+        pcm=(await off.startRendering()).getChannelData(0)}}
+    var opt={target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:"avc",width:cv.width,height:cv.height},fastStart:"in-memory",firstTimestampBehavior:"offset"};
+    if(acfg)opt.audio={codec:mc,numberOfChannels:1,sampleRate:SR};
+    var mux=new Mp4Muxer.Muxer(opt),fail=null;
+    var venc=new VideoEncoder({output:function(c,m){mux.addVideoChunk(c,m)},error:function(e){fail=e}});venc.configure(vcfg);
+    var aenc=null;if(acfg){aenc=new AudioEncoder({output:function(c,m){mux.addAudioChunk(c,m)},error:function(e){fail=e}});aenc.configure(acfg)}
+    var N=Math.ceil(TOTAL*fps),apos=0;
+    function feed(target){if(!aenc)return;target=Math.min(pcm.length,target);
+      while(apos<target){var len=Math.min(4800,target-apos),d=pcm.slice(apos,apos+len);
+        var ad=new AudioData({format:"f32-planar",sampleRate:SR,numberOfFrames:len,numberOfChannels:1,timestamp:Math.round(apos/SR*1e6),data:d});
+        aenc.encode(ad);ad.close();apos+=len}}
+    for(var n=0;n<N;n++){
+      if(fail)throw fail;frameAt(n/fps);
+      var vf=new VideoFrame(cv,{timestamp:Math.round(n*1e6/fps),duration:Math.round(1e6/fps)});
+      venc.encode(vf,{keyFrame:n%(fps*2)===0});vf.close();feed(Math.floor((n+1)/fps*SR));
+      while(venc.encodeQueueSize>5)await sleep(4);
+      if(n%8===0){msg("Export ho raha hai: "+Math.floor(n/N*100)+"% ("+cv.width+"x"+cv.height+", "+Math.round(TOTAL)+" sec ka video)");await sleep(0)}}
+    feed(pcm?pcm.length:0);await venc.flush();if(aenc)await aenc.flush();if(fail)throw fail;mux.finalize();
+    var blob=new Blob([mux.target.buffer],{type:"video/mp4"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="screenshot-video-"+cv.width+"x"+cv.height+".mp4";
+    a.textContent="Video download karo ("+(blob.size/1048576).toFixed(1)+" MB, MP4, "+Math.round(TOTAL)+" sec)";dl.appendChild(a);a.click();
+    msg("Export ho gaya"+(acfg?" (awaaz ke saath).":ev.length?". Is device par audio encode nahi hua, video bina awaaz ke bana.":" (bina awaaz).")+" Download na shuru ho to neeche button dabao.");
+  }catch(e){msg("Export fail: "+(e&&e.message?e.message:e)+". 1080p ya 30 FPS try karo.")}
+  finally{if(wl)try{wl.release()}catch(e){}busy=false;ex.disabled=pv.disabled=false;setRes(1080);buildPlan();frameAt(2.5)}}
+ex.onclick=exportMP4;
+
+/* ===== NH API: HTML2Video Android app in functions ko bulati hai. Inhe mat badlo ===== */
+window.NH={
+  lang:"hi-IN",
+  narration:function(){return JSON.stringify(S.map(function(s){return{a:s.a||"",b:s.b||""}}))},
+  setDurations:function(j){DUR=JSON.parse(j);buildPlan();var ev=[];
+    PLAN.forEach(function(p){["a","b"].forEach(function(k){if(S[p.i][k]&&DUR[p.i]&&DUR[p.i][k]>0)ev.push({key:p.i+k,at:p.start+(k==="a"?0.3:p.tc)})})});
+    return JSON.stringify({total:TOTAL,events:ev})},
+  run:async function(fps){
+    try{await IMGP;buildPlan();setRes(1080);var N=Math.ceil(TOTAL*fps);
+      for(var n=0;n<N;n++){frameAt(n/fps);
+        if(Android.pushFrame(cv.toDataURL("image/jpeg",0.95))===false){Android.fail("Cancel ho gaya");return}
+        if(n%20===0){Android.progress(n,N);await sleep(0)}}
+      Android.progress(N,N);Android.done()}
+    catch(e){Android.fail(String(e&&e.message?e.message:e))}}
+};
+Object.defineProperty(NH,"lang",{get:function(){return LANG}});
+
+/* ===== Save standalone HTML (marks + screenshots andar embed) ===== */
+function projJSON(){return JSON.stringify({lang:LANG,steps:S},function(k,v){return(k==="img"||k==="bg"||k==="bgK")?undefined:v}).replace(/</g,"\\u003c")}
+$("saveHtml").onclick=function(){
+  if(!S.length)return;
+  var data=projJSON(),html=SRC.replace(/(<script id="proj" type="application\/json">)[\s\S]*?(<\/script>)/,function(m,a,b){return a+data+b});
+  var blob=new Blob([html],{type:"text/html"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="screenshot-video.html";document.body.appendChild(a);a.click();a.remove();
+  msg("Standalone HTML save ho gaya ("+(blob.size/1048576).toFixed(1)+" MB). Ise HTML2Video app mein kholo.")};
+
+/* ===== Start ===== */
+(function(){var raw=$("proj").textContent.trim();
+  if(raw&&raw!=="null"){try{var P=JSON.parse(raw);LANG=P.lang||"hi-IN";S=P.steps||[];loadImgs();cur=0;renderStrip();loadFields();
+    IMGP.then(function(){drawEdit();if(S.length){showTab(true)}});}catch(e){msg("Project load fail: "+e.message)}}
+  else{renderStrip();loadFields();drawEdit()}
+  setRes(1080)})();
+</script>
+</body>
+</html>

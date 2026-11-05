@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Firebase Setup - Mobile MP4 Export</title>
+<style>
+:root{--bg:#101418;--ink:#eef1f4;--mut:#9aa6b2;--card:#1b2128;--ac:#f5a300;box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root{--bg:#f1f3f5;--ink:#1d232a;--mut:#5d6a76;--card:#fff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+.w{max-width:900px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:4px 0}
+p{margin:4px 0 12px;color:var(--mut);font-size:13px}
+canvas{width:100%;height:auto;aspect-ratio:16/9;display:block;border-radius:10px;background:#fff}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+button,select,.fb{font:inherit;padding:10px 13px;border-radius:9px;border:1px solid #3a4450;background:var(--card);color:var(--ink);cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#1d232a;font-weight:700}
+button.rec{background:#e8403a;border-color:#e8403a;color:#fff}
+button:disabled{opacity:.5}
+button:focus-visible,select:focus-visible{outline:3px solid #4da3ff;outline-offset:2px}
+#st{font-size:13px;color:var(--mut);min-height:20px}
+#dl a{display:inline-block;margin-top:8px;color:#1d232a;background:var(--ac);padding:12px 16px;border-radius:9px;font-weight:700;text-decoration:none}
+details{background:var(--card);border-radius:10px;padding:10px 12px;margin:12px 0}
+summary{font-weight:700;cursor:pointer}
+.stp{border-top:1px solid #3a4450;margin-top:10px;padding-top:8px}
+.cr{margin:8px 0}
+.sc{font-size:14px;margin-bottom:6px}
+.bt{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.bt span{font-size:12px;color:var(--mut)}
+.note{font-size:12px;color:var(--mut);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Firebase Setup Video (MP4)</h1>
+<p>Phone par bhi chalta hai. Export ek asli MP4 banata hai jiska time sahi dikhta hai, to editing aur share dono ho jate hain.</p>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div class="ctl">
+  <button id="pv">▶ Preview chalao</button>
+  <select id="q" aria-label="Quality">
+    <option value="1080" selected>Full HD 1080p</option>
+    <option value="1440">2K 1440p</option>
+    <option value="2160">Ultra HD 4K</option>
+  </select>
+  <select id="fps" aria-label="FPS"><option>30</option><option>60</option></select>
+  <label style="font-size:13px"><input type="checkbox" id="cap" checked> Subtitle</label>
+  <button id="ex" class="p">Export MP4</button>
+</div>
+<div id="st"></div>
+<div id="dl"></div>
+<details>
+<summary>🎙 Hindi awaaz (optional): har step ke liye record ya file</summary>
+<p>Har line ke neeche Record dabao aur bolo, phir Stop. Ya kisi Hindi voice app se banai audio ki File chuno. Video ka time aur click aapki awaaz ke hisaab se apne aap set ho jata hai.</p>
+<div id="clips"></div>
+</details>
+<p class="note">Export phone par fast hota hai (video real-time nahi chalta). Export ke dauran screen on rakho aur ye tab khula rakho. 4K phone par fail ho to 1080p lo. Bina awaaz ke bhi MP4 ban jati hai. Internet on rakho, kyunki MP4 banane wali library pehli baar online load hoti hai.</p>
+</div>
+<script>
+/* ===== SETTINGS ===== */
+var PKG="com.nhbox.app";      // package name
+var PROJ="NHBoxApp";          // project name
+/* Har step mein: a = pehli awaaz (click se pehle), b = doosri awaaz (click ke baad) */
+/* ==================== */
+
+var cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+var W=1920,H=1080,K=1,TG=0;
+var FX=260,FY=300,FW=1400,FH=660,OX=FX,OY=FY+56,CH=FH-56;
+var SF='"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',MO='ui-monospace,Consolas,Menlo,monospace';
+var DV='"Noto Sans Devanagari","Nirmala UI","Mangal",'+SF;
+var BLUE="#1a73e8",ORG="#f5a300",RED="#e8403a";
+var cl=function(v,a,b){return v<a?a:v>b?b:v};
+var E=function(t){t=cl(t,0,1);return 1-Math.pow(1-t,3)};
+var BK=function(t){t=cl(t,0,1);return 1+2.7*Math.pow(t-1,3)+1.7*Math.pow(t-1,2)};
+var typed=function(s,t,sp){return s.slice(0,Math.max(0,Math.floor(t*sp)))};
+
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function tx(s,x,y,size,col,al,font,wt,a){ctx.save();ctx.globalAlpha=a==null?1:a;ctx.font=(wt||"")+" "+size+"px "+(font||SF);ctx.fillStyle=col;ctx.textAlign=al||"left";ctx.textBaseline="middle";ctx.fillText(s,x,y);ctx.restore()}
+function wrap(s,x,y,mw,lh,size,col){ctx.font=size+"px "+SF;var w=s.split(" "),l="",yy=y;
+  w.forEach(function(k){var q=l?l+" "+k:k;if(ctx.measureText(q).width>mw&&l){tx(l,x,yy,size,col);l=k;yy+=lh}else l=q});tx(l,x,yy,size,col)}
+function pop(cx,cy,t,fn){if(t<=0)return;var s=BK(t);ctx.save();ctx.translate(cx,cy);ctx.scale(s,s);ctx.translate(-cx,-cy);fn();ctx.restore()}
+function field(x,y,w,label,val,foc,done){tx(label,x,y-14,24,"#5f6368");ctx.save();ctx.fillStyle="#fff";ctx.strokeStyle=foc?BLUE:"#9aa0a6";ctx.lineWidth=foc?4:2;rr(x,y+8,w,72,10);ctx.fill();ctx.stroke();ctx.restore();
+  tx(val+((foc&&!done&&Math.floor(TG*2)%2===0)?"|":""),x+24,y+46,34,"#202124","left",MO)}
+function button(cx,cy,w,label,col,t,tc){pop(cx,cy,t,function(){ctx.fillStyle=col;ctx.strokeStyle="#dadce0";ctx.lineWidth=2;rr(cx-w/2,cy-34,w,68,12);ctx.fill();if(col==="#fff")ctx.stroke();tx(label,cx,cy+2,30,tc||"#fff","center",SF,"600")})}
+function tile(x,y,w,h,ic,label,t){pop(x+w/2,y+h/2,t,function(){ctx.fillStyle="#fff";ctx.strokeStyle="#dadce0";ctx.lineWidth=2;rr(x,y,w,h,16);ctx.fill();ctx.stroke();
+  tx(ic,x+w/2,y+h/2-24,64,"#202124","center");tx(label,x+w/2,y+h-40,30,"#202124","center")})}
+function toggle(x,y,on){ctx.fillStyle=on?BLUE:"#bbb";rr(x,y,92,48,24);ctx.fill();ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(x+(on?68:24),y+24,18,0,7);ctx.fill()}
+function sheet(title,sub,u,at){if(u<at)return;var p=E((u-at)/0.6);ctx.save();ctx.translate(0,(1-p)*CH);ctx.fillStyle="#fff";ctx.strokeStyle="#dadce0";ctx.lineWidth=2;rr(30,40,1340,CH-70,18);ctx.fill();ctx.stroke();
+  tx(title,70,110,48,"#202124","left",SF,"500");tx(sub,70,170,28,"#5f6368");ctx.restore()}
+function ide(L,t,u){ctx.fillStyle="#2b2d30";ctx.fillRect(0,0,FW,CH);
+  L.forEach(function(l,i){var y=60+i*52,txt=l[0],hi=l[1],dl=l[2],col=hi?"#ffd866":"#bcbec4",a=E((t-0.1-i*0.1)/0.25);
+    if(dl!==undefined){if(u>=dl){a=Math.min(a,E((u-dl)/0.35))}else if(l[3]){txt=l[3];hi=0;col="#6b6f76"}else return}
+    if(a<=0)return;
+    if(hi){ctx.fillStyle="rgba(245,197,66,"+0.22*a+")";ctx.fillRect(0,y-24,FW,48)}
+    tx(txt,50,y,32,col,"left",MO,"",a)})}
+
+/* ===== STEPS ===== */
+var S=[
+{t:"Firebase console kholo",u:"console.firebase.google.com",h:"Browser mein console.firebase.google.com kholo aur Google account se login karo.",
+ a:"सबसे पहले फायरबेस कंसोल खोलिए, और क्रिएट अ प्रोजेक्ट पर क्लिक कीजिए।",b:"अब प्रोजेक्ट बनाने का पेज खुल जाएगा।",
+ m:[70,170,400,260],post:2.4,
+ d:function(t,u){tx("Welcome to Firebase",70,90,52,"#202124","left",SF,"500");tile(70,170,400,260,"+","Create a project",t-0.2);tile(510,170,400,260,"F","Old project",t-0.4);
+  sheet("Create a project","Step 1 of 3: Name your project",u,0.3)}},
+{t:"Project ka naam",u:"console.firebase.google.com/u/0/project/_/create",h:"Naam daalo, jaise "+PROJ+", phir Continue.",
+ a:"नाम वाले बॉक्स पर क्लिक कीजिए।",b:"यहाँ अपने प्रोजेक्ट का नाम लिखिए, फिर कंटिन्यू दबाइए।",
+ m:[70,228,1100,72],p2:[210,420,2.2,[70,386,280,68]],post:3.6,
+ d:function(t,u){tx("Create a project",70,80,50,"#202124","left",SF,"500");tx("Step 1 of 3: Name your project",70,140,28,"#5f6368");
+  field(70,220,1100,"Project name",typed(PROJ,u-0.2,9),u>=0,u-0.2>=PROJ.length/9);button(210,420,280,"Continue",BLUE,t-0.3)}},
+{t:"Google Analytics",u:"console.firebase.google.com/u/0/project/_/create",h:"Analytics zaroori nahi. Chahiye to ON rakho, warna OFF karke Create project.",
+ a:"यहाँ गूगल एनालिटिक्स का स्विच है, इस पर क्लिक कीजिए।",b:"ज़रूरी न हो तो इसे बंद रखिए, फिर क्रिएट प्रोजेक्ट दबाइए।",
+ m:[70,220,92,48],p2:[240,420,2.8,[70,386,340,68]],post:4.2,
+ d:function(t,u){tx("Google Analytics",70,80,50,"#202124","left",SF,"500");tx("Step 2 of 3: Enable Google Analytics for this project",70,140,28,"#5f6368");
+  toggle(70,220,!(u>=0.15));tx("Enable Google Analytics",190,244,34,"#202124");button(240,420,340,"Create project",BLUE,t-0.3)}},
+{t:"Project ban raha hai",u:"console.firebase.google.com",h:"Kuch seconds wait karo, phir Continue dabao.",
+ a:"प्रोजेक्ट बन रहा है, कुछ सेकंड इंतज़ार कीजिए।",b:"बन जाने पर कंटिन्यू दबाइए।",
+ p2:[210,420,0.4,[70,386,280,68]],post:2.6,
+ d:function(t,u){var p=E(t/2.4);tx("Creating your project...",70,90,50,"#202124","left",SF,"500");ctx.fillStyle="#e0e0e0";rr(70,200,1100,16,8);ctx.fill();ctx.fillStyle=BLUE;rr(70,200,1100*p,16,8);ctx.fill();
+  tx(Math.floor(p*100)+"%",70,270,30,"#5f6368");button(210,420,280,"Continue","#fff",u,BLUE)}},
+{t:"Dashboard: Android icon",u:"console.firebase.google.com/project/nhboxapp",h:"Project overview mein Android (robot) icon par click karo.",
+ a:"डैशबोर्ड पर एंड्रॉइड के आइकन पर क्लिक कीजिए।",b:"अब ऐप रजिस्टर करने का पेज खुलेगा।",
+ m:[410,200,300,240],post:2.4,
+ d:function(t,u){tx(PROJ,70,80,50,"#202124","left",SF,"500");tx("Get started by adding Firebase to your app",70,140,28,"#5f6368");
+  tile(70,200,300,240,"iOS","iOS+",t-0.2);tile(410,200,300,240,"</>","Android",t-0.4);tile(750,200,300,240,"www","Web",t-0.6);
+  sheet("Add Firebase to your Android app","Register app",u,0.3)}},
+{t:"App register karo",u:"console.firebase.google.com/project/nhboxapp/overview",h:"Package name bilkul wahi daalo jo build.gradle ke applicationId mein hai. SHA-1 optional hai, Google login ke liye zaroori.",
+ a:"पैकेज नेम वाले बॉक्स पर क्लिक कीजिए।",b:"यहाँ वही पैकेज नेम लिखिए जो आपके बिल्ड ग्रेडल के एप्लीकेशन आईडी में है। फिर रजिस्टर ऐप दबाइए।",
+ m:[70,138,1100,72],p2:[210,560,4.4,[70,526,280,68]],post:6,
+ d:function(t,u){tx("Add Firebase to your Android app",70,60,44,"#202124","left",SF,"500");
+  field(70,130,1100,"Android package name",typed(PKG,u-0.2,10),u>=0&&u<2,u-0.2>=PKG.length/10);
+  field(70,260,1100,"App nickname (optional)",typed("NHBox App",u-2.2,10),false,true);
+  field(70,390,1100,"Debug SHA-1 (optional)",typed("A1:B2:C3:...:9F",u-3,10),false,true);button(210,560,280,"Register app",BLUE,t-0.3)}},
+{t:"google-services.json download",u:"console.firebase.google.com/project/nhboxapp/overview",h:"Download google-services.json dabao. File Downloads mein aa jayegi.",
+ a:"गूगल सर्विसेज़ डॉट जेसन डाउनलोड बटन पर क्लिक कीजिए।",b:"फाइल आपके डाउनलोड फोल्डर में आ जाएगी।",
+ m:[70,436,520,68],post:3,
+ d:function(t,u){tx("Download and then add config file",70,70,46,"#202124","left",SF,"500");tx("Is file ko apne app module mein daalna hai.",70,130,28,"#5f6368");
+  if(u>=0){var p=E((u-0.2)/1.2),y=200+p*160;ctx.fillStyle="#f7f7f2";ctx.strokeStyle="#dadce0";ctx.lineWidth=3;rr(70,y,120,150,12);ctx.fill();ctx.stroke();ctx.fillStyle=ORG;ctx.fillRect(70,y,120,34);
+   tx("{ }",130,y+90,44,"#202124","center",MO);tx("google-services.json",230,y+75,38,"#202124","left",MO,"",E(u/0.5))}
+  button(330,470,520,"Download google-services.json",BLUE,t-0.2)}},
+{t:"Android Studio: file paste",u:"Android Studio (Project view)",h:"Upar left mein view ko Project mode karo. File ko app/ folder mein paste karo, src ke andar nahi.",
+ a:"एंड्रॉइड स्टूडियो में प्रोजेक्ट व्यू में, ऐप फोल्डर के अंदर फाइल पेस्ट कीजिए।",b:"ध्यान रखिए, फाइल एसआरसी फोल्डर के अंदर नहीं डालनी है।",
+ m:[10,346,1380,52],post:3,
+ d:function(t,u){ide([["Project  (Project view)",0],["v NHBoxApp",0],["  > .gradle",0],["  v app",0],["      > build",0],["      > src",0],
+  ["      google-services.json   <-- paste ho gaya",1,0,"      ........  (yahan paste hogi)"],["      build.gradle.kts",0],["  build.gradle.kts",0],["  settings.gradle.kts",0]],t,u)}},
+{t:"Project-level Gradle",u:"build.gradle.kts (Project: "+PROJ+")",h:"Root build.gradle.kts mein Google services plugin add karo.",
+ a:"रूट बिल्ड ग्रेडल फाइल में, यह गूगल सर्विसेज़ प्लगइन वाली लाइन जोड़िए।",b:"इससे फायरबेस का सेटअप आपके प्रोजेक्ट में जुड़ जाता है।",
+ m:[10,138,1380,52],post:3,
+ d:function(t,u){ide([["plugins {",0],['  id("com.android.application") version "8.5.0" apply false',0],
+  ['  id("com.google.gms.google-services") version "4.4.2" apply false',1,0,"  // yahan plugin line aayegi"],["}",0]],t,u)}},
+{t:"App-level Gradle",u:"build.gradle.kts (Module: app)",h:"Plugin apply karo aur Firebase BoM + jo services chahiye wo add karo.",
+ a:"ऐप लेवल बिल्ड ग्रेडल में पहले यह प्लगइन वाली लाइन जोड़िए।",b:"फिर फायरबेस की डिपेंडेंसी जोड़िए: बीओएम, ऑथ और फायरस्टोर।",
+ m:[10,138,1380,52],post:4,
+ d:function(t,u){ide([["plugins {",0],['  id("com.android.application")',0],['  id("com.google.gms.google-services")',1,0,"  // yahan plugin line aayegi"],["}",0],["",0],["dependencies {",0],
+  ['  implementation(platform("com.google.firebase:firebase-bom:33.1.2"))',1,0.8],['  implementation("com.google.firebase:firebase-auth")',1,1.3],
+  ['  implementation("com.google.firebase:firebase-firestore")',1,1.8],["}",0]],t,u)}},
+{t:"Sync Now",u:"Android Studio",h:"Upar yellow bar mein Sync Now dabao. Build output mein BUILD SUCCESSFUL aana chahiye.",
+ a:"ऊपर सिंक नाउ पर क्लिक कीजिए।",b:"सिंक पूरा होने पर बिल्ड सक्सेसफुल दिखेगा।",
+ m:[1120,2,200,68],post:4.2,
+ d:function(t,u){ide([],t,u);ctx.fillStyle="#4a3f12";ctx.fillRect(0,0,FW,70);tx("Gradle files have changed since last project sync.",40,36,28,"#ffd866");
+  button(1220,36,200,"Sync Now",BLUE,t-0.1);var p=u<0?0:E((u-0.3)/2);
+  ctx.fillStyle="#1d1f22";rr(60,200,1280,50,25);ctx.fill();ctx.fillStyle="#6aab73";rr(60,200,1280*p,50,25);ctx.fill();
+  if(u>2.6){tx("BUILD SUCCESSFUL in 24s",60,360,48,"#6aab73","left",MO,"",E((u-2.6)/0.4));tx("google-services.json: processed OK",60,430,30,"#9da0a8","left",MO,"",E((u-2.9)/0.4))}}},
+{t:"Services ON karo",u:"console.firebase.google.com/project/nhboxapp/firestore",h:"Authentication mein Get started, sign-in method on karo. Firestore mein Create database karo.",
+ a:"ऑथेंटिकेशन पर क्लिक करके साइन-इन मेथड चालू कीजिए।",b:"फिर फायरस्टोर डेटाबेस बनाइए, और ऐप चलाकर टेस्ट कीजिए।",
+ m:[70,130,520,320],p2:[900,290,2,[640,130,520,320]],post:5.2,
+ d:function(t,u){tx("Build",70,70,50,"#202124","left",SF,"500");tile(70,130,520,320,"ID","Authentication",t-0.2);tile(640,130,520,320,"DB","Firestore Database",t-0.4);
+  toggle(280,470,u>0.5);toggle(850,470,u>2.9);tx("App run karke login aur data test karo.",70,570,32,"#188038","left",SF,"600",E((u-3.8)/0.5))}}
+];
+S.forEach(function(s){if(s.m)s.tg=[OX+s.m[0]+Math.min(s.m[2]/2,260),OY+s.m[1]+s.m[3]/2]});
+
+/* ===== Red mark, mouse arrow ===== */
+function mark(r,al){if(al<=0)return;var p=0.5+0.5*Math.sin(TG*6);
+  ctx.save();ctx.globalAlpha=al;ctx.shadowColor="rgba(232,64,58,.85)";ctx.shadowBlur=16+p*16;ctx.fillStyle="rgba(232,64,58,.13)";ctx.strokeStyle=RED;ctx.lineWidth=7;
+  rr(r[0]-12,r[1]-12,r[2]+24,r[3]+24,20);ctx.fill();ctx.stroke();ctx.restore();
+  var lw=210,px=Math.max(10,Math.min(r[0]+r[2]-lw+12,FW-lw-10)),py=r[1]<80?r[1]+r[3]+30:r[1]-70;
+  ctx.save();ctx.globalAlpha=al;ctx.fillStyle=RED;rr(px,py,lw,46,23);ctx.fill();ctx.restore();
+  tx("यहाँ क्लिक करें",px+lw/2,py+24,26,"#fff","center",DV,"700",al)}
+function arrow(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.shadowColor="rgba(0,0,0,.4)";ctx.shadowBlur=8;ctx.shadowOffsetY=3;
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,34);ctx.lineTo(8,26);ctx.lineTo(14,40);ctx.lineTo(21,37);ctx.lineTo(15,24);ctx.lineTo(26,24);ctx.closePath();
+  ctx.fillStyle="#fff";ctx.fill();ctx.shadowColor="transparent";ctx.lineWidth=2.6;ctx.lineJoin="round";ctx.strokeStyle="#111";ctx.stroke();ctx.restore()}
+var CUR=[1100,560];
+function curPos(s,t,u){var x=CUR[0],y=CUR[1];
+  if(s.tg){var p=E((t-0.4)/1.5);x=CUR[0]+(s.tg[0]-CUR[0])*p;y=CUR[1]+(s.tg[1]-CUR[1])*p}
+  if(s.p2&&u>=s.p2[2]){var bx=s.tg?s.tg[0]:CUR[0],by=s.tg?s.tg[1]:CUR[1],q=E((u-s.p2[2])/0.8);x=bx+(OX+s.p2[0]-bx)*q;y=by+(OY+s.p2[1]-by)*q}
+  return[x,y]}
+function ripple(x,y,dt){if(dt<0||dt>=0.6)return;ctx.save();ctx.globalAlpha=1-dt/0.6;ctx.strokeStyle=RED;ctx.lineWidth=7;ctx.beginPath();ctx.arc(x,y,12+dt*140,0,7);ctx.stroke();ctx.restore()}
+
+/* ===== Frame ===== */
+function capText(s){ctx.font="500 30px "+DV;var w=s.split(" "),L=[],l="";
+  w.forEach(function(k){var q=l?l+" "+k:k;if(ctx.measureText(q).width>1500&&l){L.push(l);l=k}else l=q});L.push(l);
+  var y0=L.length>1?990:1008;L.forEach(function(x,j){tx(x,W/2,y0+j*38,30,"#202124","center",DV,"500")})}
+function frame(i,t,u,T,a,prog){
+  TG=T;ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);
+  var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#fff7e6");g.addColorStop(1,"#f4f5f7");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  var s=S[i];
+  ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*24);
+  ctx.fillStyle=ORG;rr(130,70,150,52,26);ctx.fill();tx("Step "+(i+1)+"/"+S.length,205,97,26,"#202124","center",SF,"700");
+  tx(s.t,310,97,64,"#202124","left",SF,"700");wrap(s.h,130,190,1660,46,34,"#5f6368");
+  ctx.save();ctx.shadowColor="rgba(0,0,0,.18)";ctx.shadowBlur=30;ctx.shadowOffsetY=10;ctx.fillStyle="#fff";rr(FX,FY,FW,FH,18);ctx.fill();ctx.restore();
+  ctx.save();rr(FX,FY,FW,FH,18);ctx.clip();
+  ctx.fillStyle="#eef0f3";ctx.fillRect(FX,FY,FW,56);
+  ctx.fillStyle="#c4c7cc";[0,1,2].forEach(function(k){ctx.beginPath();ctx.arc(FX+28+k*26,FY+28,8,0,7);ctx.fill()});
+  ctx.fillStyle="#fff";rr(FX+130,FY+10,FW-170,36,18);ctx.fill();tx(s.u,FX+156,FY+29,22,"#5f6368");
+  ctx.save();ctx.translate(OX,OY);ctx.beginPath();ctx.rect(0,0,FW,CH);ctx.clip();
+  s.d(t,u);
+  if(s.m){mark(s.m,u<0?E((t-0.5)/0.3):1-E(u/0.5))}
+  if(s.p2){var c=s.p2[2];mark(s.p2[3],u<c-0.7?0:u<c+1.3?E((u-c+0.7)/0.3):0)}
+  ctx.restore();ctx.restore();
+  // mouse arrow + click ripples
+  var p=curPos(s,t,u),cr=0;
+  if(s.tg)ripple(s.tg[0],s.tg[1],u);
+  if(s.p2)ripple(OX+s.p2[0],OY+s.p2[1],u-s.p2[2]-0.8);
+  if(s.tg&&u>=0&&u<0.15)cr=1;if(s.p2&&u-s.p2[2]-0.8>=0&&u-s.p2[2]-0.8<0.15)cr=1;
+  arrow(p[0],p[1],cr?1.45:1.7);
+  if(document.getElementById("cap").checked){capText(u>=0&&s.b?s.b:s.a)}
+  ctx.restore();
+  ctx.fillStyle="rgba(0,0,0,.1)";ctx.fillRect(130,H-18,W-260,6);ctx.fillStyle=ORG;ctx.fillRect(130,H-18,(W-260)*cl(prog,0,1),6)}
+
+
+/* ===== Apni awaaz (clips) ===== */
+var $=function(x){return document.getElementById(x)};
+var st=$("st"),dl=$("dl"),pv=$("pv"),ex=$("ex");
+var msg=function(m){st.textContent=m};
+var AC=null,CLIPS={},rs=null,raf=0,busy=false,pvOn=false,psrc=[];
+function actx(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();return AC}
+function est(s){return Math.max(1.5,s.length*0.1)}
+var DUR=null;
+function cdur(i,k){var s=S[i];if(!s[k])return 0;if(DUR&&DUR[i]&&DUR[i][k]>0)return DUR[i][k];var c=CLIPS[i+k];return c?c.duration:est(s[k])}
+function refresh(key){var c=CLIPS[key],d=$("d"+key);if(d)d.textContent=c?c.duration.toFixed(1)+" sec ✔":"nahi hai"}
+function decode(ab,key){return actx().decodeAudioData(ab).then(function(b){CLIPS[key]=b;refresh(key);msg("Clip save ho gaya.")}).catch(function(e){msg("Audio samajh nahi aaya: "+e.message)})}
+function toggleRec(key,btn){
+  if(rs){if(rs.key===key)rs.mr.stop();else msg("Pehle chal rahi recording stop karo.");return}
+  if(!navigator.mediaDevices||!window.MediaRecorder){msg("Is browser mein mic recording support nahi.");return}
+  navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(stream){
+    var mr=new MediaRecorder(stream),ch=[];rs={key:key,mr:mr};btn.textContent="⏹ Stop";btn.classList.add("rec");
+    mr.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data)};
+    mr.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});btn.textContent="🎙 Record";btn.classList.remove("rec");rs=null;
+      new Blob(ch,{type:mr.mimeType}).arrayBuffer().then(function(ab){decode(ab,key)})};
+    mr.start()}).catch(function(e){msg("Mic permission nahi mili: "+e.message)})}
+(function(){var h="";S.forEach(function(s,i){h+="<div class='stp'><b>Step "+(i+1)+": "+s.t+"</b>";
+  ["a","b"].forEach(function(k){if(!s[k])return;var key=i+k;
+    h+="<div class='cr'><div class='sc'>"+(k==="a"?"Pehle bolo (click se pehle): ":"Phir bolo (click ke baad): ")+s[k]+"</div><div class='bt'>"+
+    "<button data-a='rec' data-k='"+key+"'>🎙 Record</button><label class='fb'>📁 File<input type='file' accept='audio/*' hidden data-a='file' data-k='"+key+"'></label>"+
+    "<button data-a='play' data-k='"+key+"'>▶</button><button data-a='clr' data-k='"+key+"'>✕</button><span id='d"+key+"'>nahi hai</span></div></div>"});
+  h+="</div>"});$("clips").innerHTML=h})();
+$("clips").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var k=b.dataset.k,a=b.dataset.a;
+  if(a==="rec")toggleRec(k,b);
+  else if(a==="play"&&CLIPS[k]){var s=actx().createBufferSource();s.buffer=CLIPS[k];s.connect(actx().destination);s.start()}
+  else if(a==="clr"){delete CLIPS[k];refresh(k)}});
+$("clips").addEventListener("change",function(e){var f=e.target;if(f.dataset.a!=="file"||!f.files[0])return;
+  f.files[0].arrayBuffer().then(function(ab){decode(ab,f.dataset.k)});f.value=""});
+
+/* ===== Timeline: awaaz ki length se time banta hai ===== */
+var PLAN=[],TOTAL=0;
+function buildPlan(){PLAN=[];var T0=0,prev=[1100,560];
+  S.forEach(function(s,i){var da=cdur(i,"a"),db=cdur(i,"b"),tc=Math.max(2.4,0.3+da+0.25),post=Math.max(s.post,db+0.5),len=tc+post+0.45;
+    CUR=prev.slice();PLAN.push({i:i,start:T0,tc:tc,len:len,cur0:prev.slice()});prev=curPos(s,len-0.45,post);T0+=len});
+  TOTAL=T0}
+function events(){var ev=[];PLAN.forEach(function(p){if(CLIPS[p.i+"a"])ev.push({key:p.i+"a",at:p.start+0.3});if(CLIPS[p.i+"b"])ev.push({key:p.i+"b",at:p.start+p.tc})});return ev}
+function frameAt(T){var p=PLAN[PLAN.length-1];
+  for(var k=0;k<PLAN.length;k++){if(T<PLAN[k].start+PLAN[k].len){p=PLAN[k];break}}
+  var t=cl(T-p.start,0,p.len),u=t>=p.tc?t-p.tc:-1,out=p.len-0.45,s=S[p.i];
+  var a=Math.min(cl(t/0.4,0,1),cl(1-(t-out)/0.45,0,1));
+  var prog=(p.i+(u>=0?0.4+0.6*cl(u/s.post,0,1):0.4*cl(t/2.4,0,1)))/S.length;
+  CUR=p.cur0;frame(p.i,t,u,T,a,prog)}
+function setRes(h){K=h/1080;cv.width=Math.round(W*K);cv.height=Math.round(H*K)}
+
+/* ===== Preview ===== */
+function stopPv(){cancelAnimationFrame(raf);psrc.forEach(function(s){try{s.stop()}catch(e){}});psrc=[];pvOn=false;pv.textContent="▶ Preview chalao"}
+pv.onclick=function(){if(busy)return;if(pvOn){stopPv();return}
+  buildPlan();setRes(1080);var ac=actx(),base=ac.currentTime+0.15;
+  events().forEach(function(e){var s=ac.createBufferSource();s.buffer=CLIPS[e.key];s.connect(ac.destination);s.start(base+e.at);psrc.push(s)});
+  var t0=performance.now()+150;pvOn=true;pv.textContent="⏹ Stop preview";msg("Preview chal raha hai...");
+  (function loop(){var T=(performance.now()-t0)/1000;
+    if(T>=TOTAL){stopPv();msg("Preview khatam.");frameAt(0);return}
+    frameAt(Math.max(0,T));raf=requestAnimationFrame(loop)})()};
+
+/* ===== Export: WebCodecs se asli MP4 (duration sahi, editing ho sakti hai) ===== */
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+async function exportMP4(){
+  if(busy)return;if(pvOn)stopPv();
+  if(!window.VideoEncoder||!window.VideoFrame){msg("Is browser mein WebCodecs nahi hai. Chrome ka naya version use karo.");return}
+  if(!window.Mp4Muxer){msg("MP4 library load nahi hui. Internet on karke page refresh karo.");return}
+  busy=true;ex.disabled=pv.disabled=true;dl.innerHTML="";var wl=null;
+  try{
+    try{wl=await navigator.wakeLock.request("screen")}catch(e){}
+    buildPlan();var h=parseInt($("q").value,10),fps=parseInt($("fps").value,10);setRes(h);
+    var bps=h>=2160?45e6:h>=1440?24e6:12e6,vcfg=null;
+    var lv=["avc1.640034","avc1.640033","avc1.640032","avc1.640028","avc1.4d0028","avc1.42E01F"];
+    for(var i=0;i<lv.length&&!vcfg;i++){var c={codec:lv[i],width:cv.width,height:cv.height,bitrate:bps,framerate:fps,avc:{format:"avc"}};
+      try{var r=await VideoEncoder.isConfigSupported(c);if(r&&r.supported)vcfg=r.config||c}catch(e){}}
+    if(!vcfg)throw new Error("Phone ye quality encode nahi kar sakta. 1080p try karo.");
+    var ev=events(),acfg=null,mc=null,pcm=null,SR=48000;
+    if(ev.length&&window.AudioEncoder&&window.AudioData){
+      var al=[["mp4a.40.2","aac"],["opus","opus"]];
+      for(var j=0;j<al.length&&!acfg;j++){var ac={codec:al[j][0],sampleRate:SR,numberOfChannels:1,bitrate:128000};
+        try{var rr2=await AudioEncoder.isConfigSupported(ac);if(rr2&&rr2.supported){acfg=ac;mc=al[j][1]}}catch(e){}}
+      if(acfg){msg("Awaaz taiyar ho rahi hai...");var off=new OfflineAudioContext(1,Math.ceil(TOTAL*SR),SR);
+        ev.forEach(function(e){var s=off.createBufferSource();s.buffer=CLIPS[e.key];s.connect(off.destination);s.start(e.at)});
+        pcm=(await off.startRendering()).getChannelData(0)}
+    }
+    var opt={target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:"avc",width:cv.width,height:cv.height},fastStart:"in-memory",firstTimestampBehavior:"offset"};
+    if(acfg)opt.audio={codec:mc,numberOfChannels:1,sampleRate:SR};
+    var mux=new Mp4Muxer.Muxer(opt),fail=null;
+    var venc=new VideoEncoder({output:function(c,m){mux.addVideoChunk(c,m)},error:function(e){fail=e}});venc.configure(vcfg);
+    var aenc=null;if(acfg){aenc=new AudioEncoder({output:function(c,m){mux.addAudioChunk(c,m)},error:function(e){fail=e}});aenc.configure(acfg)}
+    var N=Math.ceil(TOTAL*fps),apos=0;
+    function feed(target){if(!aenc)return;target=Math.min(pcm.length,target);
+      while(apos<target){var len=Math.min(4800,target-apos),d=pcm.slice(apos,apos+len);
+        var ad=new AudioData({format:"f32-planar",sampleRate:SR,numberOfFrames:len,numberOfChannels:1,timestamp:Math.round(apos/SR*1e6),data:d});
+        aenc.encode(ad);ad.close();apos+=len}}
+    for(var n=0;n<N;n++){
+      if(fail)throw fail;
+      frameAt(n/fps);
+      var vf=new VideoFrame(cv,{timestamp:Math.round(n*1e6/fps),duration:Math.round(1e6/fps)});
+      venc.encode(vf,{keyFrame:n%(fps*2)===0});vf.close();
+      feed(Math.floor((n+1)/fps*SR));
+      while(venc.encodeQueueSize>5)await sleep(4);
+      if(n%8===0){msg("Export ho raha hai: "+Math.floor(n/N*100)+"% ("+cv.width+"x"+cv.height+", "+Math.round(TOTAL)+" sec ka video)");await sleep(0)}
+    }
+    feed(pcm?pcm.length:0);
+    await venc.flush();if(aenc)await aenc.flush();
+    if(fail)throw fail;
+    mux.finalize();
+    var blob=new Blob([mux.target.buffer],{type:"video/mp4"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="firebase-setup-"+cv.width+"x"+cv.height+".mp4";
+    a.textContent="Video download karo ("+(blob.size/1048576).toFixed(1)+" MB, MP4, "+Math.round(TOTAL)+" sec)";dl.appendChild(a);a.click();
+    msg("Export ho gaya"+(acfg?" (awaaz ke saath).":ev.length?". Is device par audio encode nahi hua, video bina awaaz ke bana.":" (bina awaaz).")+" Download na shuru ho to neeche button dabao.");
+  }catch(e){msg("Export fail: "+(e&&e.message?e.message:e)+". 1080p ya 30 FPS try karo.")}
+  finally{if(wl)try{wl.release()}catch(e){}busy=false;ex.disabled=pv.disabled=false;setRes(1080);buildPlan();frameAt(2.5)}
+}
+
+/* ===== NH API: Android app (HTML2Video) in functions ko bulati hai. Inhe mat badlo ===== */
+window.NH={
+  lang:"hi-IN",
+  narration:function(){return JSON.stringify(S.map(function(s){return{a:s.a||"",b:s.b||""}}))},
+  setDurations:function(j){DUR=JSON.parse(j);buildPlan();var ev=[];
+    PLAN.forEach(function(p){["a","b"].forEach(function(k){if(S[p.i][k]&&DUR[p.i]&&DUR[p.i][k]>0)ev.push({key:p.i+k,at:p.start+(k==="a"?0.3:p.tc)})})});
+    return JSON.stringify({total:TOTAL,events:ev})},
+  run:async function(fps){
+    try{buildPlan();setRes(1080);var N=Math.ceil(TOTAL*fps);
+      for(var n=0;n<N;n++){frameAt(n/fps);
+        if(Android.pushFrame(cv.toDataURL("image/jpeg",0.95))===false){Android.fail("Cancel ho gaya");return}
+        if(n%20===0){Android.progress(n,N);await sleep(0)}}
+      Android.progress(N,N);Android.done()}
+    catch(e){Android.fail(String(e&&e.message?e.message:e))}}
+};
+ex.onclick=exportMP4;
+buildPlan();setRes(1080);frameAt(2.5);
+</script>
+</body>
+</html>

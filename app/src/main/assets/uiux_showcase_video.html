@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UI/UX Name Explorer - Complete Features Showcase Video</title>
+<style>
+:root{--bg:#060913;--ink:#F1F5FF;--mut:#94A6C8;--card:#10172A;--ac:#38BDF8;box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+.w{max-width:940px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:4px 0;background:linear-gradient(90deg,#38BDF8,#818CF8,#F472B6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p{margin:4px 0 12px;color:var(--mut);font-size:13px}
+canvas{width:100%;height:auto;aspect-ratio:16/9;display:block;border-radius:12px;background:#000;border:1px solid #1E2B48;box-shadow:0 12px 36px rgba(0,0,0,.6)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+button,select{font:inherit;padding:9px 13px;border-radius:9px;border:1px solid #263558;background:var(--card);color:var(--ink);cursor:pointer}
+button:hover,select:hover{border-color:var(--ac)}
+#st{font-size:13px;color:var(--mut);min-height:20px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>UI/UX Name Explorer: Complete Features Video (HTML2Video Ready)</h1>
+<p>16:9, 1920x1080 Full HD showcase (10 scenes). Awaaz HTML2Video app ki Hindi AI voice se banti hai. Browser preview mein live animation, Hindi voiceover, subtitles, aur WebAudio Sound Effects (typing, popup, slide, tap, click, whoosh — No Music) chalta hai, aur "SFX track (WAV)" button se audio download hota hai.</p>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div class="ctl">
+  <button id="pv">▶ Preview chalao</button>
+  <select id="scSel" aria-label="Jump to scene">
+    <option value="0">Scene 1: Intro & Hook</option>
+    <option value="1">Scene 2: 2 Animated Loading Screens & Home</option>
+    <option value="2">Scene 3: 100+ UI/UX Library & Search</option>
+    <option value="3">Scene 4: Style Detail, Palette & AI Prompt</option>
+    <option value="4">Scene 5: Screen Designer & Live Themes</option>
+    <option value="5">Scene 6: Touch Resize & Gallery Photo Upload</option>
+    <option value="6">Scene 7: Nav Icons, Colors & Size Presets</option>
+    <option value="7">Scene 8: Smart Lock, Explain Box & Preview</option>
+    <option value="8">Scene 9: Auto Prompt & Live AI Refinement</option>
+    <option value="9">Scene 10: 4K PNG Export, NH License Key & Outro</option>
+  </select>
+  <label style="font-size:13px"><input type="checkbox" id="cap" checked> Subtitle</label>
+  <label style="font-size:13px"><input type="checkbox" id="vo" checked> Voice (sirf browser preview)</label>
+  <label style="font-size:13px"><input type="checkbox" id="sf" checked> SFX Only (No Music)</label>
+  <button id="dl">⬇ SFX track (WAV)</button>
+</div>
+<div id="st"></div>
+</div>
+<script>
+/* ===================== SCRIPT (Hinglish voice-over — User Features Only) ===================== */
+var SC=[
+  {"min": 18, "vo": "Hello dosto! Welcome back to our channel. Kya aapke saath bhi aisa hota hai ki aapke dimaag mein ekdum next-level app ya website ka UI design chal raha hai, par jab aap ChatGPT, Claude, ya kisi AI tool ko prompt dene baithte ho, toh aapko us design style ka exact naam hi yaad nahi aata? Toh aaj main aapko dikhane wala hoon UI UX Name Explorer application! Is app mein aapko milte hain 100 se zyada UI UX Design Styles, Live Interactive Screen Designer, Gallery Photo Upload, aur 4K Ultra HD PNG Export! Chaliye shuru karte hain!"},
+  {"min": 20, "vo": "Sabse pehle jaise hi aap UI UX Name Explorer open karte hain, aapko milta hai 2-stage next-level animated loading experience. Pehle loading screen par live community user counter glowing radar rings aur particles ke saath animate hota hai. Aur doosre loading screen par isometric Glassmorphism, Bento Grid, aur Neumorphism cards live morph hote hain. App open hote hi aapke saamne aata hai Midnight Obsidian Dark UI Home Dashboard, jahan se aap Popular Styles, Trending Styles, aur 10 design categories explore kar sakte hain."},
+  {"min": 18, "vo": "Ab chalte hain Library tab mein. Yahan aapko 100 se zyada professional UI UX design styles aur patterns milte hain. Chahe aapko Glassmorphism chahiye, Neumorphism, Bento Grid, Claymorphism, Cyberpunk, ya Material You, bas search bar mein keyword type karein aur real-time mein results filter ho jayenge. Aap Relevance, A to Z, Popular, aur Trending sort filters ke saath apna favorite design style turant dhundh sakte hain."},
+  {"min": 20, "vo": "Jab aap kisi bhi design style par tap karte hain, toh sabse upar aapko us style ka Live Interactive Preview dekhne ko milta hai. Neeche aapko milte hain uske Alternative Names, Keywords, aur exact Color Palette Hex Codes jinko aap ek tap mein copy kar sakte hain. Sabse khaas baat, har style ke andar ek Ready-to-Use AI Prompt milta hai, jise copy karke aap seedha ChatGPT, Claude, ya Cursor mein paste kar sakte hain."},
+  {"min": 22, "vo": "Ab aate hain is app ke sabse powerful feature par, Interactive Mobile Screen Designer! Yahan aap upar Frame icon se Dynamic Island, Punch-Hole, ya Notch phone frame select kar sakte hain. Style button par tap karke apni poori screen ko ek click mein 100 se zyada UI themes mein badal sakte hain. Aur neeche Add bar se Top Bar, Bottom Navigation, Hero Image, Cards, Buttons, Chips, Search Input, Charts, Lists, aur Floating Action Button add kar sakte hain."},
+  {"min": 20, "vo": "Screen Designer mein aap do ungliyon se Pinch-to-Zoom kar sakte hain, aur kisi bhi element ko ungli se drag, 8-point resize, ya rotate kar sakte hain. Agar aap apne UI design mein mobile gallery se real photo lagana chahte hain, toh bas Image element select karein aur Upload Photo from Gallery par tap karein. Photo select hote hi aapke UI card mein set ho jayegi, jise aap Crop Fill ya Full Image Fit mode mein adjust kar sakte hain."},
+  {"min": 20, "vo": "Iske alawa aap Bottom Navigation aur Top Bar ke har ek tab icon ko customize kar sakte hain, aur 2 se 5 navigation tabs rakh sakte hain. Color tab mein jaakar kisi bhi element ka custom color badal sakte hain. Aur Size panel mein aapko Chhota, Bada, Slim, Medium, Large, aur Full Width ke ready-made presets milte hain, saath hi 1 pixel fine position nudge buttons bhi diye gaye hain."},
+  {"min": 20, "vo": "Design karte waqt koi element galti se apni jagah se hil na jaye, iske liye aapko milta hai Smart Lock feature. Aap kisi single element ko ya poore screen layout ko ek tap mein Lock kar sakte hain. Explain Layout button par tap karke aap seedha phone screen ke upar Explain Text Callout Box add kar sakte hain, aur poori screen ka auto-generated Layout Breakdown copy kar sakte hain. Aur Preview Mode mein switch karke full-screen clean design check kar sakte hain."},
+  {"min": 20, "vo": "Ab baat karte hain AI Prompt Generator ki! Top bar mein Prompt icon par tap karte hi yeh app aapke banaye huye har element, exact position, color palette, aur layout note ko padh kar ek complete technical UI prompt taiyaar kar deta hai. Aur AI Settings mein aap apni Google Gemini, OpenAI, Claude, OpenRouter, ya Groq API key connect karke live AI se apne UI prompt ko aur bhi refine karwa sakte hain."},
+  {"min": 24, "vo": "Apne complete UI design ko image mein save karne ke liye Download PNG icon par tap karein. Yahan aap With Phone Frame ya Screen Only select karke seedha 1440 by 3120 pixels, yaani 4x Ultra-HD Lossless PNG apne phone ki Gallery mein save ya share kar sakte hain. Aur agar aapko Without Watermark clean PNG chahiye, toh isi page par License Key Without Watermark section diya gaya hai. Aap Contact Admin on Telegram par tap karke apni NH License Key le sakte hain aur Apply Key karte hi watermark turant hat jayega! Toh dosto, agar aapko UI UX Name Explorer pasand aaya, toh video ko Like karein, channel ko Subscribe karein, aur comment mein apna favorite UI style zaroor batayein. Milte hain next video mein, Jai Hind!"}
+];
+var S=SC; /* HTML2Video Android app isi naam ko dhundhta hai */
+
+/* ===================== core drawing helpers ===================== */
+var cv=document.getElementById("cv"),c=cv.getContext("2d"),W=1920,H=1080,CX=960;
+var SF='system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',MO='ui-monospace,Consolas,Menlo,monospace';
+var VI="#818CF8",CYN="#38BDF8",PNK="#F472B6",GRN="#34D399",AMB="#FBBF24",RED="#F87171",CARD="#10172A",CARD2="#172038",STK="#263558",TXT="#F1F5FF",SUB="#94A6C8";
+var cl=function(v,a,b){return v<a?a:v>b?b:v};
+var E=function(t){t=cl(t,0,1);return 1-Math.pow(1-t,3)};
+var BK=function(t){t=cl(t,0,1);return 1+2.7*Math.pow(t-1,3)+1.7*Math.pow(t-1,2)};
+var seg=function(t,a,b){return cl((t-a)/(b-a),0,1)};
+var A=function(q,a,d){return E((q-a)/(d||.04))};
+var hs=function(n){var x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+function rr(x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function tx(s,x,y,size,col,al,wt,a,sp,font){c.save();c.globalAlpha*=(a==null?1:a);c.font=(wt||400)+" "+size+"px "+(font||SF);c.fillStyle=col;c.textAlign=al||"left";c.textBaseline="middle";
+  if(sp){try{c.letterSpacing=sp+"px"}catch(e){}}c.fillText(s,x,y);c.restore()}
+function glow(col,b){c.shadowColor=col;c.shadowBlur=b}
+function noglow(){c.shadowColor="transparent";c.shadowBlur=0}
+function gradH(x,w,c1,c2){var g=c.createLinearGradient(x,0,x+w,0);g.addColorStop(0,c1||CYN);g.addColorStop(1,c2||VI);return g}
+function gradDiag(x,y,w,h,c1,c2,c3){var g=c.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,c1||"#38BDF8");g.addColorStop(.5,c2||"#818CF8");g.addColorStop(1,c3||"#F472B6");return g}
+
+/* ===================== timeline ===================== */
+var DUR=null,PLAN=[],TOTAL=0;
+function est(i){return Math.max(3,SC[i].vo.length*0.075)}
+function vdur(i){return DUR&&DUR[i]&&DUR[i].a>0?DUR[i].a:est(i)}
+function buildPlan(){PLAN=[];var T0=0;
+  SC.forEach(function(s,i){var vd=vdur(i),len=Math.max(s.min,vd+1.7);if(i===SC.length-1)len=Math.max(s.min,0.5+vd+3.0);
+    PLAN.push({i:i,start:T0,len:len,vd:vd,vs:0.5});T0+=len});
+  TOTAL=T0}
+window.__missing=[];
+function fr(i,word){var s=SC[i].vo,k=s.indexOf(word);if(k<0){window.__missing.push(i+":"+word);return .5}return cl(k/s.length,0,1)}
+function F(i,w){return fr(i,w)}
+function tp(q,t0,d){d=d||.04;return q>=t0&&q<t0+d?(q-t0)/d:0}
+function floatY(T){return Math.sin(T*1.25)*6}
+
+/* ===================== backdrop & subtitles ===================== */
+function backdrop(T){
+  c.fillStyle="#060913";c.fillRect(0,0,W,H);
+  var g=c.createRadialGradient(CX,500,60,CX,500,1120);g.addColorStop(0,"rgba(56,189,248,.22)");g.addColorStop(.45,"rgba(99,102,241,.18)");g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  var g2=c.createRadialGradient(1520,220,20,1520,220,620);g2.addColorStop(0,"rgba(244,114,182,.15)");g2.addColorStop(1,"rgba(244,114,182,0)");c.fillStyle=g2;c.fillRect(0,0,W,H);
+  c.save();c.strokeStyle="rgba(56,189,248,.08)";c.lineWidth=1;var o=(T*14)%80;
+  for(var x=-80+o;x<W;x+=80){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke()}
+  for(var y=-80+o;y<H;y+=80){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}c.restore();
+  for(var k=0;k<56;k++){var sp=5+hs(k+3)*13,x=(hs(k)*W+T*sp+W*4)%W,y=(hs(k+40)*H-T*sp*.5+H*4)%H,r=.9+hs(k+80)*2.1,a=.12+.28*hs(k+120)*(.6+.4*Math.sin(T*.8+k));
+    c.fillStyle=k%3===0?"rgba(56,189,248,"+a+")":(k%3===1?"rgba(129,140,248,"+a+")":"rgba(244,114,182,"+a+")");c.beginPath();c.arc(x,y,r,0,7);c.fill()}
+}
+function wrapLines(s,mw,font){c.save();c.font=font;var w=s.split(" "),L=[],l="";w.forEach(function(k){var q=l?l+" "+k:k;if(c.measureText(q).width>mw&&l){L.push(l);l=k}else l=q});L.push(l);c.restore();return L}
+function caption(i,q){
+  if(!document.getElementById("cap").checked)return;
+  var s=SC[i];if(!s.sn){s.sn=(s.vo.match(/[^.!?]+[.!?]+(?:\s|$)/g)||[s.vo])}
+  var L=s.vo.length,pos=cl(q,0,.999)*L,acc=0,k=0;for(;k<s.sn.length-1;k++){if(pos<acc+s.sn[k].length)break;acc+=s.sn[k].length}
+  var a=cl((pos-acc)/5,0,1),txt=s.sn[k].trim(),fs=txt.length>150?31:35,f="600 "+fs+"px "+SF,lines=wrapLines(txt,1560,f),lh=fs+12,h=lines.length*lh+22,y0=1012-h;
+  c.save();c.globalAlpha=a;c.fillStyle="rgba(6,9,19,.82)";var wd=0;c.font=f;lines.forEach(function(l){wd=Math.max(wd,c.measureText(l).width)});
+  rr(CX-wd/2-30,y0,wd+60,h,18);c.fill();c.strokeStyle="rgba(56,189,248,.42)";c.lineWidth=1.5;c.stroke();
+  lines.forEach(function(l,j){tx(l,CX,y0+11+lh/2+j*lh,fs,"#fff","center",600)});c.restore()}
+
+/* ===================== UI/UX Name Explorer Brand Icon & Primitives ===================== */
+function uiuxAppIcon(x,y,s,a,T){
+  c.save();c.globalAlpha*=a;c.translate(x,y);c.scale(s,s);
+  var p=1+.025*Math.sin((T||0)*2.5);c.scale(p,p);
+  glow("rgba(56,189,248,.65)",54);
+  var g=c.createLinearGradient(-110,-110,110,110);g.addColorStop(0,"#0D152C");g.addColorStop(.5,"#161D3A");g.addColorStop(1,"#090D1C");
+  c.fillStyle=g;rr(-110,-110,220,220,52);c.fill();noglow();
+  c.strokeStyle=gradDiag(-110,-110,220,220,"#38BDF8","#818CF8","#F472B6");c.lineWidth=4;rr(-110,-110,220,220,52);c.stroke();
+  /* Back Isometric Card (Rose-Pink) */
+  c.save();c.translate(18,-18);c.fillStyle=gradDiag(-56,-42,112,84,"#F472B6","#EC4899","#A855F7");rr(-56,-42,112,84,20);c.fill();c.restore();
+  /* Mid Isometric Card (Indigo-Violet) */
+  c.save();c.translate(-6,-4);c.fillStyle=gradDiag(-60,-44,120,88,"#6366F1","#818CF8","#38BDF8");rr(-60,-44,120,88,22);c.fill();c.strokeStyle="rgba(255,255,255,.4)";c.lineWidth=2;c.stroke();c.restore();
+  /* Front Glass Card with UI/UX + Sparkle */
+  c.save();c.translate(-16,16);c.fillStyle="rgba(16,23,42,.86)";rr(-64,-44,128,88,22);c.fill();
+  c.strokeStyle="#38BDF8";c.lineWidth=2.5;c.stroke();
+  tx("UI/UX",-8,-6,28,"#fff","center",900);
+  c.fillStyle="#38BDF8";rr(-44,18,52,8,4);c.fill();c.fillStyle="#F472B6";rr(14,18,28,8,4);c.fill();
+  c.restore();
+  /* Golden 4-Point AI Star */
+  c.save();c.translate(58,-54);c.fillStyle="#FBBF24";c.beginPath();
+  for(var k=0;k<8;k++){var ang=k*Math.PI/4,rad=k%2===0?22:8;c.lineTo(Math.cos(ang)*rad,Math.sin(ang)*rad)}c.closePath();c.fill();c.restore();
+  c.restore();
+}
+
+function ico(x,y,r,kind,col){c.save();c.translate(x,y);c.strokeStyle=col;c.fillStyle=col;c.lineWidth=r*.15;c.lineCap="round";c.lineJoin="round";
+  if(kind==="lock"){c.beginPath();c.arc(0,-r*.18,r*.28,Math.PI,0);c.stroke();rr(-r*.38,-r*.18,r*.76,r*.58,r*.1);c.fill()}
+  else if(kind==="check"){c.beginPath();c.moveTo(-r*.4,0);c.lineTo(-r*.1,r*.3);c.lineTo(r*.45,-r*.32);c.stroke()}
+  else if(kind==="down"){c.beginPath();c.moveTo(0,-r*.42);c.lineTo(0,r*.25);c.moveTo(-r*.28,0);c.lineTo(0,r*.28);c.lineTo(r*.28,0);c.moveTo(-r*.38,r*.45);c.lineTo(r*.38,r*.45);c.stroke()}
+  else if(kind==="search"){c.beginPath();c.arc(-r*.08,-r*.08,r*.28,0,7);c.stroke();c.beginPath();c.moveTo(r*.14,r*.14);c.lineTo(r*.38,r*.38);c.stroke()}
+  else if(kind==="spark"){c.beginPath();for(var k=0;k<8;k++){var a=k*Math.PI/4,rd=k%2===0?r*.48:r*.16;c.lineTo(Math.cos(a)*rd,Math.sin(a)*rd)}c.closePath();c.fill()}
+  else if(kind==="palette"){c.beginPath();c.arc(0,0,r*.42,0,7);c.stroke();[[-.16,-.14],[.14,-.14],[-.14,.16],[.16,.14]].forEach(function(p){c.beginPath();c.arc(p[0]*r,p[1]*r,r*.07,0,7);c.fill()})}
+  else if(kind==="photo"){rr(-r*.42,-r*.34,r*.84,r*.68,r*.1);c.stroke();c.beginPath();c.arc(-r*.16,-r*.1,r*.08,0,7);c.fill();c.beginPath();c.moveTo(-r*.36,r*.26);c.lineTo(-r*.06,-r*.04);c.lineTo(r*.12,r*.14);c.lineTo(r*.26,0);c.lineTo(r*.38,r*.26);c.stroke()}
+  else if(kind==="phone"){rr(-r*.3,-r*.5,r*.6,r,r*.1);c.stroke();c.fillRect(-r*.08,r*.34,r*.16,r*.05)}
+  else if(kind==="key"){c.beginPath();c.arc(-r*.16,0,r*.22,0,7);c.stroke();c.beginPath();c.moveTo(r*.06,0);c.lineTo(r*.44,0);c.moveTo(r*.28,0);c.lineTo(r*.28,r*.18);c.moveTo(r*.42,0);c.lineTo(r*.42,r*.18);c.stroke()}
+  else if(kind==="send"){c.beginPath();c.moveTo(-r*.42,-r*.04);c.lineTo(r*.42,-r*.36);c.lineTo(r*.1,r*.42);c.lineTo(-r*.06,r*.1);c.closePath();c.fill()}
+  c.restore()}
+
+function panel(x,y,w,h,a,col){c.save();c.globalAlpha*=a;glow("rgba(0,0,0,.55)",28);c.fillStyle="rgba(16,23,42,.94)";rr(x,y,w,h,24);c.fill();noglow();c.strokeStyle=col||"rgba(56,189,248,.48)";c.lineWidth=2;c.stroke();c.restore()}
+function sideCard(x,y,w,h,a,title,lines,col,icon){if(a<=0)return;c.save();c.translate((1-a)*(x<CX?-40:40),0);c.globalAlpha=a;
+  panel(x,y,w,h,1,col);if(icon)ico(x+48,y+52,48,icon,col||CYN);tx(title,x+(icon?86:28),y+46,29,"#fff","left",800);
+  lines.forEach(function(l,k){tx(l,x+28,y+102+k*38,23,k===0?"#E2E8F0":SUB,"left",k===0?700:500)});c.restore()}
+function cbBanner(x,y,w,h,a,col,icon,title,sub){if(a<=0)return;c.save();c.globalAlpha*=a;c.translate(0,(1-a)*18);panel(x,y,w,h,1,col);ico(x+54,y+h/2,50,icon,col);tx(title,x+104,y+h/2-(sub?17:0),28,"#fff","left",800);if(sub)tx(sub,x+104,y+h/2+22,22,"#CBD5F5","left",600);c.restore()}
+function osd(items,q){var cur=null;items.forEach(function(it){if(q>=it[0])cur=it});if(!cur)return;var a=A(q,cur[0],.03);c.save();c.globalAlpha=a;c.font="800 30px "+SF;var w=c.measureText(cur[1]).width+72;
+  glow("rgba(56,189,248,.5)",24);c.fillStyle="rgba(12,18,38,.94)";rr(CX-w/2,36,w,58,29);c.fill();noglow();c.strokeStyle=CYN;c.lineWidth=2;c.stroke();tx(cur[1],CX,66,30,"#fff","center",800);c.restore()}
+function tap(x,y,p){if(p<=0||p>=1)return;c.save();c.globalAlpha=1-p*.7;c.strokeStyle=CYN;c.lineWidth=3;c.beginPath();c.arc(x,y,10+p*38,0,7);c.stroke();
+  c.fillStyle="rgba(56,189,248,.55)";c.beginPath();c.arc(x,y,12*(1-p*.4),0,7);c.fill();c.restore()}
+function hlBox(x,y,w,h,a,T,r){if(a<=0)return;c.save();c.globalAlpha=a;glow(CYN,12+8*Math.sin(T*5));c.strokeStyle=CYN;c.lineWidth=2.8;rr(x-4,y-4,w+8,h+8,r||14);c.stroke();c.restore()}
+function btn(x,y,w,h,label,pri,pr,hl,T,col){c.save();var s=1-.05*(pr||0);c.translate(x+w/2,y+h/2);c.scale(s,s);c.translate(-w/2,-h/2);
+  if(hl){glow(CYN,10+10*(.5+.5*Math.sin((T||0)*5)))}
+  c.fillStyle=col||(pri?gradH(0,w,CYN,VI):CARD2);rr(0,0,w,h,Math.min(14,h*.34));c.fill();noglow();if(!pri&&!col){c.strokeStyle=hl?CYN:STK;c.lineWidth=hl?2.2:1.4;c.stroke()}
+  tx(label,w/2,h/2+1,Math.min(15,h*.38),"#fff","center",700);c.restore()}
+function seq(q,list){var k=0;for(var j=0;j<list.length;j++){if(q>=list[j][0])k=j}if(k>0){var a=A(q,list[k][0],.025);if(a<1){list[k-1][1]()}c.save();c.globalAlpha*=a;list[k][1]();c.restore()}else list[0][1]()}
+
+/* ===================== Phone Viewport (334 x 714) ===================== */
+var PW=364,PH=748,SI=15,SWD=PW-2*SI,SHT=PH-2*SI;
+function phone(cx,cy,s,rot,alpha,frameMode,screen){
+  c.save();c.globalAlpha=alpha;c.translate(cx,cy);c.rotate(rot);c.scale(s,s);
+  glow("rgba(56,189,248,.42)",56);
+  var g=c.createLinearGradient(-PW/2,0,PW/2,0);g.addColorStop(0,"#263354");g.addColorStop(.5,"#0E1426");g.addColorStop(1,"#1D2844");
+  c.fillStyle=g;rr(-PW/2,-PH/2,PW,PH,56);c.fill();noglow();
+  var g2=c.createLinearGradient(-PW/2,-PH/2,PW/2,PH/2);g2.addColorStop(0,"rgba(56,189,248,.9)");g2.addColorStop(.5,"rgba(129,140,248,.4)");g2.addColorStop(1,"rgba(244,114,182,.75)");
+  c.strokeStyle=g2;c.lineWidth=3.2;rr(-PW/2,-PH/2,PW,PH,56);c.stroke();
+  c.fillStyle="#000";rr(-PW/2+SI-2,-PH/2+SI-2,SWD+4,SHT+4,44);c.fill();
+  c.save();c.translate(-SWD/2,-SHT/2);rr(0,0,SWD,SHT,42);c.clip();
+  var bg=c.createLinearGradient(0,0,0,SHT);bg.addColorStop(0,"#090E1C");bg.addColorStop(1,"#050811");c.fillStyle=bg;c.fillRect(0,0,SWD,SHT);
+  screen();
+  /* Phone cutout overlay */
+  if(frameMode==="island"||frameMode==null){c.fillStyle="#000";rr(SWD/2-48,10,96,24,12);c.fill()}
+  else if(frameMode==="punch"){c.fillStyle="#000";c.beginPath();c.arc(SWD/2,20,9,0,7);c.fill()}
+  else if(frameMode==="notch"){c.fillStyle="#000";rr(SWD/2-64,0,128,26,12);c.fill()}
+  c.restore();c.restore();
+}
+function sbar(){tx("9:41",28,22,13,"#F1F5FF","left",700);c.save();c.strokeStyle="#F1F5FF";c.lineWidth=1.4;rr(SWD-54,16,22,11,3);c.stroke();c.fillStyle="#38BDF8";c.fillRect(SWD-52,18,16,7);c.restore()}
+function hdr(t,sub){sbar();tx(t,20,66,20,TXT,"left",800);if(sub)tx(sub,20,88,11.5,SUB)}
+function bottomNavBar(selIdx){
+  var y=SHT-58;c.fillStyle="rgba(16,23,42,.96)";rr(12,y,SWD-24,46,23);c.fill();c.strokeStyle=STK;c.lineWidth=1.2;c.stroke();
+  var tabs=["Home","Library","Designer","Saved","Settings"];
+  tabs.forEach(function(lb,k){var x=12+(SWD-24)*(k+.5)/5,on=k===selIdx;
+    if(on){c.fillStyle="rgba(56,189,248,.18)";rr(x-28,y+6,56,34,17);c.fill()}
+    tx(lb,x,y+24,10.5,on?CYN:SUB,"center",on?800:600);
+  });
+}
+
+/* ===================== App Specific Phone Screens ===================== */
+/* 1. Loading Screen 1 (Community Counter) & Loading Screen 2 (UI/UX Morph) */
+function loadingScr1(T,p){
+  var g=c.createLinearGradient(0,0,SWD,SHT);g.addColorStop(0,"#050814");g.addColorStop(.5,"#0D1630");g.addColorStop(1,"#080C1C");c.fillStyle=g;c.fillRect(0,0,SWD,SHT);sbar();
+  var cx=SWD/2,cy=260;
+  for(var r=1;r<=3;r++){c.save();c.translate(cx,cy);c.rotate(T*(r%2?1:-1)*.8);c.strokeStyle=r===1?"rgba(56,189,248,.55)":(r===2?"rgba(129,140,248,.4)":"rgba(244,114,182,.3)");c.lineWidth=2;c.setLineDash([18,12]);c.beginPath();c.arc(0,0,42+r*28,0,7);c.stroke();c.restore()}
+  c.save();glow(CYN,26);c.fillStyle="rgba(16,23,42,.9)";c.beginPath();c.arc(cx,cy,56,0,7);c.fill();noglow();c.strokeStyle=CYN;c.lineWidth=2.5;c.stroke();
+  var cnt=Math.floor(120+1128*E(p));
+  tx(cnt+"+",cx,cy-6,26,"#fff","center",900);tx("DESIGNERS",cx,cy+18,9.5,CYN,"center",800,1,1.5);c.restore();
+  tx("LIVE COMMUNITY",cx,420,12,PNK,"center",800,1,2);
+  tx("UI/UX Name Explorer",cx,448,21,"#fff","center",900);
+  tx("Syncing live styles & design studio...",cx,476,11.5,SUB,"center",500);
+  c.fillStyle="#172038";rr(42,520,SWD-84,8,4);c.fill();c.fillStyle=gradH(42,SWD-84,CYN,PNK);rr(42,520,(SWD-84)*cl(p,0.08,1),8,4);c.fill();
+  tx("STAGE 1 / 2  •  COMMUNITY PULSE",cx,552,10,SUB,"center",700,1,1);
+}
+
+function loadingScr2(T,p){
+  var g=c.createLinearGradient(0,0,SWD,SHT);g.addColorStop(0,"#090D20");g.addColorStop(.5,"#18123C");g.addColorStop(1,"#08182C");c.fillStyle=g;c.fillRect(0,0,SWD,SHT);sbar();
+  tx("STAGE 2 / 2  •  UI/UX STUDIO",SWD/2,76,10.5,CYN,"center",800,1,1.5);
+  /* Morphing floating UI cards */
+  var cards=[["Glassmorphism","#38BDF8","#818CF8",120],["Bento Grid","#F472B6","#818CF8",230],["Neumorphism","#34D399","#38BDF8",340]];
+  cards.forEach(function(cd,k){
+    var off=Math.sin(T*2+k*1.4)*8,y=cd[3]+off;
+    c.save();glow(cd[1],16);c.fillStyle="rgba(23,32,56,.88)";rr(28+k*6,y,SWD-56-k*12,92,20);c.fill();noglow();
+    c.strokeStyle=cd[1];c.lineWidth=1.8;c.stroke();
+    c.fillStyle=gradDiag(42,y+16,56,56,cd[1],cd[2],cd[1]);rr(42,y+18,56,56,14);c.fill();
+    tx(cd[0],114,y+34,16,"#fff","left",800);
+    tx("Live Compose Preview + AI Prompt",114,y+58,11,SUB,"left",500);
+    c.restore();
+  });
+  tx("Preparing 100+ UI Styles & Designer...",SWD/2,492,12,"#fff","center",700);
+  c.fillStyle="#172038";rr(42,520,SWD-84,8,4);c.fill();c.fillStyle=gradH(42,SWD-84,PNK,CYN);rr(42,520,(SWD-84)*cl(p,0.1,1),8,4);c.fill();
+}
+
+/* 2. Home Dashboard Screen */
+function homeAppScr(T,o){
+  hdr("UI/UX Explorer","100+ Design Styles & Live Studio");
+  /* Hero Designer Banner */
+  c.save();glow("rgba(56,189,248,.35)",18);c.fillStyle=gradDiag(16,106,SWD-32,102,"#1E293B","#312E81","#0F172A");rr(16,106,SWD-32,102,18);c.fill();noglow();
+  c.strokeStyle=CYN;c.lineWidth=1.5;c.stroke();
+  tx("INTERACTIVE STUDIO",30,128,10,CYN,"left",800,1,1.2);
+  tx("Mobile Screen Designer",30,150,16,"#fff","left",800);
+  tx("Drag, resize, gallery photo & 4K PNG",30,170,11,SUB,"left",500);
+  btn(30,180,118,22,"Open Designer",true,0,o.hlDes>0,T);c.restore();
+  /* Category Pills */
+  tx("10 Design Categories",20,228,13,"#fff","left",800);
+  var cats=["Visual Styles","Layouts","Navigation","Buttons","Cards & Grids"];
+  var cx=16;cats.slice(0,3).forEach(function(ct,k){var w=96;c.fillStyle=k===0?gradH(cx,w,CYN,VI):CARD;rr(cx,242,w,26,13);c.fill();tx(ct,cx+w/2,255,10.5,"#fff","center",700);cx+=w+8});
+  if(o.hlCat>0)hlBox(16,240,SWD-32,30,o.hlCat,T,14);
+  /* Popular & Trending Cards */
+  tx("Popular & Trending Styles",20,290,13,"#fff","left",800);
+  var styles=[["Glassmorphism","Visual Styles","#38BDF8","#818CF8","Popular"],["Bento Grid","Layout Patterns","#F472B6","#818CF8","Trending"],["Neumorphism","Soft 3D UI","#34D399","#38BDF8","Popular"],["Cyberpunk Neon","Dark Futuristic","#FBBF24","#EC4899","Trending"]];
+  styles.forEach(function(st,k){
+    var y=308+k*78;c.fillStyle=CARD;rr(16,y,SWD-32,70,15);c.fill();c.strokeStyle=STK;c.lineWidth=1.2;c.stroke();
+    c.fillStyle=gradDiag(26,y+11,48,48,st[2],st[3],st[2]);rr(26,y+11,48,48,12);c.fill();
+    tx(st[0],86,y+26,14,"#fff","left",800);tx(st[1],86,y+46,11,SUB,"left",500);
+    c.fillStyle="rgba(56,189,248,.16)";rr(SWD-92,y+22,64,22,11);c.fill();tx(st[4],SWD-60,y+33,10,CYN,"center",700);
+  });
+  if(o.hlPop>0)hlBox(16,308,SWD-32,150,o.hlPop,T,16);
+  bottomNavBar(0);
+}
+
+/* 3. Library Search & Filter Screen */
+function libraryAppScr(T,o){
+  hdr("UI/UX Library","Search 100+ styles, aliases & prompts");
+  /* Search bar */
+  c.fillStyle=CARD;rr(16,104,SWD-32,42,14);c.fill();c.strokeStyle=o.typ>0?CYN:STK;c.lineWidth=o.typ>0?2:1.2;c.stroke();
+  ico(36,125,22,"search",CYN);
+  var qStr="Glassmorphism",typed=qStr.slice(0,Math.floor((o.typ||0)*qStr.length));
+  tx(typed?typed+((o.typ<1&&Math.floor(T*2)%2===0)?"|":""):"Search Glass, Bento, Clay, Neon...",54,125,12.5,typed?"#fff":SUB,"left",600);
+  /* Sort chips */
+  var sorts=["Relevance","A–Z","Popular","Trending"];
+  sorts.forEach(function(sr,k){var x=16+k*76,on=k===(o.sortIdx||0);c.fillStyle=on?gradH(x,70,CYN,VI):CARD2;rr(x,156,70,24,12);c.fill();tx(sr,x+35,168,10,"#fff","center",700)});
+  if(o.hlSort>0)hlBox(14,154,SWD-28,28,o.hlSort,T,12);
+  /* Filtered style cards */
+  var list=[
+    ["Glassmorphism","Frosted glass • Background blur","#38BDF8","#818CF8"],
+    ["Bento Grid UI","Modular apple-style dashboard","#F472B6","#6366F1"],
+    ["Claymorphism","Soft 3D inflated pastel cards","#34D399","#38BDF8"],
+    ["Cyberpunk HUD","High-contrast neon sci-fi UI","#FBBF24","#EC4899"],
+    ["Material You (M3)","Dynamic color expressive tokens","#818CF8","#38BDF8"]
+  ];
+  list.forEach(function(it,k){
+    var y=192+k*84,on=k===0&&o.hlFirst>0;
+    c.fillStyle=on?"rgba(56,189,248,.16)":CARD;rr(16,y,SWD-32,74,16);c.fill();c.strokeStyle=on?CYN:STK;c.lineWidth=on?2.2:1.2;c.stroke();
+    c.fillStyle=gradDiag(26,y+11,52,52,it[2],it[3],it[2]);rr(26,y+11,52,52,14);c.fill();
+    tx(it[0],90,y+27,14,"#fff","left",800);tx(it[1],90,y+48,11,SUB,"left",500);
+  });
+  if(o.hlFirst>0)hlBox(16,192,SWD-32,74,o.hlFirst,T,16);
+  tap(SWD/2,228,o.tapCard||0);
+  bottomNavBar(1);
+}
+
+/* 4. Style Detail Screen (Live Preview + Palette + AI Prompt) */
+function detailAppScr(T,o){
+  hdr("Glassmorphism","Visual Styles • Popular");
+  /* Live Interactive Compose Preview Card */
+  c.save();
+  var g=c.createLinearGradient(16,102,SWD-16,242);g.addColorStop(0,"#1E1B4B");g.addColorStop(.5,"#0284C7");g.addColorStop(1,"#701A75");
+  c.fillStyle=g;rr(16,102,SWD-32,138,18);c.fill();
+  c.fillStyle="rgba(244,114,182,.55)";c.beginPath();c.arc(70+Math.sin(T*2)*12,150,28,0,7);c.fill();
+  c.fillStyle="rgba(56,189,248,.55)";c.beginPath();c.arc(240+Math.cos(T*2)*12,196,32,0,7);c.fill();
+  c.fillStyle="rgba(255,255,255,.18)";rr(34,120,SWD-68,102,16);c.fill();
+  c.strokeStyle="rgba(255,255,255,.55)";c.lineWidth=1.5;c.stroke();
+  tx("LIVE INTERACTIVE PREVIEW",50,142,9.5,CYN,"left",800,1,1.2);
+  tx("Frosted Glass Card",50,164,15,"#fff","left",800);
+  tx("Translucent surface + vivid blur",50,186,11,"rgba(255,255,255,.8)","left",500);
+  c.restore();
+  if(o.hlPrev>0)hlBox(16,102,SWD-32,138,o.hlPrev,T,18);
+
+  /* Aliases & Keywords */
+  tx("Also Known As (Aliases)",20,260,12,"#fff","left",800);
+  ["Frosted Glass","Blur UI","Acrylic Surface"].forEach(function(al,k){var x=16+k*102;c.fillStyle=CARD2;rr(x,274,96,24,12);c.fill();tx(al,x+48,286,10,CYN,"center",700)});
+
+  /* Color Palette Swatches */
+  tx("Color Palette (Tap to Copy Hex)",20,318,12,"#fff","left",800);
+  var sw=[["#38BDF8","#38BDF8"],["#818CF8","#818CF8"],["#F472B6","#F472B6"],["#0F172A","#0F172A"]];
+  sw.forEach(function(s,k){var x=16+k*76;c.fillStyle=CARD;rr(x,332,70,46,12);c.fill();c.strokeStyle=STK;c.lineWidth=1;c.stroke();
+    c.fillStyle=s[1];rr(x+8,338,54,18,6);c.fill();tx(s[0],x+35,367,9.5,"#fff","center",700,1,0,MO)});
+  if(o.hlPal>0)hlBox(16,332,SWD-32,46,o.hlPal,T,12);
+  tap(52,355,o.tapHex||0);
+
+  /* Ready-to-Use AI Prompt Card */
+  c.fillStyle=CARD;rr(16,392,SWD-32,164,16);c.fill();c.strokeStyle=o.hlPr>0?CYN:STK;c.lineWidth=o.hlPr>0?2.2:1.2;c.stroke();
+  ico(34,414,20,"spark",AMB);tx("Ready-to-Use AI Prompt",52,414,13,"#fff","left",800);
+  tx("Design a modern mobile UI using",28,440,11,SUB,"left",500,1,0,MO);
+  tx("Glassmorphism with frosted translucent",28,458,11,SUB,"left",500,1,0,MO);
+  tx("cards (backdrop-filter blur 20px),",28,476,11,SUB,"left",500,1,0,MO);
+  tx("1px luminous border & #38BDF8 glow.",28,494,11,SUB,"left",500,1,0,MO);
+  btn(28,512,SWD-56,34,o.copied>0?"✓ AI Prompt Copied!":"Copy AI Prompt",true,o.pr||0,o.hlPr>0,T);
+  tap(SWD/2,529,o.tapPr||0);
+  bottomNavBar(1);
+}
+
+/* 5. Interactive Screen Designer (Themes, Frames, Elements, Gallery Photo, Inspector, Lock, Explain) */
+function designerAppScr(T,o){
+  sbar();
+  /* Slim Top Designer Toolbar */
+  c.fillStyle=CARD;rr(10,36,SWD-20,34,12);c.fill();
+  tx(o.scrName||"Movie Hub UI",22,53,12,"#fff","left",800);
+  var tools=["Frame","Style","Lock","Note","Prompt","PNG"];
+  tools.forEach(function(tl,k){
+    var x=118+k*34,on=(o.hlTool===k);
+    c.fillStyle=on?CYN:CARD2;rr(x,41,30,24,7);c.fill();
+    tx(tl.slice(0,4),x+15,53,8.5,on?"#050814":"#fff","center",800);
+  });
+
+  /* Center Mini Phone Viewport inside Designer */
+  var vx=42,vy=80,vw=SWD-84,vh=380;
+  var thIdx=o.themeIdx||0;
+  var thBg=thIdx===1?["#090418","#2E0854","#052E36"]:(thIdx===2?["#0F172A","#1E293B","#0F172A"]:["#161E3C","#311B61","#0B3B54"]);
+  var thAcc=thIdx===1?"#FBBF24":(thIdx===2?"#F472B6":"#38BDF8");
+  c.save();
+  glow(thAcc,22);
+  c.fillStyle="#050811";rr(vx-6,vy-6,vw+12,vh+12,32);c.fill();noglow();
+  c.strokeStyle=thAcc;c.lineWidth=2.4;rr(vx-6,vy-6,vw+12,vh+12,32);c.stroke();
+  c.save();rr(vx,vy,vw,vh,26);c.clip();
+  var bg=c.createLinearGradient(vx,vy,vx+vw,vy+vh);bg.addColorStop(0,thBg[0]);bg.addColorStop(.5,thBg[1]);bg.addColorStop(1,thBg[2]);
+  c.fillStyle=bg;c.fillRect(vx,vy,vw,vh);
+
+  /* Frame style cutout inside viewport */
+  var fm=o.frameStyle||"island";
+  if(fm==="island"){c.fillStyle="#000";rr(vx+vw/2-30,vy+6,60,14,7);c.fill()}
+  else if(fm==="punch"){c.fillStyle="#000";c.beginPath();c.arc(vx+vw/2,vy+12,6,0,7);c.fill()}
+  else if(fm==="notch"){c.fillStyle="#000";rr(vx+vw/2-42,vy,84,16,8);c.fill()}
+
+  /* Canvas Elements inside Phone Viewport */
+  var nEl=o.numEl==null?5:o.numEl;
+  /* 1. Top Bar */
+  if(nEl>=1){
+    c.fillStyle="rgba(255,255,255,.12)";rr(vx+10,vy+26,vw-20,32,10);c.fill();
+    tx("Discover Movies",vx+22,vy+42,11,"#fff","left",800);
+    ico(vx+vw-26,vy+42,14,"search",thAcc);
+  }
+  /* 2. Hero Image Element (Supports Gallery Photo Upload!) */
+  if(nEl>=2){
+    var imgH=o.slimPreset?82:108;
+    var ix=vx+12+(o.nudgeX||0),iy=vy+66;
+    c.save();rr(ix,iy,vw-24,imgH,14);c.clip();
+    if(o.hasGalleryPhoto){
+      /* Rich Sunset Cyber Mountain Gallery Photo simulation */
+      var pg=c.createLinearGradient(ix,iy,ix+vw-24,iy+imgH);
+      pg.addColorStop(0,"#F43F5E");pg.addColorStop(.45,"#8B5CF6");pg.addColorStop(1,"#0EA5E9");
+      c.fillStyle=pg;c.fillRect(ix,iy,vw-24,imgH);
+      c.fillStyle="#FBBF24";c.beginPath();c.arc(ix+vw-68,iy+32,18,0,7);c.fill();
+      c.fillStyle="rgba(15,23,42,.75)";c.beginPath();c.moveTo(ix,iy+imgH);c.lineTo(ix+65,iy+44);c.lineTo(ix+140,iy+imgH);c.closePath();c.fill();
+      c.beginPath();c.moveTo(ix+95,iy+imgH);c.lineTo(ix+175,iy+36);c.lineTo(ix+vw-24,iy+imgH);c.closePath();c.fill();
+      tx(o.fitMode?"GALLERY PHOTO (FIT)":"GALLERY PHOTO (CROP FILL)",ix+12,iy+imgH-14,9,"#fff","left",800);
+    }else{
+      c.fillStyle="rgba(56,189,248,.16)";c.fillRect(ix,iy,vw-24,imgH);
+      ico(ix+(vw-24)/2,iy+imgH/2-8,28,"photo",thAcc);
+      tx("Hero Image / Gallery Photo",ix+(vw-24)/2,iy+imgH/2+18,10,"#fff","center",700);
+    }
+    c.restore();
+    /* 8-point Selection & Resize Handles when selected */
+    if(o.selEl==="image"&&!o.previewMode){
+      c.strokeStyle=o.locked?"#FBBF24":CYN;c.lineWidth=2;rr(ix,iy,vw-24,imgH,14);c.stroke();
+      [[ix,iy],[ix+(vw-24)/2,iy],[ix+vw-24,iy],[ix,iy+imgH/2],[ix+vw-24,iy+imgH/2],[ix,iy+imgH],[ix+(vw-24)/2,iy+imgH],[ix+vw-24,iy+imgH]].forEach(function(pt){
+        c.fillStyle="#fff";c.strokeStyle=CYN;c.lineWidth=2;c.beginPath();c.arc(pt[0],pt[1],4.5,0,7);c.fill();c.stroke();
+      });
+    }
+  }
+  /* 3. Feature Card */
+  if(nEl>=3){
+    var cy2=vy+(o.slimPreset?156:182);
+    c.fillStyle="rgba(255,255,255,.12)";rr(vx+12,cy2,vw-24,62,14);c.fill();
+    c.strokeStyle="rgba(255,255,255,.25)";c.lineWidth=1;c.stroke();
+    tx("Trending Bento Card",vx+24,cy2+22,11.5,"#fff","left",800);
+    tx("4.9 ★  •  Ultra HD Stream",vx+24,cy2+42,10,SUB,"left",600);
+  }
+  /* 4. Primary Button (Custom color & size preset support) */
+  if(nEl>=4){
+    var by2=vy+(o.slimPreset?226:252),bh2=o.slimPreset?28:36;
+    var btnCol=o.customColor||thAcc;
+    c.fillStyle=btnCol;rr(vx+12,by2,vw-24,bh2,12);c.fill();
+    tx("Watch Trailer Now",vx+vw/2,by2+bh2/2,11,"#050814","center",900);
+    if(o.selEl==="button"&&!o.previewMode){
+      c.strokeStyle="#fff";c.lineWidth=2;rr(vx+10,by2-2,vw-20,bh2+4,14);c.stroke();
+    }
+  }
+  /* 5. Explain Text Callout Box on Screen */
+  if(o.showExplainBox){
+    var ey=vy+294;
+    c.save();c.fillStyle="rgba(251,191,36,.16)";rr(vx+12,ey,vw-24,36,10);c.fill();
+    c.strokeStyle="#FBBF24";c.lineWidth=1.5;c.setLineDash([6,4]);c.stroke();c.setLineDash([]);
+    tx("ⓘ Note: 3-Column Bento Grid + Glass Header",vx+22,ey+18,9.5,"#FDE68A","left",700);
+    c.restore();
+  }
+  /* 6. Bottom Navigation Bar inside Viewport (Customizable 2-5 Tabs) */
+  if(nEl>=5){
+    var ny=vy+vh-42,nTabs=o.navTabs||4;
+    c.fillStyle="rgba(10,14,28,.9)";rr(vx+10,ny,vw-20,34,17);c.fill();
+    c.strokeStyle=thAcc;c.lineWidth=1.2;c.stroke();
+    var navLabels=["Home","Movies","Saved","Profile","VIP"].slice(0,nTabs);
+    navLabels.forEach(function(nl,k){
+      var nx=vx+10+(vw-20)*(k+.5)/nTabs;
+      tx(nl,nx,ny+17,9,k===0?thAcc:"#fff","center",k===0?800:500);
+    });
+    if(o.selEl==="nav"&&!o.previewMode){
+      c.strokeStyle=CYN;c.lineWidth=2;rr(vx+8,ny-2,vw-16,38,18);c.stroke();
+    }
+  }
+  /* Center Snap Guidelines */
+  if(o.showGuides&&!o.previewMode){
+    c.save();c.strokeStyle="rgba(56,189,248,.75)";c.lineWidth=1.2;c.setLineDash([5,5]);
+    c.beginPath();c.moveTo(vx+vw/2,vy);c.lineTo(vx+vw/2,vy+vh);c.moveTo(vx,vy+vh/2);c.lineTo(vx+vw,vy+vh/2);c.stroke();c.restore();
+  }
+  c.restore();c.restore();
+
+  /* Bottom Inspector Panel or Element Add Bar */
+  var py=472;
+  if(o.previewMode){
+    c.fillStyle="rgba(52,211,153,.16)";rr(14,py,SWD-28,66,16);c.fill();c.strokeStyle=GRN;c.lineWidth=1.5;c.stroke();
+    tx("✓ FULL-SCREEN PREVIEW MODE ACTIVE",SWD/2,py+24,11.5,GRN,"center",800);
+    tx("Editing handles hidden • Clean interactive mockup",SWD/2,py+45,10.5,"#fff","center",500);
+  } else if(o.panelMode==="gallery"){
+    c.fillStyle=CARD;rr(12,py,SWD-24,114,16);c.fill();c.strokeStyle=CYN;c.lineWidth=1.5;c.stroke();
+    tx("IMAGE SOURCE  •  GALLERY PHOTO",24,py+20,10.5,CYN,"left",800);
+    btn(22,py+34,SWD-44,34,o.hasGalleryPhoto?"✓ Change Gallery Image":"Upload Photo from Gallery",true,o.pr||0,true,T);
+    ["Crop (Fill Box)","Fit (Full Image)"].forEach(function(md,k){
+      var x=22+k*142,on=(k===1)===Boolean(o.fitMode);
+      c.fillStyle=on?gradH(x,134,CYN,VI):CARD2;rr(x,py+76,134,26,13);c.fill();tx(md,x+67,py+89,10,"#fff","center",700);
+    });
+  } else if(o.panelMode==="inspector"){
+    c.fillStyle=CARD;rr(12,py,SWD-24,114,16);c.fill();c.strokeStyle=VI;c.lineWidth=1.5;c.stroke();
+    var mTabs=["Nav Icons","Color","Size (Chhota/Bada)","Position"];
+    mTabs.forEach(function(mt,k){var x=18+k*75,on=k===(o.subTab||0);c.fillStyle=on?CYN:CARD2;rr(x,py+10,71,22,11);c.fill();tx(mt.slice(0,9),x+35,py+21,8.5,on?"#050814":"#fff","center",800)});
+    if((o.subTab||0)===0){
+      tx("Bottom Nav Tabs (2–5): "+(o.navTabs||4)+" Tabs",24,py+50,11,"#fff","left",700);
+      ["- Tab","+ Tab","Swap Icon"].forEach(function(b,k){var x=22+k*94;c.fillStyle=CARD2;rr(x,py+68,86,30,10);c.fill();c.strokeStyle=CYN;c.lineWidth=1;c.stroke();tx(b,x+43,py+83,10,"#fff","center",700)});
+    } else if(o.subTab===1){
+      tx("Custom Element Color Swatches:",24,py+50,11,"#fff","left",700);
+      ["#38BDF8","#F472B6","#34D399","#FBBF24","#A855F7","#FFFFFF"].forEach(function(col,k){
+        var x=26+k*46;c.fillStyle=col;c.beginPath();c.arc(x+14,py+82,14,0,7);c.fill();
+        if(o.customColor===col){c.strokeStyle="#fff";c.lineWidth=2.5;c.stroke()}
+      });
+    } else {
+      tx("Quick Size Presets & 1dp Fine Nudge:",24,py+48,10.5,"#fff","left",700);
+      ["Chhota (-)","Bada (+)","Slim","Full Width","←1","→1"].forEach(function(pr,k){
+        var x=18+k*49;c.fillStyle=k===2&&o.slimPreset?CYN:CARD2;rr(x,py+66,45,30,8);c.fill();
+        tx(pr,x+22,py+81,8.5,k===2&&o.slimPreset?"#050814":"#fff","center",700);
+      });
+    }
+  } else if(o.panelMode==="lock"){
+    c.fillStyle="rgba(251,191,36,.15)";rr(12,py,SWD-24,108,16);c.fill();c.strokeStyle="#FBBF24";c.lineWidth=1.8;c.stroke();
+    ico(38,py+34,26,"lock","#FBBF24");
+    tx("🔒 SMART LOCK PROTECTION ACTIVE",62,py+28,11.5,"#FDE68A","left",800);
+    tx("Position, size & rotation protected from touch.",62,py+48,10,"#fff","left",500);
+    btn(22,py+66,SWD-44,30,"Add Explain Text Callout Box",true,0,o.showExplainBox,T);
+  } else {
+    c.fillStyle=CARD;rr(12,py,SWD-24,108,16);c.fill();c.strokeStyle=STK;c.lineWidth=1.2;c.stroke();
+    tx("+ ADD UI COMPONENTS TO SCREEN",24,py+20,10,CYN,"left",800,1,1);
+    var els=["+ Top Bar","+ Hero Image","+ Bento Card","+ Button","+ Bottom Nav","+ Chart"];
+    els.forEach(function(el,k){
+      var x=18+(k%3)*100,y=py+34+Math.floor(k/3)*34;
+      c.fillStyle=CARD2;rr(x,y,94,28,9);c.fill();c.strokeStyle=STK;c.lineWidth=1;c.stroke();
+      tx(el,x+47,y+14,9.5,"#fff","center",700);
+    });
+  }
+  bottomNavBar(2);
+}
+
+/* 6. Auto-Prompt Sheet & AI Refinement Screen */
+function promptAiAppScr(T,o){
+  hdr(o.aiTab?"AI Settings & Live Model":"Generated UI Prompt",o.aiTab?"Connect Gemini, OpenAI, Claude, Groq":"Coordinate-accurate technical specification");
+  if(!o.aiTab){
+    c.fillStyle=CARD;rr(16,104,SWD-32,330,16);c.fill();c.strokeStyle=CYN;c.lineWidth=1.5;c.stroke();
+    tx("AUTO-GENERATED TECHNICAL UI PROMPT",28,126,10,CYN,"left",800,1,1);
+    var pLines=[
+      "Screen: \"Movie Hub UI\" (360x780 dp)",
+      "Style: Glassmorphism (#38BDF8, #818CF8)",
+      "Layout hierarchy (top to bottom):",
+      "1. Top app bar \"Discover Movies\" (full width)",
+      "2. Hero Image (custom gallery photo, crop fill)",
+      "3. Feature Card \"Trending Bento Card\"",
+      "4. Primary CTA Button \"Watch Trailer Now\"",
+      "5. Explain Callout: \"3-Column Bento Grid\"",
+      "6. Bottom Nav (4 custom tabs: Home, Movies...)"
+    ];
+    pLines.forEach(function(ln,k){
+      tx(ln,26,154+k*26,10.5,k<2?"#fff":"#CBD5F5","left",k<2?700:500,1,0,MO);
+    });
+    btn(24,386,136,36,"Copy Prompt",true,0,true,T);
+    btn(170,386,140,36,"Refine with AI ✨",false,0,o.hlRef>0,T);
+    c.fillStyle="rgba(56,189,248,.14)";rr(16,448,SWD-32,120,16);c.fill();c.strokeStyle=CYN;c.lineWidth=1.2;c.stroke();
+    tx("WORKS 100% READY FOR:",28,472,10.5,CYN,"left",800);
+    tx("ChatGPT  •  Claude  •  Google Gemini  •  Cursor  •  v0",28,498,11.5,"#fff","left",700);
+    tx("Includes exact coordinates, hex colors & layout notes",28,524,10.5,SUB,"left",500);
+  } else {
+    tx("Select AI Provider",20,114,12,"#fff","left",800);
+    var provs=["Google Gemini","OpenAI GPT","Claude","Groq Fast","OpenRouter"];
+    provs.forEach(function(pv,k){
+      var x=16+(k%3)*102,y=128+Math.floor(k/3)*32,on=k===0;
+      c.fillStyle=on?gradH(x,96,CYN,VI):CARD;rr(x,y,96,26,13);c.fill();
+      tx(pv,x+48,y+13,9.5,"#fff","center",700);
+    });
+    c.fillStyle=CARD;rr(16,204,SWD-32,360,16);c.fill();c.strokeStyle=GRN;c.lineWidth=1.6;c.stroke();
+    ico(34,228,22,"spark",GRN);tx("LIVE AI REFINED SPECIFICATION",54,228,11,GRN,"left",800);
+    var rLines=[
+      "✓ Gemini 1.5 Pro  •  420 ms",
+      "• Backdrop blur: 24dp with 18% white alpha",
+      "• Card border: 1dp linear gradient (#38BDF8)",
+      "• Hero aspect ratio: 16:9 rounded 18dp",
+      "• Typography: Inter Bold 20sp headers",
+      "• Micro-interaction: spring scale 0.96x on tap"
+    ];
+    rLines.forEach(function(rl,k){
+      tx(rl,28,260+k*32,11,k===0?CYN:"#fff","left",k===0?800:500);
+    });
+    btn(28,468,SWD-56,38,"✓ Copy Refined AI Prompt",true,0,true,T);
+  }
+  bottomNavBar(2);
+}
+
+/* 7. Save Complete UI as High-Quality PNG Dialog (With NH... License Key & Telegram Link) */
+function exportPngAppScr(T,o){
+  designerAppScr(T,{themeIdx:0,hasGalleryPhoto:true,numEl:5});
+  c.fillStyle="rgba(4,7,16,.78)";c.fillRect(0,0,SWD,SHT);
+  var dx=14,dy=68,dw=SWD-28,dh=584;
+  c.fillStyle="#10172A";rr(dx,dy,dw,dh,24);c.fill();c.strokeStyle=o.licActive?GRN:CYN;c.lineWidth=2;c.stroke();
+  tx("Save Complete UI as High-Quality PNG",SWD/2,dy+28,14,"#fff","center",800);
+
+  /* Mini phone preview inside Export Dialog */
+  var px=SWD/2-46,py=dy+46,pw=92,ph=176;
+  c.save();c.fillStyle="#050814";rr(px-3,py-3,pw+6,ph+6,16);c.fill();c.strokeStyle=CYN;c.lineWidth=1.5;c.stroke();
+  var g=c.createLinearGradient(px,py,px+pw,py+ph);g.addColorStop(0,"#1E1B4B");g.addColorStop(1,"#0284C7");c.fillStyle=g;rr(px,py,pw,ph,13);c.fill();
+  c.fillStyle="#F43F5E";rr(px+8,py+22,pw-16,46,7);c.fill();
+  c.fillStyle="rgba(255,255,255,.2)";rr(px+8,py+76,pw-16,32,7);c.fill();
+  c.fillStyle=CYN;rr(px+8,py+116,pw-16,18,6);c.fill();
+  /* Tiled micro-watermark shown ONLY when license is NOT active */
+  if(!o.licActive){
+    c.save();c.translate(px+pw/2,py+ph/2);c.rotate(-.3);
+    for(var r=-2;r<=2;r++){tx("UI/UX Explorer • NH",0,r*26,6.5,"rgba(255,255,255,.36)","center",700)}
+    c.restore();
+  }
+  c.restore();
+
+  tx("Ultra-HD Resolution: 1440 × 3120 px (4x Lossless PNG)",SWD/2,dy+238,10,o.licActive?GRN:SUB,"center",700);
+  tx(o.licActive?"✓ License Key Active (NH-8F4K-29XM) • WITHOUT Watermark":"Includes transparent micro-watermark • Saves to Gallery",SWD/2,dy+254,9.5,o.licActive?GRN:SUB,"center",600);
+
+  /* Frame chips */
+  ["With Phone Frame","Screen Only"].forEach(function(ch,k){
+    var x=dx+24+k*134,on=k===0;
+    c.fillStyle=on?gradH(x,124,CYN,VI):CARD2;rr(x,dy+270,124,26,13);c.fill();
+    tx(ch,x+62,dy+283,10,"#fff","center",700);
+  });
+
+  /* License Key (Without Watermark) Card */
+  var ly=dy+308;
+  c.fillStyle="rgba(23,32,56,.9)";rr(dx+12,ly,dw-24,186,16);c.fill();
+  c.strokeStyle=o.licActive?GRN:CYN;c.lineWidth=1.6;c.stroke();
+  ico(dx+30,ly+22,18,o.licActive?"check":"key",o.licActive?GRN:CYN);
+  tx(o.licActive?"License Active (Without Watermark)":"License Key (Without Watermark)",dx+46,ly+22,11.5,o.licActive?GRN:"#fff","left",800);
+
+  /* NH... Key Input + Apply Key Button */
+  c.fillStyle="#090D1A";rr(dx+22,ly+42,dw-128,36,10);c.fill();c.strokeStyle=o.keyTyped>0?CYN:STK;c.lineWidth=1.4;c.stroke();
+  var kStr="NH-8F4K-29XM",kShown=kStr.slice(0,Math.floor((o.keyTyped||0)*kStr.length));
+  tx(kShown?kShown:"Enter NH... License Key",dx+32,ly+60,11,kShown?"#fff":SUB,"left",700,1,0,MO);
+  btn(dx+dw-98,ly+42,76,36,o.licActive?"Active ✓":"Apply Key",true,o.prKey||0,o.hlApply>0,T,o.licActive?GRN:null);
+  tap(dx+dw-60,ly+60,o.tapApply||0);
+
+  if(o.licActive){
+    tx("✓ Watermark Removed from PNG & Prompts!",dx+24,ly+96,10.5,GRN,"left",700);
+  } else {
+    tx("First 2 letters start with NH... (Realtime Verified)",dx+24,ly+96,10,SUB,"left",500);
+  }
+
+  /* Click to Contact Admin on Telegram Button */
+  c.fillStyle="rgba(56,189,248,.16)";rr(dx+22,ly+116,dw-44,54,12);c.fill();
+  c.strokeStyle=o.hlTg>0?CYN:"rgba(56,189,248,.45)";c.lineWidth=o.hlTg>0?2.2:1.2;c.stroke();
+  ico(dx+42,ly+143,22,"send",CYN);
+  tx("Get License Key • Contact Admin on Telegram",dx+62,ly+136,10.5,CYN,"left",800);
+  tx("Tap to open Telegram Channel for NH... Key",dx+62,ly+154,9.5,SUB,"left",500);
+  tap(SWD/2,ly+143,o.tapTg||0);
+
+  /* Bottom Share / Save to Gallery Buttons */
+  btn(dx+14,dy+dh-62,130,42,"Share PNG",false,0,false,T);
+  btn(dx+152,dy+dh-62,140,42,o.saved>0?"✓ Saved to Gallery":"Save to Gallery",true,o.prSave||0,o.hlSave>0,T);
+  tap(dx+222,dy+dh-41,o.tapSave||0);
+}
+
+/* ===================== WebAudio Synth SFX + Music Bed ===================== */
+var AC=null,MG=null;
+function mkNoise(ctx){var n=ctx.sampleRate*2,b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0),s=1234567;for(var i=0;i<n;i++){s=(s*1664525+1013904223)>>>0;d[i]=(s/4294967296)*2-1}return b}
+function envG(g,t,a,d,pk){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(pk,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+a+d)}
+function tone(x,type,f,t,d,v,f2){var o=x.ctx.createOscillator(),g=x.ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);envG(g,t,.006,d,v);o.connect(g);g.connect(x.out);o.start(t);o.stop(t+d+.05)}
+function nz(x,t,d,v,ft,fq,q,off){var n=x.ctx.createBufferSource();n.buffer=x.noise;var f=x.ctx.createBiquadFilter();f.type=ft;f.frequency.value=fq;f.Q.value=q||.7;var g=x.ctx.createGain();envG(g,t,.003,d,v);n.connect(f);f.connect(g);g.connect(x.out);n.start(t,off||0,d+.05);return f}
+var SFX={
+  whoosh:function(x,t,e){var d=e.d||1.1,n=x.ctx.createBufferSource();n.buffer=x.noise;var f=x.ctx.createBiquadFilter();f.type="bandpass";f.Q.value=1.1;f.frequency.setValueAtTime(260,t);f.frequency.exponentialRampToValueAtTime(3200,t+d*.65);f.frequency.exponentialRampToValueAtTime(500,t+d);var g=x.ctx.createGain();envG(g,t,d*.45,d*.55,.28);n.connect(f);f.connect(g);g.connect(x.out);n.start(t,0,d+.05)},
+  tick:function(x,t){nz(x,t,.03,.2,"highpass",2400+((t*977)%1)*1400,.7,(t*13)%1.5)},
+  click:function(x,t){nz(x,t,.025,.2,"highpass",2000,.7,(t*11)%1.5);tone(x,"sine",1500,t,.04,.1,900)},
+  tap:function(x,t){tone(x,"sine",280,t,.1,.28,130);nz(x,t,.02,.12,"highpass",2200,.7,(t*17)%1.5)},
+  type:function(x,t,e){var n=e.n||10,gp=e.gap||.075;for(var k=0;k<n;k++){nz(x,t+k*gp+((k*37)%5)*.006,.025,.17,"highpass",1700+((k*53)%7)*220,.8,(k*0.21+t)%1.5)}},
+  chime:function(x,t,e){var N=e.notes||[784,1175];N.forEach(function(f,k){tone(x,"sine",f,t+k*.1,0.9,.18);tone(x,"sine",f*2,t+k*.1,.5,.05)})},
+  success:function(x,t){[523,659,784,1047].forEach(function(f,k){tone(x,"triangle",f,t+k*.08,.5,.18);tone(x,"sine",f*2,t+k*.08,.35,.05)})},
+  notif:function(x,t){[988,1319].forEach(function(f,k){tone(x,"triangle",f,t+k*.11,.35,.18)})},
+  copy:function(x,t){tone(x,"sine",540,t,.07,.22,920);nz(x,t,.02,.12,"highpass",2400,.7,(t*9)%1.5)},
+  lock:function(x,t){tone(x,"square",190,t,.07,.14,120);tone(x,"sine",95,t,.18,.26,65);tone(x,"triangle",1320,t+.1,.45,.14)},
+  riser:function(x,t,e){var d=e.d||2.2,o=x.ctx.createOscillator(),f=x.ctx.createBiquadFilter(),g=x.ctx.createGain();o.type="sawtooth";o.frequency.setValueAtTime(75,t);o.frequency.exponentialRampToValueAtTime(680,t+d);f.type="lowpass";f.frequency.setValueAtTime(220,t);f.frequency.exponentialRampToValueAtTime(4800,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.15,t+d);g.gain.exponentialRampToValueAtTime(.0001,t+d+.12);o.connect(f);f.connect(g);g.connect(x.out);o.start(t);o.stop(t+d+.15);SFX.whoosh(x,t,{d:d})},
+  hit:function(x,t){tone(x,"sine",72,t,1.6,.5,34);nz(x,t,.45,.32,"lowpass",400,.7,0);[261,329,392,523].forEach(function(f){tone(x,"triangle",f,t+.05,2.0,.09)})}
+};
+function bedSched(x,t0,dur){var ch=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]],n=Math.ceil(dur/4);
+  for(var k=0;k<n;k++){var t=t0+k*4,c4=ch[k%4],fade=Math.min(1,Math.max(0,(dur-k*4)/3));c4.forEach(function(f,j){var o=x.ctx.createOscillator(),fl=x.ctx.createBiquadFilter(),g=x.ctx.createGain();o.type="triangle";o.frequency.value=f*(j===0?.5:1);o.detune.value=(j-1)*5;fl.type="lowpass";fl.frequency.value=920;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.034*fade,t+1.2);g.gain.setValueAtTime(.034*fade,t+2.8);g.gain.linearRampToValueAtTime(.0001,t+4.2);o.connect(fl);fl.connect(g);g.connect(x.out);o.start(t);o.stop(t+4.3)});
+    for(var a=0;a<4;a++){tone(x,"sine",c4[a%3]*2,t+a+.02,.8,.02*fade)}}}
+
+function sfxPlan(){
+  var E_=[],at=function(i,w,o){return PLAN[i].start+PLAN[i].vs+fr(i,w)*PLAN[i].vd+(o||0)},ev=function(t,k,o){var e=o||{};e.t=Math.max(0,t);e.k=k;E_.push(e)},S0=function(i,o){return PLAN[i].start+(o||0)};
+  /* Scene 0: Intro */
+  ev(S0(0,.1),"whoosh",{d:1.4});ev(S0(0,.7),"chime",{notes:[523,659,1047]});
+  ev(at(0,"UI UX Name Explorer application"),"success");
+  ev(at(0,"100 se zyada UI UX Design Styles"),"tap");
+  ev(at(0,"Live Interactive Screen Designer"),"click");
+  ev(at(0,"4K Ultra HD PNG Export"),"notif");
+  /* Scene 1: 2 Loading Screens & Home */
+  ev(S0(1,.2),"whoosh",{d:1.0});ev(at(1,"live community user counter"),"tick");
+  ev(at(1,"doosre loading screen"),"chime",{notes:[659,988]});
+  ev(at(1,"Midnight Obsidian Dark UI"),"success");
+  ev(at(1,"Popular Styles"),"tap");ev(at(1,"10 design categories"),"click");
+  /* Scene 2: Library & Search */
+  ev(at(2,"Library tab mein"),"tap");
+  ev(at(2,"search bar mein keyword"),"type",{n:12,gap:.07});
+  ev(at(2,"Relevance, A to Z"),"click");ev(at(2,"favorite design style"),"success");
+  /* Scene 3: Detail Page & Prompt */
+  ev(at(3,"Live Interactive Preview"),"chime",{notes:[587,880]});
+  ev(at(3,"Color Palette Hex Codes"),"copy");
+  ev(at(3,"Ready-to-Use AI Prompt"),"notif");ev(at(3,"ChatGPT, Claude"),"success");
+  /* Scene 4: Screen Designer & Themes */
+  ev(at(4,"Interactive Mobile Screen Designer"),"whoosh",{d:1.1});
+  ev(at(4,"Dynamic Island, Punch-Hole"),"click");
+  ev(at(4,"100 se zyada UI themes"),"chime",{notes:[523,784,1047]});
+  ev(at(4,"Top Bar, Bottom Navigation"),"tap");ev(at(4,"Hero Image, Cards"),"tap");
+  /* Scene 5: Pinch Zoom & Gallery Photo Upload */
+  ev(at(5,"Pinch-to-Zoom"),"tick");ev(at(5,"8-point resize"),"click");
+  ev(at(5,"Upload Photo from Gallery"),"tap");ev(at(5,"Photo select hote hi"),"success");
+  ev(at(5,"Crop Fill ya Full Image Fit"),"click");
+  /* Scene 6: Nav Icons, Colors & Size Presets */
+  ev(at(6,"Bottom Navigation aur Top Bar"),"tap");ev(at(6,"2 se 5 navigation tabs"),"click");
+  ev(at(6,"custom color badal"),"notif");
+  ev(at(6,"Chhota, Bada, Slim"),"tap");ev(at(6,"1 pixel fine position"),"tick");
+  /* Scene 7: Smart Lock, Explain Box & Preview */
+  ev(at(7,"Smart Lock feature"),"lock");ev(at(7,"ek tap mein Lock"),"lock");
+  ev(at(7,"Explain Text Callout Box"),"notif");ev(at(7,"Layout Breakdown copy"),"copy");
+  ev(at(7,"Preview Mode mein switch"),"chime",{notes:[659,988,1319]});
+  /* Scene 8: Auto Prompt & Live AI */
+  ev(at(8,"AI Prompt Generator"),"tap");ev(at(8,"complete technical UI prompt"),"copy");
+  ev(at(8,"Google Gemini, OpenAI, Claude"),"click");ev(at(8,"refine karwa sakte"),"success");
+  /* Scene 9: 4K PNG Export, License Key & Outro */
+  ev(at(9,"Download PNG icon"),"tap");ev(at(9,"1440 by 3120 pixels"),"notif");
+  ev(at(9,"License Key Without Watermark"),"click");
+  ev(at(9,"Contact Admin on Telegram"),"tap");
+  ev(at(9,"Apply Key karte hi"),"success");
+  var lk=at(9,"Like karein",-.2);ev(lk-2.0,"riser",{d:2.0});ev(lk,"hit");
+  ev(at(9,"Subscribe karein"),"chime",{notes:[784,988,1319]});ev(at(9,"Jai Hind"),"success");
+  return E_;
+}
+
+function schedAll(x,t0){sfxPlan().forEach(function(e){var f=SFX[e.k];if(f)f(x,Math.max(0.001,t0+e.t),e)})}
+function sfxStart(offsetSec){try{if(!document.getElementById("sf").checked)return;var AC0=window.AudioContext||window.webkitAudioContext;if(!AC0)return;AC=new AC0();MG=AC.createGain();MG.gain.value=.9;MG.connect(AC.destination);schedAll({ctx:AC,out:MG,noise:mkNoise(AC)},AC.currentTime+.12-(offsetSec||0))}catch(e){}}
+function sfxStop(){try{if(MG)MG.gain.value=0;if(AC)AC.close()}catch(e){}AC=null;MG=null}
+function wavBlob(buf){var d=buf.getChannelData(0),n=d.length,sr=buf.sampleRate,ab=new ArrayBuffer(44+n*2),v=new DataView(ab),w=function(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVE");w(12,"fmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);
+  for(var i=0;i<n;i++){var s=Math.max(-1,Math.min(1,d[i]));v.setInt16(44+i*2,s<0?s*32768:s*32767,true)}return new Blob([ab],{type:"audio/wav"})}
+function renderSfx(){buildPlan();var sr=22050,OA=window.OfflineAudioContext||window.webkitOfflineAudioContext,ctx=new OA(1,Math.ceil(TOTAL*sr),sr);schedAll({ctx:ctx,out:ctx.destination,noise:mkNoise(ctx)},0);return ctx.startRendering()}
+
+/* ===================== Scene Renderer (0..9) ===================== */
+function sceneDraw(p,T,t){
+  var i=p.i,vd=p.vd,q=cl((t-p.vs)/vd,0,1.2),by=floatY(T),PX=CX,PY=475,PS=.94;
+  var P=function(fn,a,s,fm,x,y){phone(x==null?PX:x,(y==null?PY:y)+by,s||PS,0,a==null?1:a,fm||"island",fn)};
+
+  if(i===0){
+    var tApp=F(0,"UI UX Name Explorer application"),tSt=F(0,"100 se zyada UI UX Design Styles"),tDes=F(0,"Live Interactive Screen Designer"),tGal=F(0,"Gallery Photo Upload"),tPng=F(0,"4K Ultra HD PNG Export");
+    osd([[0,"UI/UX DESIGN STYLE KA EXACT NAAM & PROMPT?"],[tApp,"UI/UX NAME EXPLORER — COMPLETE DESIGN STUDIO"]],q);
+    P(function(){
+      designerAppScr(T,{themeIdx:q>tGal?1:0,hasGalleryPhoto:q>tGal,numEl:5,selEl:"image"});
+    },A(q,tApp-.02,.06));
+    sideCard(110,250,550,240,A(q,tSt,.04),"100+ UI/UX Styles",["Glassmorphism • Bento Grid","Neumorphism • Cyberpunk","Live Previews + AI Prompts"],CYN,"palette");
+    sideCard(1260,250,550,240,A(q,tDes,.04),"Live Screen Designer",["Touch Drag • 8-Point Resize","Gallery Photo Upload","1440×3120 (4K) PNG Export"],PNK,"phone");
+    cbBanner(260,760,1400,104,A(q,tPng,.04),GRN,"spark","All-in-One Mobile UI/UX Studio","Design screens with your fingers • Copy AI prompts • Export 4x Ultra-HD PNG");
+
+    var ov=1-A(q,tApp-.02,.06);
+    if(ov>.01){
+      c.save();c.globalAlpha=ov;c.fillStyle="#050812";c.fillRect(0,0,W,H);c.restore();
+      var la=A(q,.01,.06);
+      uiuxAppIcon(CX,430+(1-la)*25,1.45*(.85+.15*la),la*ov,T);
+      tx("UI/UX NAME EXPLORER",CX,650,70,"#fff","center",900,la*ov,5);
+      tx("100+ UI Styles  •  Interactive Screen Designer  •  AI Prompts  •  4K PNG",CX,724,30,CYN,"center",700,la*ov,1.5);
+    }
+  }
+  else if(i===1){
+    var tL1=F(1,"Pehle loading screen"),tL2=F(1,"doosre loading screen"),tHm=F(1,"Midnight Obsidian Dark UI"),tPop=F(1,"Popular Styles"),tCat=F(1,"10 design categories");
+    osd([[0,"STAGE 1: LIVE COMMUNITY COUNTER ANIMATION"],[tL2,"STAGE 2: ISOMETRIC UI/UX MORPH ANIMATION"],[tHm,"MIDNIGHT OBSIDIAN DARK UI DASHBOARD"]],q);
+    P(function(){
+      seq(q,[
+        [0,function(){loadingScr1(T,seg(q,0,tL2-.02))}],
+        [tL2-.01,function(){loadingScr2(T,seg(q,tL2,tHm-.02))}],
+        [tHm-.01,function(){homeAppScr(T,{hlDes:A(q,tHm+.02,.04),hlPop:A(q,tPop,.04),hlCat:A(q,tCat,.04)})}]
+      ]);
+    },1);
+    sideCard(110,260,550,250,A(q,tL1,.04)*(1-A(q,tHm-.02,.04)),"2-Stage Startup",["1. Live Designer Counter","2. Isometric UI Card Morph","60 FPS Smooth Canvas"],CYN,"spark");
+    sideCard(110,260,550,250,A(q,tHm,.04),"Midnight Obsidian UI",["Electric Sky & Indigo Accents","Slim & Scannable Cards","Zero Visual Clutter"],VI,"palette");
+    sideCard(1260,260,550,250,A(q,tPop,.04),"Explore Instantly",["Popular & Trending Styles","10 Curated UI Categories","1-Tap Designer Launch"],GRN,"check");
+  }
+  else if(i===2){
+    var tLib=F(2,"Library tab mein"),tGl=F(2,"Glassmorphism chahiye"),tSr=F(2,"search bar mein keyword"),tSo=F(2,"Relevance, A to Z");
+    osd([[0,"UI/UX LIBRARY: 100+ DESIGN STYLES & PATTERNS"],[tSr,"REAL-TIME INSTANT SEARCH"],[tSo,"SMART SORT & CATEGORY FILTERS"]],q);
+    P(function(){
+      libraryAppScr(T,{
+        typ:seg(q,tSr,tSo-.03),
+        hlSort:A(q,tSo-.01,.04),
+        sortIdx:q>tSo+.06?2:0,
+        hlFirst:A(q,tSo+.08,.04),
+        tapCard:tp(q,tSo+.12,.04)
+      });
+    },1);
+    sideCard(110,250,550,260,A(q,tGl,.04),"100+ UI Styles",["Glassmorphism • Neumorphism","Bento Grid • Claymorphism","Cyberpunk • Material You"],CYN,"search");
+    sideCard(1260,250,550,260,A(q,tSo,.04),"Instant Filtering",["Search by name, alias, keyword","Filter by 10 categories","Sort: Relevance, A–Z, Popular"],PNK,"spark");
+  }
+  else if(i===3){
+    var tPrv=F(3,"Live Interactive Preview"),tAl=F(3,"Alternative Names"),tHex=F(3,"Color Palette Hex Codes"),tAi=F(3,"Ready-to-Use AI Prompt"),tPst=F(3,"ChatGPT, Claude");
+    osd([[0,"STYLE DETAIL: LIVE INTERACTIVE COMPOSE PREVIEW"],[tHex,"EXACT COLOR PALETTE HEX CODES"],[tAi,"1-TAP READY-TO-USE AI PROMPT"]],q);
+    P(function(){
+      detailAppScr(T,{
+        hlPrev:A(q,tPrv-.02,.04)*(q<tHex?1:0),
+        hlPal:A(q,tHex-.02,.04)*(q<tAi?1:0),
+        tapHex:tp(q,tHex+.04,.04),
+        hlPr:A(q,tAi-.02,.04),
+        pr:tp(q,tPst-.02,.03)>0?1:0,
+        tapPr:tp(q,tPst-.02,.04),
+        copied:A(q,tPst,.03)
+      });
+    },1);
+    sideCard(110,250,550,250,A(q,tAl,.04),"Complete Breakdown",["Live Compose Preview at top","Aliases & search keywords","Tap any Hex swatch to copy"],CYN,"palette");
+    sideCard(1260,250,550,250,A(q,tAi,.04),"Ready-to-Use Prompt",["Pre-crafted technical prompt","Paste into ChatGPT, Claude,","Cursor, v0, or Midjourney"],AMB,"spark");
+  }
+  else if(i===4){
+    var tFr=F(4,"Dynamic Island, Punch-Hole"),tSt=F(4,"Style button par tap"),tAd=F(4,"Top Bar, Bottom Navigation"),tBt=F(4,"Hero Image, Cards");
+    osd([[0,"INTERACTIVE MOBILE SCREEN DESIGNER"],[tFr,"PHONE FRAMES: DYNAMIC ISLAND / PUNCH-HOLE / NOTCH"],[tSt,"100+ LIVE UI THEME SWITCHER"],[tAd,"ADD 12+ UI COMPONENT TYPES"]],q);
+    var fm=q<tFr+.04?"island":(q<tSt?"punch":"island");
+    var th=q<tSt?0:(q<tAd?1:2);
+    var nEl=q<tAd?2:(q<tBt?3:5);
+    P(function(){
+      designerAppScr(T,{
+        frameStyle:fm,
+        themeIdx:th,
+        numEl:nEl,
+        hlTool:q<tSt?0:(q<tAd?1:-1),
+        showGuides:q>tAd
+      });
+    },1,PS,fm);
+    sideCard(110,250,550,250,A(q,tFr,.04),"Realistic Frames",["Dynamic Island • Punch-Hole","Notch • Minimal • Frame-Free","100+ Live Style Themes"],CYN,"phone");
+    sideCard(1260,250,550,250,A(q,tAd,.04),"12+ UI Elements",["Top Bar • Bottom Nav • Cards","Hero Image • Buttons • Chips","Inputs • Lists • Charts • FAB"],PNK,"spark");
+  }
+  else if(i===5){
+    var tPz=F(5,"Pinch-to-Zoom"),tRs=F(5,"8-point resize"),tUp=F(5,"Upload Photo from Gallery"),tSt2=F(5,"Photo select hote hi"),tCr=F(5,"Crop Fill ya Full Image Fit");
+    osd([[0,"PINCH-TO-ZOOM & 8-POINT FINGER RESIZE"],[tUp,"UPLOAD REAL PHOTO FROM MOBILE GALLERY"],[tCr,"CROP (FILL BOX) OR FIT (FULL IMAGE)"]],q);
+    var zScale=PS*(1+.08*Math.sin(seg(q,tPz,tUp)*Math.PI));
+    P(function(){
+      designerAppScr(T,{
+        selEl:"image",
+        panelMode:q>=tUp-.03?"gallery":"add",
+        hasGalleryPhoto:q>=tSt2,
+        fitMode:q>=tCr+.04,
+        pr:tp(q,tUp+.04,.03)>0?1:0,
+        showGuides:q<tUp
+      });
+    },1,zScale);
+    sideCard(110,250,550,250,A(q,tRs,.04),"Touch & Resize",["2-Finger Pinch-to-Zoom","8 Corner & Side Handles","Center Snap Guidelines"],CYN,"phone");
+    sideCard(1260,250,550,250,A(q,tUp,.04),"Gallery Photo Upload",["Pick any image from phone","Auto-saves in high resolution","Toggle Crop Fill vs Full Fit"],GRN,"photo");
+  }
+  else if(i===6){
+    var tNv=F(6,"Bottom Navigation aur Top Bar"),tTb=F(6,"2 se 5 navigation tabs"),tCl=F(6,"Color tab mein jaakar"),tSz=F(6,"Chhota, Bada, Slim"),tNd=F(6,"1 pixel fine position");
+    osd([[0,"CUSTOMIZE BOTTOM NAV & TOP BAR ICONS (2–5 TABS)"],[tCl,"CUSTOM ELEMENT COLOR SWATCHES"],[tSz,"SIZE PRESETS: CHHOTA, BADA, SLIM & 1DP NUDGE"]],q);
+    var sub=q<tCl?0:(q<tSz?1:2);
+    P(function(){
+      designerAppScr(T,{
+        panelMode:"inspector",
+        subTab:sub,
+        selEl:sub===0?"nav":"button",
+        hasGalleryPhoto:true,
+        navTabs:q>tTb?5:4,
+        customColor:q>tCl+.03?"#F472B6":null,
+        slimPreset:q>tSz+.04,
+        nudgeX:q>tNd?6:0
+      });
+    },1);
+    sideCard(110,250,550,250,A(q,tNv,.04),"Custom Nav Icons",["Change every tab icon live","Add or remove tabs (2 to 5)","65+ searchable vector icons"],CYN,"spark");
+    sideCard(1260,250,550,250,A(q,tSz,.04),"Size & Precision",["Chhota (-) & Bada (+) scaling","Slim, Small, Medium, Full presets","1dp & 8dp fine nudge controls"],AMB,"palette");
+  }
+  else if(i===7){
+    var tLk=F(7,"Smart Lock feature"),tEx=F(7,"Explain Text Callout Box"),tBr=F(7,"Layout Breakdown copy"),tPv=F(7,"Preview Mode mein switch");
+    osd([[0,"SMART LOCK: PROTECT ELEMENTS & WHOLE LAYOUT"],[tEx,"ON-SCREEN EXPLAIN TEXT CALLOUT BOX"],[tPv,"FULL-SCREEN CLEAN PREVIEW MODE"]],q);
+    P(function(){
+      designerAppScr(T,{
+        panelMode:"lock",
+        selEl:"image",
+        hasGalleryPhoto:true,
+        locked:q>=tLk,
+        hlTool:q<tEx?2:(q<tPv?3:-1),
+        showExplainBox:q>=tEx,
+        previewMode:q>=tPv
+      });
+    },1);
+    sideCard(110,250,550,250,A(q,tLk,.04),"Smart Lock Guard",["Lock single element or layout","Prevents accidental touch move","Unlock anytime with 1 tap"],AMB,"lock");
+    sideCard(1260,250,550,250,A(q,tEx,.04),"Explain & Preview",["Add callout notes on canvas","Copy full Layout Breakdown","Distraction-free Preview Mode"],GRN,"check");
+  }
+  else if(i===8){
+    var tPr=F(8,"Prompt icon par tap"),tTc=F(8,"complete technical UI prompt"),tAi=F(8,"Google Gemini, OpenAI, Claude"),tRf=F(8,"refine karwa sakte");
+    osd([[0,"AUTO-GENERATED COORDINATE-ACCURATE UI PROMPT"],[tAi,"CONNECT GEMINI, OPENAI, CLAUDE, GROQ OR OPENROUTER"],[tRf,"LIVE AI PROMPT REFINEMENT"]],q);
+    P(function(){
+      promptAiAppScr(T,{
+        aiTab:q>=tAi,
+        hlRef:A(q,tAi-.05,.04)
+      });
+    },1);
+    sideCard(110,250,550,250,A(q,tTc,.04),"Auto Prompt Builder",["Reads every element & position","Includes style palette & notes","Works offline out-of-the-box"],CYN,"spark");
+    sideCard(1260,250,550,250,A(q,tAi,.04),"Multi-Provider Live AI",["Google Gemini • OpenAI GPT","Anthropic Claude • Groq • OpenRouter","Encrypted API key storage"],PNK,"check");
+  }
+  else {
+    var tDl=F(9,"Download PNG icon"),tPx=F(9,"1440 by 3120 pixels"),tLc=F(9,"License Key Without Watermark"),tTg=F(9,"Contact Admin on Telegram"),tAp=F(9,"Apply Key karte hi"),tLk2=F(9,"Like karein"),tSb=F(9,"Subscribe karein"),tJh=F(9,"Jai Hind");
+    osd([[0,"SAVE COMPLETE UI AS 4X ULTRA-HD PNG (1440 × 3120 PX)"],[tLc,"LICENSE KEY (WITHOUT WATERMARK) SECTION"],[tTg,"CONTACT ADMIN ON TELEGRAM FOR NH... KEY"],[tAp,"✓ WATERMARK REMOVED INSTANTLY"]],q);
+    var showOutro=A(q,tLk2-.03,.05);
+    P(function(){
+      exportPngAppScr(T,{
+        hlSave:A(q,tPx,.04)*(q<tLc?1:0),
+        keyTyped:seg(q,tLc+.02,tAp-.02),
+        hlTg:A(q,tTg-.01,.04)*(q<tAp?1:0),
+        tapTg:tp(q,tTg+.02,.04),
+        hlApply:A(q,tAp-.02,.03),
+        prKey:tp(q,tAp,.03)>0?1:0,
+        tapApply:tp(q,tAp,.04),
+        licActive:q>=tAp+.02,
+        prSave:tp(q,tAp+.08,.03)>0?1:0,
+        tapSave:tp(q,tAp+.08,.04),
+        saved:A(q,tAp+.09,.03)
+      });
+    },1-showOutro);
+    sideCard(110,250,550,260,A(q,tPx,.04)*(1-showOutro),"4x Ultra-HD PNG",["1440 × 3120 px Lossless PNG","With Phone Frame or Screen Only","Saves to Gallery & Shares"],CYN,"down");
+    sideCard(1260,250,550,260,A(q,tLc,.04)*(1-showOutro),"Without Watermark",["Enter NH... License Key","1-Tap Contact Admin on Telegram","Instant Watermark-Free Export"],GRN,"key");
+
+    if(showOutro>0){
+      c.save();c.globalAlpha=showOutro;c.fillStyle="rgba(6,9,19,.94)";c.fillRect(0,0,W,H);
+      uiuxAppIcon(CX,310,1.25,showOutro,T);
+      tx("UI/UX NAME EXPLORER",CX,510,84,"#fff","center",900,showOutro,5);
+      tx("100+ UI Styles  •  Mobile Screen Designer  •  AI Prompts  •  4K PNG",CX,592,34,CYN,"center",700,showOutro,1.5);
+      var subA=A(q,tSb-.03,.04);
+      c.save();c.globalAlpha=showOutro*subA;glow("#E11D48",28);c.fillStyle="#E11D48";rr(CX-210,648,420,68,34);c.fill();noglow();
+      tx("👍 LIKE  &  SUBSCRIBE 🔔",CX,682,30,"#fff","center",900,1,2);c.restore();
+      tx("Comment your favorite UI style: Glassmorphism or Bento Grid?",CX,766,30,"#E2E8F0","center",600,showOutro*subA);
+      var jhA=A(q,tJh-.01,.04);
+      tx("Jai Hind! 🇮🇳",CX,838,54,AMB,"center",900,showOutro*jhA,3);
+      c.restore();
+    }
+  }
+}
+
+/* ===================== Master Frame Renderer ===================== */
+function frameAt(T){
+  var p=PLAN[PLAN.length-1];for(var k=0;k<PLAN.length;k++){if(T<PLAN[k].start+PLAN[k].len){p=PLAN[k];break}}
+  var t=cl(T-p.start,0,p.len),q=cl((t-p.vs)/p.vd,0,1.2);
+  c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.setLineDash([]);c.lineDashOffset=0;noglow();c.clearRect(0,0,W,H);
+  backdrop(T);
+  var z=1+.045*(1-E(seg(t,0,1.3)));c.save();c.translate(CX,540);c.scale(z,z);c.translate(-CX,-540);sceneDraw(p,T,t);c.restore();
+  var v=c.createRadialGradient(CX,540,520,CX,540,1250);v.addColorStop(0,"rgba(0,0,0,0)");v.addColorStop(1,"rgba(0,0,0,.55)");c.fillStyle=v;c.fillRect(0,0,W,H);
+  if(p.i>0){tx("EditByNHboX",W-40,36,20,"rgba(180,195,235,.65)","right",600)}
+  caption(p.i,q);
+  var f=Math.min(seg(t,0,.45),1-seg(t,p.len-.45,p.len));
+  if(f<1){c.fillStyle="rgba(0,0,0,"+(1-f)+")";c.fillRect(0,0,W,H)}
+}
+
+/* ===================== Interactive Browser Preview & Controls ===================== */
+var $=function(x){return document.getElementById(x)},st=$("st"),pv=$("pv"),scSel=$("scSel"),msg=function(m){st.textContent=m};
+var raf=0,pvOn=false,lastScene=-1,startOffset=0;
+function say(i){try{if(!window.speechSynthesis||!$("vo").checked)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(SC[i].vo);u.lang="hi-IN";u.rate=.96;speechSynthesis.speak(u)}catch(e){}}
+function stopPv(){cancelAnimationFrame(raf);pvOn=false;sfxStop();pv.textContent="▶ Preview chalao";try{speechSynthesis.cancel()}catch(e){}}
+function startPvFrom(sceneIdx){
+  stopPv();DUR=null;buildPlan();
+  var idx=cl(sceneIdx||0,0,PLAN.length-1);
+  startOffset=PLAN[idx].start;
+  sfxStart(startOffset);
+  var t0=performance.now()+120;pvOn=true;lastScene=-1;pv.textContent="⏹ Stop preview";
+  msg("Scene "+(idx+1)+" se preview chal raha hai...");
+  (function loop(){
+    var T=startOffset+(performance.now()-t0)/1000;
+    if(T>=TOTAL){stopPv();msg("Preview khatam.");frameAt(2.2);return}
+    T=Math.max(0,T);var k=0;for(;k<PLAN.length-1;k++){if(T<PLAN[k].start+PLAN[k].len)break}
+    if(k!==lastScene&&T>=PLAN[k].start+PLAN[k].vs){lastScene=k;scSel.value=String(k);say(k)}
+    frameAt(T);raf=requestAnimationFrame(loop);
+  })();
+}
+pv.addEventListener("click",function(){if(pvOn){stopPv();return}startPvFrom(parseInt(scSel.value||"0",10))});
+scSel.addEventListener("change",function(){
+  var idx=parseInt(scSel.value||"0",10);
+  buildPlan();
+  if(pvOn){startPvFrom(idx)}else{frameAt(PLAN[idx].start+2.0);msg("Scene "+(idx+1)+" preview")}
+});
+
+/* ===== NH API: Android app (HTML2Video) in functions ko bulati hai. Inhe mat badlo ===== */
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+window.NH={
+  lang:"hi-IN",
+  narration:function(){return JSON.stringify(SC.map(function(s){return{a:s.vo,b:""}}))},
+  setDurations:function(j){DUR=JSON.parse(j);buildPlan();var ev=[];
+    PLAN.forEach(function(p){if(DUR[p.i]&&DUR[p.i].a>0)ev.push({key:p.i+"a",at:p.start+p.vs})});
+    return JSON.stringify({total:TOTAL,events:ev})},
+  run:async function(fps){
+    try{buildPlan();var N=Math.ceil(TOTAL*fps);
+      for(var n=0;n<N;n++){frameAt(n/fps);
+        if(Android.pushFrame(cv.toDataURL("image/jpeg",0.95))===false){Android.fail("Cancel ho gaya");return}
+        if(n%20===0){Android.progress(n,N);await sleep(0)}}
+      Android.progress(N,N);Android.done()}
+    catch(e){Android.fail(String(e&&e.message?e.message:e))}}
+};
+$("dl").addEventListener("click",function(){var b=$("dl");b.disabled=true;b.textContent="Rendering...";try{renderSfx().then(function(buf){var u=URL.createObjectURL(wavBlob(buf)),a=document.createElement("a");a.href=u;a.download="uiux_name_explorer_video_sfx.wav";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},4000);b.disabled=false;b.textContent="⬇ SFX track (WAV)"})}catch(e){b.disabled=false;b.textContent="SFX error"}});
+buildPlan();
+(function () {
+  /* HTML2Video v3.5: Universal Canvas & DOM SFX Extractor + Live Preview SFX Engine (No Background Music).
+     Works automatically with every HTML2Video showcase/tutorial HTML file. */
+  try {
+    if (window.__h2vSfxReady) return 'sfx-exists';
+    window.__h2vSfxReady = true;
+
+    /* 1. Completely disable any background music in the page */
+    window.bedSched = function () {};
+    window.musicStart = function () {};
+    try { window.musicOn = false; } catch (e0) {}
+    try {
+      var sfInput = document.getElementById('sf');
+      if (sfInput && sfInput.parentElement) {
+        var nodes = sfInput.parentElement.childNodes;
+        for (var ni = 0; ni < nodes.length; ni++) {
+          if (nodes[ni].nodeType === 3 && /music/i.test(nodes[ni].nodeValue)) {
+            nodes[ni].nodeValue = ' SFX (browser preview)';
+          }
+        }
+      }
+      var bm = document.getElementById('bMusic');
+      if (bm) bm.style.display = 'none';
+    } catch (e1) {}
+
+    /* 2. Complete WebAudio SFX Synthesizer (for Live Preview & WAV Download) */
+    function mkNoise(ctx) {
+      var n = ctx.sampleRate * 2, b = ctx.createBuffer(1, n, ctx.sampleRate), d = b.getChannelData(0), s = 1234567;
+      for (var i = 0; i < n; i++) { s = (s * 1664525 + 1013904223) >>> 0; d[i] = (s / 4294967296) * 2 - 1; }
+      return b;
+    }
+    function safeT(x, t) {
+      var minT = (x && x.ctx && typeof x.ctx.currentTime === 'number') ? x.ctx.currentTime : 0;
+      return Math.max(minT + 0.001, t || 0);
+    }
+    function envG(g, t, a, d, pk) {
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0002, pk), t + a);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+    }
+    function tone(x, type, f, t, d, v, f2) {
+      t = safeT(x, t);
+      var o = x.ctx.createOscillator(), g = x.ctx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(Math.max(20, f), t);
+      if (f2) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t + d);
+      envG(g, t, 0.005, d, v);
+      o.connect(g); g.connect(x.out);
+      o.start(t); o.stop(t + d + 0.04);
+    }
+    function nz(x, t, d, v, ft, fq, q, off) {
+      t = safeT(x, t);
+      var n = x.ctx.createBufferSource(); n.buffer = x.noise;
+      var f = x.ctx.createBiquadFilter(); f.type = ft; f.frequency.value = fq; f.Q.value = q || 0.7;
+      var g = x.ctx.createGain(); envG(g, t, 0.003, d, v);
+      n.connect(f); f.connect(g); g.connect(x.out);
+      n.start(t, Math.max(0, (off || 0) % 1.5), d + 0.04);
+      return f;
+    }
+
+    var FULL_SFX = {
+      whoosh: function (x, t, e) {
+        t = safeT(x, t);
+        var d = (e && e.d) ? e.d : 0.78, vol = (e && e.v) ? e.v * 0.32 : 0.30;
+        var n = x.ctx.createBufferSource(); n.buffer = x.noise;
+        var f = x.ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.1;
+        f.frequency.setValueAtTime(260, t);
+        f.frequency.exponentialRampToValueAtTime(3200, t + d * 0.6);
+        f.frequency.exponentialRampToValueAtTime(480, t + d);
+        var g = x.ctx.createGain(); envG(g, t, d * 0.42, d * 0.58, vol);
+        n.connect(f); f.connect(g); g.connect(x.out);
+        n.start(t, 0, d + 0.05);
+      },
+      slide: function (x, t) {
+        t = safeT(x, t);
+        var d = 0.18, n = x.ctx.createBufferSource(); n.buffer = x.noise;
+        var f = x.ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.3;
+        f.frequency.setValueAtTime(420, t);
+        f.frequency.exponentialRampToValueAtTime(2400, t + d * 0.55);
+        f.frequency.exponentialRampToValueAtTime(800, t + d);
+        var g = x.ctx.createGain(); envG(g, t, 0.03, d - 0.03, 0.24);
+        n.connect(f); f.connect(g); g.connect(x.out);
+        n.start(t, 0, d + 0.04);
+        tone(x, 'sine', 240, t, 0.11, 0.16, 480);
+      },
+      popup: function (x, t) {
+        t = safeT(x, t);
+        tone(x, 'sine', 340, t, 0.085, 0.26, 820);
+        tone(x, 'triangle', 680, t + 0.01, 0.065, 0.10, 1560);
+      },
+      pop: function (x, t) { FULL_SFX.popup(x, t); },
+      key: function (x, t) {
+        t = safeT(x, t);
+        var det = 1 + 0.11 * Math.sin(t * 43.7);
+        nz(x, t, 0.024, 0.22, 'highpass', 2200 * det, 0.85, (t * 17) % 1.4);
+        tone(x, 'triangle', 1300 * det, t, 0.026, 0.14, 460);
+      },
+      type: function (x, t, e) {
+        t = safeT(x, t);
+        var n = (e && e.n) ? e.n : 10, gp = (e && e.gap) ? e.gap : 0.072;
+        for (var k = 0; k < n; k++) {
+          FULL_SFX.key(x, t + k * gp + ((k * 37) % 5) * 0.004);
+        }
+      },
+      tap: function (x, t) {
+        t = safeT(x, t);
+        tone(x, 'sine', 320, t, 0.09, 0.30, 135);
+        nz(x, t, 0.02, 0.15, 'highpass', 2300, 0.7, (t * 19) % 1.4);
+      },
+      click: function (x, t) {
+        t = safeT(x, t);
+        nz(x, t, 0.022, 0.22, 'highpass', 2100, 0.7, (t * 11) % 1.4);
+        tone(x, 'sine', 1550, t, 0.042, 0.16, 820);
+      },
+      step: function (x, t) { FULL_SFX.click(x, t); },
+      tick: function (x, t) {
+        t = safeT(x, t);
+        nz(x, t, 0.025, 0.18, 'highpass', 2500, 0.7, (t * 13) % 1.4);
+        tone(x, 'sine', 2100, t, 0.03, 0.12, 1600);
+      },
+      chime: function (x, t, e) {
+        t = safeT(x, t);
+        var N = (e && Array.isArray(e.notes) && e.notes.length) ? e.notes : [523.25, 659.25, 1046.5];
+        N.forEach(function (f, k) {
+          tone(x, 'sine', f, t + k * 0.095, 0.75, 0.20);
+          tone(x, 'sine', f * 2, t + k * 0.095, 0.45, 0.06);
+        });
+      },
+      success: function (x, t) {
+        t = safeT(x, t);
+        [523.25, 659.25, 783.99, 1046.5].forEach(function (f, k) {
+          tone(x, 'triangle', f, t + k * 0.078, 0.48, 0.22);
+          tone(x, 'sine', f * 2, t + k * 0.078, 0.32, 0.06);
+        });
+      },
+      notif: function (x, t) {
+        t = safeT(x, t);
+        [987.77, 1318.51].forEach(function (f, k) {
+          tone(x, 'triangle', f, t + k * 0.105, 0.36, 0.22);
+        });
+      },
+      bell: function (x, t) { FULL_SFX.notif(x, t); },
+      copy: function (x, t) {
+        t = safeT(x, t);
+        FULL_SFX.click(x, t);
+        tone(x, 'sine', 580, t + 0.035, 0.08, 0.24, 1100);
+      },
+      lock: function (x, t) {
+        t = safeT(x, t);
+        tone(x, 'square', 190, t, 0.07, 0.16, 115);
+        tone(x, 'sine', 95, t, 0.16, 0.28, 65);
+        tone(x, 'triangle', 1320, t + 0.095, 0.35, 0.18);
+      },
+      alarm: function (x, t) { FULL_SFX.lock(x, t); },
+      riser: function (x, t, e) {
+        t = safeT(x, t);
+        var d = (e && e.d) ? e.d : 2.0;
+        var o = x.ctx.createOscillator(), f = x.ctx.createBiquadFilter(), g = x.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(80, t);
+        o.frequency.exponentialRampToValueAtTime(680, t + d);
+        f.type = 'lowpass';
+        f.frequency.setValueAtTime(220, t);
+        f.frequency.exponentialRampToValueAtTime(4800, t + d);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.16, t + d);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.12);
+        o.connect(f); f.connect(g); g.connect(x.out);
+        o.start(t); o.stop(t + d + 0.15);
+        FULL_SFX.whoosh(x, t, { d: d, v: 0.75 });
+      },
+      hit: function (x, t) {
+        t = safeT(x, t);
+        tone(x, 'sine', 74, t, 1.35, 0.48, 34);
+        nz(x, t, 0.42, 0.30, 'lowpass', 420, 0.7, 0);
+        [261.63, 329.63, 392.0, 523.25].forEach(function (f) {
+          tone(x, 'triangle', f, t + 0.04, 1.4, 0.09);
+        });
+      },
+      impact: function (x, t) { FULL_SFX.hit(x, t); }
+    };
+
+    window.SFX = Object.assign(window.SFX || {}, FULL_SFX);
+
+    /* 3. Universal Cue Extractor (combines explicit sfxPlan + automatic Canvas & DOM animation scanning) */
+    var origSfxPlan = typeof window.sfxPlan === 'function' ? window.sfxPlan : null;
+    var cachedCues = null;
+    var cachedTotal = -1;
+
+    function extractAllCuesArray() {
+      try {
+        if (typeof buildPlan === 'function' && !window.__h2vScanning) {
+          try { buildPlan(); } catch (eBp) {}
+        }
+        var curTotal = typeof TOTAL === 'number' ? TOTAL : 0;
+        if (cachedCues && Math.abs(curTotal - cachedTotal) < 0.01 && curTotal > 0) {
+          return cachedCues;
+        }
+        window.__h2vScanning = true;
+        var cues = [];
+        var explicitTypeRanges = [];
+
+        function addCue(t, k, extra) {
+          if (typeof t !== 'number' || isNaN(t) || t < 0) return;
+          var o = { t: Math.round(t * 1000) / 1000, k: k };
+          if (extra) {
+            if (typeof extra.d === 'number') o.d = extra.d;
+            if (typeof extra.v === 'number') o.v = extra.v;
+            if (Array.isArray(extra.notes)) o.notes = extra.notes;
+          }
+          cues.push(o);
+        }
+
+        // A. Explicit sfxPlan() from the HTML page (if present)
+        if (origSfxPlan) {
+          try {
+            var sp = origSfxPlan();
+            if (Array.isArray(sp)) {
+              sp.forEach(function (e) {
+                if (!e || typeof e.t !== 'number' || !e.k) return;
+                if (e.k === 'type') {
+                  var n = e.n || 10, gp = e.gap || 0.072;
+                  explicitTypeRanges.push([e.t - 0.15, e.t + n * gp + 0.15]);
+                  for (var k = 0; k < n; k++) {
+                    addCue(e.t + k * gp, 'key');
+                  }
+                } else {
+                  addCue(e.t, e.k, e);
+                }
+              });
+            }
+          } catch (eSp) {}
+        }
+
+        // B. Scene transitions from PLAN
+        if (typeof PLAN !== 'undefined' && Array.isArray(PLAN) && PLAN.length > 0) {
+          PLAN.forEach(function (p, idx) {
+            if (p && typeof p.start === 'number') {
+              addCue(p.start + 0.05, 'whoosh', { d: idx === 0 ? 1.1 : 0.76 });
+              if (idx === 0) addCue(p.start + 0.45, 'chime');
+              if (p.len && p.len > 2.2) {
+                addCue(p.start + p.len - 0.38, 'whoosh', { d: 0.45, v: 0.55 });
+              }
+            }
+          });
+        }
+
+        // C. Fast dry-run scan across frameAt(T) for Canvas HTMLs
+        var realFrameAt = window.__h2vOrigFrameAt || window.frameAt;
+        if (typeof realFrameAt === 'function' && curTotal > 0) {
+          var seen = {};
+          var lastTime = {};
+          var prevTx = {};
+          var prevFld = {};
+          var prevBlur = {};
+          var prevOsd = '';
+          var prevScene = -1;
+          var insideWrap = 0;
+          var curT = 0;
+
+          function cool(key, gap) {
+            if (lastTime[key] !== undefined && curT - lastTime[key] < gap) return false;
+            lastTime[key] = curT;
+            return true;
+          }
+          function inExplicitType(t) {
+            for (var i = 0; i < explicitTypeRanges.length; i++) {
+              if (t >= explicitTypeRanges[i][0] && t <= explicitTypeRanges[i][1]) return true;
+            }
+            return false;
+          }
+
+          var orig = {};
+          var fnNames = [
+            'sideCard', 'cbBanner', 'pop', 'panel', 'osd', 'hlBox', 'mark', 'markS',
+            'sheetBase', 'pickScr', 'sheet', 'browser', 'tap', 'ripple', 'btn', 'ghBtn',
+            'field', 'ghField', 'tx', 'blurBar', 'designerAppScr', 'promptAiAppScr',
+            'exportPngAppScr', 'loadingScr2', 'homeAppScr', 'fixesSheet', 'tile', 'button'
+          ];
+          fnNames.forEach(function (nm) {
+            if (typeof window[nm] === 'function') orig[nm] = window[nm];
+          });
+
+          var noopFns = ['backdrop', 'caption', 'rr', 'sbar', 'bottomNavBar', 'ico', 'icoX', 'glow', 'noglow', 'gradH', 'gradDiag'];
+          var savedNoops = {};
+          noopFns.forEach(function (fn) {
+            if (typeof window[fn] === 'function') {
+              savedNoops[fn] = window[fn];
+              window[fn] = function () {};
+            }
+          });
+
+          var origC = window.c, origCtx = window.ctx;
+          var fastC = {
+            save: function () {}, restore: function () {}, translate: function () {}, scale: function () {},
+            rotate: function () {}, setTransform: function () {}, beginPath: function () {}, moveTo: function () {},
+            lineTo: function () {}, arcTo: function () {}, closePath: function () {}, arc: function () {},
+            rect: function () {}, clip: function () {}, fill: function () {}, stroke: function () {},
+            fillRect: function () {}, strokeRect: function () {}, clearRect: function () {}, fillText: function () {},
+            drawImage: function () {}, setLineDash: function () {},
+            bezierCurveTo: function () {}, quadraticCurveTo: function () {},
+            measureText: function (s) { return { width: String(s).length * 9 }; },
+            createLinearGradient: function () { return { addColorStop: function () {} }; },
+            createRadialGradient: function () { return { addColorStop: function () {} }; }
+          };
+          try { if (window.c) window.c = fastC; } catch (eC1) {}
+          try { if (window.ctx) window.ctx = fastC; } catch (eC2) {}
+
+          if (orig.sideCard) {
+            window.sideCard = function (x, y, w, h, a, title) {
+              if (a > 0.02) {
+                var k = 'sc:' + prevScene + ':' + (title || (Math.round(x) + ':' + Math.round(y)));
+                if (!seen[k]) { seen[k] = 1; if (cool('slide', 0.12)) addCue(curT, 'slide'); }
+              }
+              insideWrap++;
+              try { return orig.sideCard.apply(this, arguments); } finally { insideWrap--; }
+            };
+          }
+          if (orig.cbBanner) {
+            window.cbBanner = function (x, y, w, h, a, col, icon, title) {
+              if (a > 0.02) {
+                var k = 'cb:' + prevScene + ':' + (title || Math.round(y));
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.12)) addCue(curT, 'popup'); }
+              }
+              insideWrap++;
+              try { return orig.cbBanner.apply(this, arguments); } finally { insideWrap--; }
+            };
+          }
+          if (orig.pop) {
+            window.pop = function (cx, cy, a, fn) {
+              if (a > 0.02) {
+                var k = 'pop:' + prevScene + ':' + Math.round(cx) + ':' + Math.round(cy);
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.09)) addCue(curT, 'popup'); }
+              }
+              insideWrap++;
+              try { return orig.pop.apply(this, arguments); } finally { insideWrap--; }
+            };
+          }
+          if (orig.panel) {
+            window.panel = function (x, y, w, h, a) {
+              if (insideWrap === 0 && a > 0.02) {
+                var k = 'pn:' + prevScene + ':' + Math.round(x) + ':' + Math.round(y) + ':' + Math.round(w);
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.12)) addCue(curT, 'popup'); }
+              }
+              return orig.panel.apply(this, arguments);
+            };
+          }
+          if (orig.osd) {
+            window.osd = function (items, q) {
+              var cur = null;
+              if (Array.isArray(items)) items.forEach(function (it) { if (q >= it[0]) cur = it; });
+              if (cur && cur[1] !== prevOsd) {
+                prevOsd = cur[1];
+                if (cur[0] > 0.02 && cool('osd', 0.18)) addCue(curT, 'popup');
+              }
+              return orig.osd.apply(this, arguments);
+            };
+          }
+          if (orig.hlBox) {
+            window.hlBox = function (x, y, w, h, a) {
+              if (a > 0.02) {
+                var k = 'hl:' + prevScene + ':' + Math.round(x) + ':' + Math.round(y) + ':' + Math.round(w);
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.12)) addCue(curT, 'popup'); }
+              }
+              return orig.hlBox.apply(this, arguments);
+            };
+          }
+          if (orig.mark) {
+            window.mark = function (r, al) {
+              if (al > 0.02 && r) {
+                var k = 'mk:' + prevScene + ':' + Math.round(r[0]) + ':' + Math.round(r[1]);
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+              }
+              return orig.mark.apply(this, arguments);
+            };
+          }
+          if (orig.markS) {
+            window.markS = function (r, c, al) {
+              if (al > 0.02 && r) {
+                var k = 'mks:' + prevScene + ':' + Math.round(r[0]) + ':' + Math.round(r[1]);
+                if (!seen[k]) { seen[k] = 1; if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+              }
+              return orig.markS.apply(this, arguments);
+            };
+          }
+          if (orig.sheetBase) {
+            window.sheetBase = function (T, p, title, h) {
+              if (p > 0.02) {
+                var k = 'shb:' + prevScene + ':' + (title || h);
+                if (!seen[k]) { seen[k] = 1; if (cool('slide', 0.18)) addCue(curT, 'slide'); }
+              }
+              return orig.sheetBase.apply(this, arguments);
+            };
+          }
+          if (orig.pickScr) {
+            window.pickScr = function (T, p) {
+              if (p > 0.02) {
+                var k = 'pks:' + prevScene;
+                if (!seen[k]) { seen[k] = 1; if (cool('slide', 0.18)) addCue(curT, 'slide'); }
+              }
+              return orig.pickScr.apply(this, arguments);
+            };
+          }
+          if (orig.sheet) {
+            window.sheet = function (title, sub, u, at) {
+              if (u >= at) {
+                var k = 'sht:' + prevScene + ':' + title;
+                if (!seen[k]) { seen[k] = 1; if (cool('slide', 0.18)) addCue(curT, 'slide'); }
+              }
+              return orig.sheet.apply(this, arguments);
+            };
+          }
+          if (orig.browser) {
+            window.browser = function (x, y, w, h, url, a) {
+              if (a > 0.02) {
+                var k = 'brw:' + prevScene + ':' + url;
+                if (!seen[k]) { seen[k] = 1; if (cool('slide', 0.2)) addCue(curT, 'slide'); }
+              }
+              return orig.browser.apply(this, arguments);
+            };
+          }
+          if (orig.tap) {
+            window.tap = function (x, y, p) {
+              var k = 'tap:' + prevScene + ':' + Math.round(x / 8) + ':' + Math.round(y / 8);
+              if (p > 0.005 && p < 0.95) {
+                if (!seen[k]) { seen[k] = 1; if (cool('anytap', 0.12)) addCue(curT, 'tap'); }
+              } else {
+                seen[k] = 0;
+              }
+              return orig.tap.apply(this, arguments);
+            };
+          }
+          if (orig.ripple) {
+            window.ripple = function (x, y, dt) {
+              var k = 'rip:' + prevScene + ':' + Math.round(x / 10) + ':' + Math.round(y / 10);
+              if (dt >= 0 && dt < 0.55) {
+                if (!seen[k]) { seen[k] = 1; if (cool('anytap', 0.12)) addCue(curT, 'tap'); }
+              } else {
+                seen[k] = 0;
+              }
+              return orig.ripple.apply(this, arguments);
+            };
+          }
+          if (orig.btn) {
+            window.btn = function (x, y, w, h, label, pri, pr) {
+              var kp = 'btnp:' + prevScene + ':' + label;
+              if ((pr || 0) > 0.005) {
+                if (!seen[kp]) { seen[kp] = 1; if (cool('anyclick', 0.12)) addCue(curT, 'click'); }
+              } else {
+                seen[kp] = 0;
+              }
+              if (typeof label === 'string' && (/^✓|Active ✓|Copied|Saved/.test(label))) {
+                var ks = 'btns:' + prevScene + ':' + label;
+                if (!seen[ks]) { seen[ks] = 1; if (cool('success', 0.25)) addCue(curT, 'success'); }
+              }
+              return orig.btn.apply(this, arguments);
+            };
+          }
+          if (orig.ghBtn) {
+            window.ghBtn = function (x, y, w, h, label, col, pr) {
+              var kp = 'ghbp:' + prevScene + ':' + label;
+              if ((pr || 0) > 0.005) {
+                if (!seen[kp]) { seen[kp] = 1; if (cool('anyclick', 0.12)) addCue(curT, 'click'); }
+              } else {
+                seen[kp] = 0;
+              }
+              return orig.ghBtn.apply(this, arguments);
+            };
+          }
+          if (orig.field) {
+            window.field = function (x, y, w, label, val) {
+              var s = String(val || '');
+              var kf = 'fld:' + prevScene + ':' + label;
+              var pv = prevFld[kf] || '';
+              if (s.length > pv.length && !inExplicitType(curT)) {
+                if (cool('key', 0.045)) addCue(curT, 'key');
+              }
+              prevFld[kf] = s;
+              return orig.field.apply(this, arguments);
+            };
+          }
+          if (orig.ghField) {
+            window.ghField = function (x, y, w, label, val) {
+              var s = String(val || '');
+              var kf = 'ghf:' + prevScene + ':' + label;
+              var pv = prevFld[kf] || '';
+              if (s.length > pv.length && !inExplicitType(curT)) {
+                if (cool('key', 0.045)) addCue(curT, 'key');
+              }
+              prevFld[kf] = s;
+              return orig.ghField.apply(this, arguments);
+            };
+          }
+          if (orig.blurBar) {
+            window.blurBar = function (x, y, w) {
+              var kb = 'blb:' + prevScene + ':' + Math.round(x) + ':' + Math.round(y);
+              var pw = prevBlur[kb] || 0;
+              if (w > pw + 3 && !inExplicitType(curT)) {
+                if (cool('key', 0.055)) addCue(curT, 'key');
+              }
+              prevBlur[kb] = w;
+              return orig.blurBar.apply(this, arguments);
+            };
+          }
+          if (orig.loadingScr2) {
+            window.loadingScr2 = function () {
+              var kl = 'ld2:' + prevScene;
+              if (!seen[kl]) { seen[kl] = 1; if (cool('slide', 0.2)) addCue(curT, 'slide'); }
+              return orig.loadingScr2.apply(this, arguments);
+            };
+          }
+          if (orig.homeAppScr) {
+            window.homeAppScr = function () {
+              var kh = 'hma:' + prevScene;
+              if (!seen[kh]) { seen[kh] = 1; if (cool('slide', 0.2)) addCue(curT, 'slide'); }
+              return orig.homeAppScr.apply(this, arguments);
+            };
+          }
+          var prevDes = {};
+          if (orig.designerAppScr) {
+            window.designerAppScr = function (T, o) {
+              o = o || {};
+              var kd = 'des:' + prevScene;
+              var pd = prevDes[kd];
+              if (pd) {
+                if (o.frameStyle !== pd.frameStyle) { if (cool('click', 0.15)) addCue(curT, 'click'); }
+                if (o.themeIdx !== pd.themeIdx) { if (cool('slide', 0.15)) addCue(curT, 'slide'); }
+                if ((o.numEl || 5) > (pd.numEl || 5)) { if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+                if (o.panelMode !== pd.panelMode) { if (cool('slide', 0.15)) addCue(curT, 'slide'); }
+                if (Boolean(o.hasGalleryPhoto) && !Boolean(pd.hasGalleryPhoto)) { if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+                if (Boolean(o.fitMode) !== Boolean(pd.fitMode)) { if (cool('click', 0.15)) addCue(curT, 'click'); }
+                if ((o.subTab || 0) !== (pd.subTab || 0)) { if (cool('slide', 0.15)) addCue(curT, 'slide'); }
+                if ((o.navTabs || 4) !== (pd.navTabs || 4)) { if (cool('click', 0.15)) addCue(curT, 'click'); }
+                if (o.customColor !== pd.customColor && o.customColor) { if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+                if (Boolean(o.slimPreset) && !Boolean(pd.slimPreset)) { if (cool('tap', 0.15)) addCue(curT, 'tap'); }
+                if ((o.nudgeX || 0) !== (pd.nudgeX || 0)) { if (cool('tick', 0.12)) addCue(curT, 'tick'); }
+                if (Boolean(o.locked) && !Boolean(pd.locked)) { if (cool('lock', 0.2)) addCue(curT, 'lock'); }
+                if (Boolean(o.showExplainBox) && !Boolean(pd.showExplainBox)) { if (cool('popup', 0.15)) addCue(curT, 'popup'); }
+                if (Boolean(o.previewMode) && !Boolean(pd.previewMode)) { if (cool('slide', 0.15)) addCue(curT, 'slide'); }
+              }
+              prevDes[kd] = {
+                frameStyle: o.frameStyle, themeIdx: o.themeIdx, numEl: o.numEl,
+                panelMode: o.panelMode, hasGalleryPhoto: o.hasGalleryPhoto, fitMode: o.fitMode,
+                subTab: o.subTab, navTabs: o.navTabs, customColor: o.customColor,
+                slimPreset: o.slimPreset, nudgeX: o.nudgeX, locked: o.locked,
+                showExplainBox: o.showExplainBox, previewMode: o.previewMode
+              };
+              return orig.designerAppScr.apply(this, arguments);
+            };
+          }
+          if (orig.promptAiAppScr) {
+            window.promptAiAppScr = function (T, o) {
+              o = o || {};
+              var kp = 'pai:' + prevScene + ':' + (o.aiTab ? '1' : '0');
+              if (!seen[kp]) { seen[kp] = 1; if (cool('slide', 0.18)) addCue(curT, 'slide'); }
+              return orig.promptAiAppScr.apply(this, arguments);
+            };
+          }
+          if (orig.exportPngAppScr) {
+            window.exportPngAppScr = function (T, o) {
+              o = o || {};
+              var ke = 'exp:' + prevScene;
+              if (!seen[ke]) { seen[ke] = 1; if (cool('popup', 0.18)) addCue(curT, 'popup'); }
+              if (o.licActive && !seen[ke + ':lic']) { seen[ke + ':lic'] = 1; if (cool('success', 0.2)) addCue(curT, 'success'); }
+              if ((o.saved || 0) > 0.02 && !seen[ke + ':sav']) { seen[ke + ':sav'] = 1; if (cool('notif', 0.2)) addCue(curT, 'notif'); }
+              return orig.exportPngAppScr.apply(this, arguments);
+            };
+          }
+          if (orig.tx) {
+            window.tx = function (s, x, y) {
+              var str = String(s == null ? '' : s);
+              var hasPipe = str.length > 1 && str.charCodeAt(str.length - 1) === 124; // '|'
+              var clean = hasPipe ? str.slice(0, -1) : str;
+              var kt = 'tx:' + prevScene + ':' + Math.round(x) + ':' + Math.round(y);
+              var pv = prevTx[kt];
+              if (clean.length > 0 && clean.length <= 64 && !inExplicitType(curT)) {
+                if (hasPipe && pv !== undefined && clean !== pv && clean.length > pv.length) {
+                  if (cool('key', 0.045)) addCue(curT, 'key');
+                } else if (pv !== undefined && clean.length > pv.length && (clean.length - pv.length) <= 3 && pv.length >= 1 && clean.indexOf(pv) === 0 && !/^\d+[%+]?$/.test(clean)) {
+                  if (cool('key', 0.045)) addCue(curT, 'key');
+                } else if (pv !== undefined && pv.length >= 8 && (clean.length === 1 || clean.length === 2) && !/^\d+[%+]?$/.test(clean)) {
+                  if (cool('key', 0.045)) addCue(curT, 'key');
+                }
+              }
+              prevTx[kt] = clean;
+            };
+          }
+
+          var step = 0.05;
+          for (var t = 0; t <= curTotal; t += step) {
+            curT = t;
+            if (typeof PLAN !== 'undefined' && Array.isArray(PLAN)) {
+              for (var k = 0; k < PLAN.length; k++) {
+                if (t < PLAN[k].start + PLAN[k].len) {
+                  if (k !== prevScene) { prevScene = k; prevTx = {}; }
+                  break;
+                }
+              }
+            }
+            try { realFrameAt(t); } catch (eFr) {}
+          }
+
+          try { if (origC) window.c = origC; } catch (eC3) {}
+          try { if (origCtx) window.ctx = origCtx; } catch (eC4) {}
+          for (var fn in savedNoops) window[fn] = savedNoops[fn];
+          for (var nm in orig) window[nm] = orig[nm];
+          try { realFrameAt(Math.min(2.2, Math.max(0, curTotal - 0.05))); } catch (eRest) {}
+        }
+
+        // Sort & deduplicate cues
+        cues.sort(function (a, b) { return a.t - b.t; });
+        var out = [];
+        var lastByKind = {};
+        for (var i = 0; i < cues.length; i++) {
+          var c = cues[i];
+          var minGap = (c.k === 'key' || c.k === 'tick') ? 0.04 : 0.08;
+          if (lastByKind[c.k] !== undefined && c.t - lastByKind[c.k] < minGap) continue;
+          lastByKind[c.k] = c.t;
+          out.push(c);
+        }
+        cachedCues = out;
+        cachedTotal = curTotal;
+        window.__h2vScanning = false;
+        return out;
+      } catch (err) {
+        window.__h2vScanning = false;
+        return [];
+      }
+    }
+
+    window.__h2vExtractSfxCues = function () {
+      cachedCues = null; // Force fresh scan with current DUR / PLAN
+      return JSON.stringify(extractAllCuesArray());
+    };
+
+    // Upgrade sfxPlan() so WAV download (renderSfx) also gets all extracted cues
+    window.sfxPlan = function () {
+      return extractAllCuesArray();
+    };
+
+    /* 4. Live Preview Real-Time SFX Player (triggered directly by frameAt(T) during preview) */
+    var liveAC = null, liveMG = null, liveNoise = null;
+    var liveVol = { master: 1, sfx: 1 };
+    var prevLiveT = -1;
+
+    function ensureLiveAC() {
+      var sfEl = document.getElementById('sf');
+      if (sfEl && !sfEl.checked) return null;
+      var AC0 = window.AudioContext || window.webkitAudioContext;
+      if (!AC0) return null;
+      if (!liveAC) {
+        try {
+          liveAC = new AC0();
+          liveMG = liveAC.createGain();
+          liveMG.gain.value = 0.9 * liveVol.master * liveVol.sfx;
+          liveMG.connect(liveAC.destination);
+          liveNoise = mkNoise(liveAC);
+        } catch (eAc) { liveAC = null; return null; }
+      }
+      if (liveAC && liveAC.state === 'suspended') {
+        try { liveAC.resume(); } catch (eRes) {}
+      }
+      return { ctx: liveAC, out: liveMG, noise: liveNoise };
+    }
+
+    // Replace page's bulk sfxStart with lightweight live AC initializer
+    window.sfxStart = function () {
+      prevLiveT = -1;
+      ensureLiveAC();
+    };
+    window.sfxStop = function () {
+      prevLiveT = -1;
+    };
+
+    // Hook frameAt(T) to play SFX cues in real time during Preview
+    if (typeof window.frameAt === 'function' && !window.__h2vOrigFrameAt) {
+      window.__h2vOrigFrameAt = window.frameAt;
+      window.frameAt = function (T) {
+        if (!window.__h2vExporting && !window.__h2vScanning && typeof T === 'number') {
+          var dt = T - prevLiveT;
+          if (prevLiveT >= 0 && dt > 0 && dt < 0.40) {
+            var x = ensureLiveAC();
+            if (x) {
+              var list = extractAllCuesArray();
+              var now = x.ctx.currentTime + 0.005;
+              for (var i = 0; i < list.length; i++) {
+                var e = list[i];
+                if (e.t > prevLiveT && e.t <= T) {
+                  var fn = FULL_SFX[e.k] || (window.SFX && window.SFX[e.k]);
+                  if (fn) { try { fn(x, now, e); } catch (ePlay) {} }
+                } else if (e.t > T) {
+                  break;
+                }
+              }
+            }
+          }
+          prevLiveT = T;
+        }
+        return window.__h2vOrigFrameAt.apply(this, arguments);
+      };
+    }
+
+    // Wrap NH.run so live preview SFX are muted during fast frame-by-frame MP4 export
+    if (window.NH) {
+      if (typeof window.NH.run === 'function' && !window.NH.__h2vWrappedRun) {
+        var origRun = window.NH.run;
+        window.NH.run = async function (fps) {
+          window.__h2vExporting = true;
+          try {
+            return await origRun.call(this, fps);
+          } finally {
+            window.__h2vExporting = false;
+          }
+        };
+        window.NH.__h2vWrappedRun = true;
+      }
+      if (!window.NH.setVolumes) {
+        window.NH.setVolumes = function (m, v, mu, s) {
+          liveVol.master = +m || 1;
+          liveVol.sfx = +s || 1;
+          if (liveMG) liveMG.gain.value = 0.9 * liveVol.master * liveVol.sfx;
+          return 'ok';
+        };
+      }
+    }
+
+    return 'sfx-ok';
+  } catch (err) {
+    return 'sfx-err:' + (err && err.message ? err.message : err);
+  }
+})();
+
+frameAt(2.2);
+</script>
+</body>
+</html>
